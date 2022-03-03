@@ -7,6 +7,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import TestComponent from "./components/TestComponent";
 import HeaderComponent from "./components/HeaderComponent";
+import RegisterComponent from "./components/RegisterComponent";
+import HomeComponent from "./components/HomeComponent";
 require('./bootstrap');
 
 window.Vue = require('vue').default;
@@ -32,9 +34,14 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {
-            path: '/test',
-            name: 'test.test',
-            component: TestComponent,
+            path: '/',
+            name: 'home',
+            component: HomeComponent,
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: RegisterComponent,
         }
     ]
 })
