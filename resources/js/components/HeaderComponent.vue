@@ -2,17 +2,21 @@
     <div class="container">
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark mt-3 mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">DoSeeThis</a>
-
-
+            <router-link v-bind:to="{name:'home'}" >
+                <a class="navbar-brand .text-decoration-none">DoSeeThis</a>
+            </router-link>
             <ul class="navbar-nav">
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="register">新規登録</a>
+                            <router-link v-bind:to="{name:'user.register'}">
+                                <button class="btn btn-success">新規登録</button>
+                            </router-link>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">ログイン</a>
+                            <router-link v-bind:to="{name:'user.register'}">
+                                <button class="btn btn-success">ログイン</button>
+                            </router-link>
                         </li>
                     </ul>
                 </div>
