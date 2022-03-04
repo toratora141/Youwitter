@@ -29,7 +29,7 @@ class UserInputPost extends FormRequest
             'account_name' => ['required', 'unique:users', 'min:4', 'max:32'],
             'display_name' => ['required', 'min:1', 'max:32'],
             'password' => ['required', 'min:6', 'max:16'],
-            'password_conform' => ['required', 'same:password'],
+            'password_confirm' => ['required', 'same:password'],
         ];
     }
 
@@ -46,8 +46,8 @@ class UserInputPost extends FormRequest
             'password.required' => '入力されていません',
             'password.min' => '6文字以上で入力してください。',
             'password.max' => '16文字以下で入力してください。',
-            'password_conform.required' => '確認のためパスワードを再入力してください。',
-            'password_conform.same' => 'パスワードが一致しません。',
+            'password_confirm.required' => '確認のためパスワードを再入力してください。',
+            'password_confirm.same' => 'パスワードが一致しません。',
         ];
     }
 
