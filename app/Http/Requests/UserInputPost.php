@@ -36,14 +36,14 @@ class UserInputPost extends FormRequest
     public function messages()
     {
         return [
-            'account_name.required' => '入力されていません',
-            'account_name.unique' => 'すでに使用されているIDです',
+            'account_name.required' => '入力されていません。',
+            'account_name.unique' => '既に使用されているIDです。',
             'account_name.min' => '4文字以上で入力してください。',
             'account_name.max' => '32文字以下で入力してください。',
-            'display_name.required' => '入力されていません',
+            'display_name.required' => '入力されていません。',
             'display_name.min' => '1文字以上で入力してください。',
             'display_name.max' => '32文字以下で入力してください。',
-            'password.required' => '入力されていません',
+            'password.required' => '入力されていません。',
             'password.min' => '6文字以上で入力してください。',
             'password.max' => '16文字以下で入力してください。',
             'password_confirm.required' => '確認のためパスワードを再入力してください。',

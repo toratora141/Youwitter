@@ -8,6 +8,7 @@ import VueRouter from 'vue-router';
 import TestComponent from "./components/TestComponent";
 import HeaderComponent from "./components/HeaderComponent";
 import RegisterComponent from "./components/RegisterComponent";
+import LoginComponent from "./components/LoginComponent";
 import HomeComponent from "./components/HomeComponent";
 require('./bootstrap');
 
@@ -42,6 +43,11 @@ const router = new VueRouter({
             path: '/register',
             name: 'user.register',
             component: RegisterComponent,
+        },
+        {
+            path: '/login',
+            name: 'user.login',
+            component: LoginComponent,
         }
     ]
 })

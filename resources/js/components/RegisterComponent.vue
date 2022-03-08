@@ -87,11 +87,6 @@
                         }
                         console.log(errors);
                         self.errors = errors;
-                        // var errors = response.response.data.errors;
-                        //  this.errors.account_name = ( errors.account_name ? errors.account_name[0] : "" );
-                        //  this.errors.display_name = ( errors.display_name ? errors.display_name[0] : "" );
-                        //  this.errors.password = ( errors.password ? errors.password[0] : "" );
-                        //  this.errors.password_confirm = ( errors.password_confirm ? errors.password_confirm[0] : "" );
                     });
                     return false;
             },

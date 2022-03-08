@@ -14,7 +14,7 @@
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link v-bind:to="{name:'user.register'}">
+                            <router-link v-bind:to="{name:'user.login'}">
                                 <button class="btn btn-success">ログイン</button>
                             </router-link>
                         </li>
