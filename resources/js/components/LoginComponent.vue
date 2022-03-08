@@ -44,34 +44,22 @@ export default {
             }
         },
         methods: {
-            // login:function() {
-            //     this.errors = {};
-            //     // var self = this;
-            //     axios.post('/api/login', this.user)
-            //         .then(function(response) {
-            //             console.log('success');
-            //             console.log(response);
-            //         }).catch(function(error) {
-            //             var responseErrors = error.response.data.errors;
-            //             var errors = {};
-            //             for(var key in responseErrors) {
-            //                 errors[key] = responseErrors[key][0];
-            //             }
-            //             self.errors = errors;
-            //         });
-            // }
-
             login:function() {
                 this.errors = {};
                 var self = this;
-                axios.get('/sanctum/crsf-cookie',{withCredentials: true}).then(response => {
-                    axios.post('/login', this.user, {withCredentials: true})
-                        .then(response => {
-                            console.log('succsess!');
-                            console.log(response);
-                        }).catch(errors => {
+                axios.get('/sanctum/csrf-cookie',{withCredentials: true}).then(response => {
+                    axios.post('/api/user/login', this.user, {withCredentials: true})
+                        .then((res) => {
+                            this.$router.push({name: 'home'});
+                        }).catch(function(error){
+                        var responseErrors = error.response.data.errors;
+                        var errors = {};
 
-                            console.log(errors);
+                        for(var key in responseErrors){
+                            errors[key] = responseErrors[key][0];
+                        }
+                        console.log(errors);
+                        self.errors = errors;
                         });
                 });
             }

@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Exception;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Http\Requests\UserInputPost;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -41,5 +46,20 @@ class LoginController extends Controller
     public function username()
     {
         return 'account_name';
+    }
+
+    public function login(UserInputPost $request)
+    {
+        $result = false;
+        $message = '';
+        $user = [];
+        $credentials = $request->only('account_name', 'password');
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            $result = true;
+        } else {
+            $message = 'EmailまたはPasswordが間違っています。';
+        }
+        return response()->json(['result' => $result, 'message' => $message]);
     }
 }
