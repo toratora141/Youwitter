@@ -25,7 +25,11 @@
                         ドロップダウン
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">メニュー1</a></li>
+                        <li>
+                            <router-link v-bind:to="{name:'user.myprofile'}">
+                                <a class="dropdown-item" href="#">プロフィール</a>
+                            </router-link>
+                        </li>
                         <li><a class="dropdown-item" href="#">メニュー2</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#">その他</a></li>

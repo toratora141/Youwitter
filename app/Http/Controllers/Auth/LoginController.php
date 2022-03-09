@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use Exception;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\UserInputPost;
+use App\Http\Requests\UserLoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
@@ -48,18 +49,40 @@ class LoginController extends Controller
         return 'account_name';
     }
 
-    public function login(UserInputPost $request)
+    public function login(UserLoginRequest $request)
     {
         $result = false;
-        $message = '';
+        $login_message = '';
         $user = [];
         $credentials = $request->only('account_name', 'password');
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $result = true;
         } else {
-            $message = 'EmailまたはPasswordが間違っています。';
+            $login_message = 'アカウントIDまたはパスワードが間違っています。';
         }
-        return response()->json(['result' => $result, 'message' => $message]);
+        return response()->json(['result' => $result, 'login_message' => $login_message, 'account_name' => $request->user()->account_name]);
+    }
+
+    public function me(Request $request): JsonResponse
+    {
+        // $result = false;
+        // $user = [];
+        // if (Auth::check()) {
+        //     $user = Auth::user();
+        //     $result = true;
+        // }
+        // return response()->json(['result' => $result, 'user' => $user]);
+
+        // $user = $request->user();
+
+        // return new JsonResponse([
+        //     'account_name' => $user->account_name,
+        //     'display_name' => $user->display_name,
+        // ]);
+        return new JsonResponse([
+            'account_name' => 'test',
+            'display_name' => 'test',
+        ]);
     }
 }

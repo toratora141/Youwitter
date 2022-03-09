@@ -85,7 +85,6 @@
                         for(var key in responseErrors){
                             errors[key] = responseErrors[key][0];
                         }
-                        console.log(errors);
                         self.errors = errors;
                     });
                     return false;

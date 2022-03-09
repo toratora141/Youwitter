@@ -29,6 +29,11 @@
                             v-if="errors.password">
                         </label>
                     </div>
+                    <div class="form-group row">
+                        <label class="alert alert-danger p-2"
+                            v-text="errors.login_message"
+                            v-if="errors.login_message"></label>
+                    </div>
                     <button type="submit" class="btn btn-primary w-100 mt-5">ログイン</button>
                 </form>
             </div>
@@ -40,27 +45,30 @@ export default {
         data: function() {
             return {
                 user: {},
-                errors: {}
+                errors: {},
+                errors_login: {},
+
             }
         },
         methods: {
             login:function() {
                 this.errors = {};
+                this.errors_login = {};
                 var self = this;
                 axios.get('/sanctum/csrf-cookie',{withCredentials: true}).then(response => {
                     axios.post('/api/user/login', this.user, {withCredentials: true})
-                        .then((res) => {
-                            this.$router.push({name: 'home'});
+                        .then(function(res) {
+                            console.log(res);
+                            self.errors = res.data;
                         }).catch(function(error){
                         var responseErrors = error.response.data.errors;
                         var errors = {};
-
                         for(var key in responseErrors){
                             errors[key] = responseErrors[key][0];
                         }
-                        console.log(errors);
                         self.errors = errors;
                         });
+                        return false;
                 });
             }
         }

@@ -17,10 +17,8 @@ Route::get('/{any}', function () {
     return view('app');
 })->where('any', '.*');
 
-// Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-// Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
-
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::get('/user/auth', 'App\Hppt\Controllers\Auth\LoginController@auth');
+// });
 
 Route::post('/login', 'App\Http\Controllers\Auth\LoginController@login');
