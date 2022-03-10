@@ -74,6 +74,7 @@
             submit() {
                 this.errors = {};
                 var self = this;
+                console.log(this.user);
                 axios.post('/api/users/register', this.user)
                     .then((res) => {
                         this.$router.push({name: 'home'});

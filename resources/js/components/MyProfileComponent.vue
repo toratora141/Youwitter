@@ -10,13 +10,10 @@
   <div>
   account info
     <div class="p-2">
-      <label>Name</label>
-      <p class="mb-2">{{user.account_name}}</p>
-      <label>Email</label>
-      <p>{{user.display_name}}</p>
-    </div>
-    <div class="p-2 text-danger">
-      {{error}}
+      <label>アカウントID</label>
+      <p class="mb-2">{{account_name}}</p>
+      <label>アカウント名</label>
+      <p>{{display_name}}</p>
     </div>
   </div>
 
@@ -27,23 +24,28 @@
   export default {
     data() {
       return {
-        user: {},
+        account_name: '',
+        display_name: '',
+        movie_id: '',
         auth: false,
         error: {},
       }
     },
     created() {
+        var self = this;
       axios.get('/api/user')
       .then((res) => {
+          var user = {};
         if (res.data.result) {
-          this.user = res.data.user
+          user['account_name'] = res.data.account_name;
+          user['display_name'] = res.data.display_name;
           this.auth = true
         }
-          console.log(res);
+          self.account_name = res.data.account_name;
+          self.display_name = res.data.display_name;
       })
-      .catch((err) => {
-          console.log(err);
-        this.error = err.response
+      .catch((error) => {
+        this.error = error.response
       })
     },
   }

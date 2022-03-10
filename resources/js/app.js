@@ -10,6 +10,7 @@ import HeaderComponent from "./components/HeaderComponent";
 import RegisterComponent from "./components/RegisterComponent";
 import LoginComponent from "./components/LoginComponent";
 import MyProfileComponent from "./components/MyProfileComponent";
+import MovieListCreateComponent from "./components/MovieListCreateComponent";
 import HomeComponent from "./components/HomeComponent";
 require('./bootstrap');
 
@@ -54,6 +55,11 @@ const router = new VueRouter({
             path: '/myprofile',
             name: 'user.myprofile',
             component: MyProfileComponent,
+        },
+        {
+            path: '/movieList/create',
+            name: 'movieList.create',
+            component: MovieListCreateComponent,
         }
     ]
 })
