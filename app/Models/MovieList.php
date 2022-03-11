@@ -20,6 +20,6 @@ class MovieList extends Model
 
     protected $table = 'movie_lists';
     protected $primaryKey = 'id';
-    public $incrementing = false;
     protected $keyType = 'string';
+    public $incrementing = false;
 }

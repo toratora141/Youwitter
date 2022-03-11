@@ -1,12 +1,14 @@
 <template>
-<div class="mx-auto p-2" style="max-width: 600px;">
 
-  <!-- <div
-    no-body
-    header="ユーザ情報"
-    header-bg-variant="primary"
-    header-text-variant="white"
-  > -->
+
+<div class="mx-auto p-2" style="max-width: 600px;">
+    <div class="card w-75" v-if="errors.unauth">
+        <div class="card-body">
+            <p class="card-text">ログインされていません</p>
+            <a class="btn btn-primary">ログイン</a>
+            <a class="btn btn-primary">新規登録</a>
+        </div>
+    </div>
   <div>
   account info
     <div class="p-2">
@@ -47,17 +49,22 @@
     created() {
         var self = this;
       axios.get('/api/user')
-      .then((res) => {
-          var user = {};
-        if (res.data.result) {
-          user['account_name'] = res.data.account_name;
-          this.auth = true
-        }
-          self.account_name = res.data.account_name;
-          this.account_name = res.data.account_name;
-      })
+        .then((res) => {
+            var user = {};
+            if (res.data.result) {
+            user['account_name'] = res.data.account_name;
+            this.auth = true
+            }
+            self.account_name = res.data.account_name;
+
+        })
       .catch((error) => {
-        this.errors = error.response
+        if(error.response.data.message ==="Unauthenticated."){
+            var errors = {};
+            errors['unauth'] = 'ログインされていません。';
+            self.errors = errors;
+        }
+        // this.errors = error.response
       })
     },
     methods:{
@@ -73,8 +80,12 @@
                     console.log('リストを作成！')
                 })
                 .catch((error) => {
-                    console.log(error);
-                    // this.errors = error.response.data.errors['id'][0];
+                    var errors_temp = {};
+                    console.log("Error!!!");
+                    console.log(error.response.data.errors['id'][0]);
+                    //送信後、画面に表示させるため一度tempに格納
+                    errors_temp['movieList_id'] = error.response.data.errors['id'][0];
+                    self.errors = errors_temp;
                 });
         }
     }
