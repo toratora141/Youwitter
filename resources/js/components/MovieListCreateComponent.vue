@@ -3,13 +3,6 @@
     <div class="alert alert-success" role="alert" v-show="alertSuccess">
         リストを作成しました！
     </div>
-    <div class="card w-75" v-if="errors.unauth">
-        <div class="card-body">
-            <p class="card-text">ログインされていません</p>
-            <a class="btn btn-primary">ログイン</a>
-            <a class="btn btn-primary">新規登録</a>
-        </div>
-    </div>
   <div>
   account info
     <div class="p-2">
