@@ -1,43 +1,41 @@
 <template>
     <div class="container">
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark mt-3 mb-3">
-        <div class="container-fluid">
-            <router-link v-bind:to="{name:'home'}" >
-                <a class="navbar-brand .text-decoration-none">DoSeeThis</a>
-            </router-link>
-            <ul class="navbar-nav">
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav">
-                        <li class="nav-item active">
-                            <router-link v-bind:to="{name:'user.register'}">
-                                <button class="btn btn-success">新規登録</button>
-                            </router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link v-bind:to="{name:'user.login'}">
-                                <button class="btn btn-success">ログイン</button>
-                            </router-link>
-                        </li>
-                    </ul>
-                </div>
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        ドロップダウン
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li>
-                            <router-link v-bind:to="{name:'user.myprofile'}">
-                                <a class="dropdown-item" href="#">プロフィール</a>
-                            </router-link>
-                        </li>
-                        <li><a class="dropdown-item" href="#">メニュー2</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">その他</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <!-- TOPは、ブラントとして常に表示 -->
+      <router-link v-bind:to="{name:'home'}" >
+                <a class="navbar-brand .text-decoration-none">Youwitter</a>
+    </router-link>
+      <!-- navbar-togglerでレスポンシブ -->
+      <!-- レスポンシブ状態でないと、トグルアイコンは非表示になり、メニューが表示される -->
+      <!-- レスポンシブになると、トグルアイコンが表示され、メニューは非表示になる -->
+      <!-- data-bs-targetとidでコンテンツを連携させる -->
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#Nav1" aria-controls="Nav1"
+        aria-expanded="false" aria-label="ナビゲーションの切替">
+        <!-- ハンバーガーメニューでボタンを表示 navbar-toggler-icon -->
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- ボタンが押されたら、以下のメニューを開く、メニューはulとliを使う -->
+      <div class="collapse navbar-collapse" id="Nav1">
+        <ul class="navbar-nav mt-3">
+            <li class="nav-item active">
+                <router-link v-bind:to="{name:'user.register'}">
+                    <a a class="nav-link" href="#">アカウント作成</a>
+                </router-link>
+            </li>
+            <li class="nav-item">
+                <router-link v-bind:to="{name:'user.login'}">
+                    <a a class="nav-link" href="#">ログイン</a>
+                </router-link>
+            </li>
+            <li class="nav-item">
+                <router-link v-bind:to="{name:'user.myprofile'}">
+                    <a class="nav-link" href="#">プロフィール</a>
+                </router-link>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="#">メニュー3</a></li>
+        </ul>
+      </div>
+    </nav>
     </div>
 </template>
 

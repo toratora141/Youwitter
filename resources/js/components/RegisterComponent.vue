@@ -57,24 +57,41 @@
                     </div>
                     <button type="submit" class="btn btn-primary w-100 mt-5">登録</button>
                 </form>
+                <div class="modal" tabindex="-1" ref="showModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <p>アカウント作成中です</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
 </template>
 
 <script>
+import { Modal } from 'bootstrap';
+
     export default {
-        data: function() {
+        data() {
             return {
                 user: {},
-                errors: {}
+                errors: {},
+                showModalObj: null,
             }
         },
+        mounted() {
+            this.showModalObj = new Modal(this.$refs.showModal, {keyboard: true})
+        }
+        ,
         methods: {
             submit() {
                 this.errors = {};
                 var self = this;
-                console.log(this.user);
+                this.showModalObj.show();
                 axios.post('/api/users/register', this.user)
                     .then((res) => {
                         this.$router.push({name: 'home'});
@@ -87,6 +104,7 @@
                             errors[key] = responseErrors[key][0];
                         }
                         self.errors = errors;
+                        self.showModalObj.hide();
                     });
                     return false;
             },

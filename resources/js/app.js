@@ -5,7 +5,6 @@
  */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import TestComponent from "./components/TestComponent";
 import HeaderComponent from "./components/HeaderComponent";
 import RegisterComponent from "./components/RegisterComponent";
 import LoginComponent from "./components/LoginComponent";
@@ -27,8 +26,6 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('test-component', TestComponent);
 Vue.component('header-component', HeaderComponent);
 
 Vue.use(VueRouter);
@@ -40,6 +37,7 @@ const router = new VueRouter({
             path: '/',
             name: 'home',
             component: HomeComponent,
+            meta: {title: 'Youwitter'}
         },
         {
             path: '/register',
