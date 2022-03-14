@@ -8,7 +8,6 @@
     header-text-variant="white"
   > -->
   <div>
-  account info
     <div class="p-2">
       <label>アカウントID</label>
       <p class="mb-2">{{account_name}}</p>

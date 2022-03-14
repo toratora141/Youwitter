@@ -10,23 +10,8 @@
             <button class="btn btn-primary" href="#">アカウント作成</button>
         </router-link>
     </div>
-  <div
-    no-body
-    header="ユーザ情報"
-    header-bg-variant="primary"
-    header-text-variant="white"
-  >
-  account info
-    <div v-if="auth" class="p-2">
-      <label>Name</label>
-      <p class="mb-2">{{user.name}}</p>
-      <label>Email</label>
-      <p>{{user.email}}</p>
-    </div>
-    <div v-else class="p-2 text-danger">
-      {{error.status}} {{error.statusText}}
-    </div>
-  </div>
+
+    作成中
 
 </div>
 </template>
