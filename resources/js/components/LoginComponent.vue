@@ -73,6 +73,7 @@ export default {
                         .then(function(res) {
                             self.showModalObj.hide();
                             self.errors = res.data;
+                            this.$router.push({name: 'home'});
                         }).catch(function(error){
                             self.showModalObj.hide();
                             var responseErrors = error.response.data.errors;

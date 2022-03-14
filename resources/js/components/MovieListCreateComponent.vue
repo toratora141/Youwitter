@@ -1,7 +1,8 @@
 <template>
-
-
 <div class="mx-auto p-2" style="max-width: 600px;">
+    <div class="alert alert-success" role="alert" v-show="alertSuccess">
+        リストを作成しました！
+    </div>
     <div class="card w-75" v-if="errors.unauth">
         <div class="card-body">
             <p class="card-text">ログインされていません</p>
@@ -22,6 +23,7 @@
                 class="col-sm-9 form-control"
                 id="movieList-id"
                 v-model="movieList_id"
+                placeholder="https://www.youtube.com/watch?v=xxxxxxx&list=xxxxxxxxxx"
             >
             <label for="movieList-id"
                 class="alert alert-danger p-2"
