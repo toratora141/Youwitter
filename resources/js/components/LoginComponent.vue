@@ -36,37 +36,51 @@
                     </div>
                     <button type="submit" class="btn btn-primary w-100 mt-5">ログイン</button>
                 </form>
+                <div class="modal" tabindex="-1" ref="showModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <p>ログイン中です</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import { Modal } from 'bootstrap';
 export default {
         data: function() {
             return {
                 user: {},
                 errors: {},
-                errors_login: {},
+                showModalObj: null,
 
             }
+        },
+        mounted() {
+            this.showModalObj = new Modal(this.$refs.showModal, {keyboard: true})
         },
         methods: {
             login:function() {
                 this.errors = {};
-                this.errors_login = {};
                 var self = this;
+                this.showModalObj.show();
                 axios.get('/sanctum/csrf-cookie',{withCredentials: true}).then(response => {
                     axios.post('/api/user/login', this.user, {withCredentials: true})
                         .then(function(res) {
-                            console.log(res);
+                            self.showModalObj.hide();
                             self.errors = res.data;
                         }).catch(function(error){
-                        var responseErrors = error.response.data.errors;
-                        var errors = {};
-                        for(var key in responseErrors){
-                            errors[key] = responseErrors[key][0];
-                        }
-                        self.errors = errors;
+                            self.showModalObj.hide();
+                            var responseErrors = error.response.data.errors;
+                            var errors = {};
+                            for(var key in responseErrors){
+                                errors[key] = responseErrors[key][0];
+                            }
+                            self.errors = errors;
                         });
                         return false;
                 });
