@@ -75,7 +75,7 @@ export default {
                             if(!res.data.result){
                                 self.errors = res.data;
                             }
-                            this.$router.push({name: '/home'});
+                            this.$router.push({name: 'home'});
                         }).catch((error) => {
                             self.showModalObj.hide();
                             // if(!error.response === 'undefined'){
@@ -86,7 +86,7 @@ export default {
                                     errors[key] = responseErrors[key][0];
                                 }
                             // }
-                            // self.errors = errors;
+                            self.errors = errors;
                         });
                         return false;
                 });
