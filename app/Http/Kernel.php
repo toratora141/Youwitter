@@ -23,7 +23,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Illuminate\Session\Middleware\StartSession::class,
         //本番環境用
-        \Illuminate\Foundation\Http\Middleware\RedirectToHttps::class,
+        \App\Http\Middleware\RedirectToHttps::class,
     ];
 
     /**
