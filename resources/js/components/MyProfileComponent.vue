@@ -1,12 +1,5 @@
 <template>
 <div class="mx-auto p-2" style="max-width: 600px;">
-
-  <!-- <div
-    no-body
-    header="ユーザ情報"
-    header-bg-variant="primary"
-    header-text-variant="white"
-  > -->
   <div>
     <div class="p-2">
       <label>アカウントID</label>
@@ -26,25 +19,7 @@
                 >
             </label>
             <img :src="value">
-            <!-- <label for="account-icon"
-                class="alert alert-danger p-2"
-                v-text="errors.account_name"
-                v-if="errors.account_name">
-            </label> -->
         </div>
-        <!-- <div class="form-group row">
-            <label for="password" class="col-sm-3 col-form-label w-100">パスワード</label>
-            <input type="password"
-                class="col-sm-9 form-control"
-                id="password"
-                v-model="user.password"
-            >
-            <label for="password"
-                class="alert alert-danger p-2"
-                v-text="errors.password"
-                v-if="errors.password">
-            </label>
-        </div> -->
         <button type="submit" class="btn btn-primary w-100 mt-5">登録</button>
     </form>
     <div class="modal" tabindex="-1" ref="showModal">

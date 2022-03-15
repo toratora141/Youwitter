@@ -78,14 +78,11 @@ export default {
                             this.$router.push({name: 'home'});
                         }).catch((error) => {
                             self.showModalObj.hide();
-                            // if(!error.response === 'undefined'){
-                            // if(false){
                                 var responseErrors = error.response.data.errors;
                                 var errors = {};
                                 for(var key in responseErrors){
                                     errors[key] = responseErrors[key][0];
                                 }
-                            // }
                             self.errors = errors;
                         });
                         return false;
