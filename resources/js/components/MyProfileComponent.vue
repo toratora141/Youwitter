@@ -15,7 +15,47 @@
       <p>{{display_name}}</p>
     </div>
   </div>
-
+  <form v-on:submit.prevent="submit">
+        <div class="form-group row" >
+            <label v-if="!value" for="account-icon" class="default col-sm-3 col-form-label w-100">
+                <input type="file"
+                    class="col-sm-9 form-control"
+                    id="account-icon"
+                    ref='file'
+                    @change="upload"
+                >
+            </label>
+            <img :src="value">
+            <!-- <label for="account-icon"
+                class="alert alert-danger p-2"
+                v-text="errors.account_name"
+                v-if="errors.account_name">
+            </label> -->
+        </div>
+        <!-- <div class="form-group row">
+            <label for="password" class="col-sm-3 col-form-label w-100">パスワード</label>
+            <input type="password"
+                class="col-sm-9 form-control"
+                id="password"
+                v-model="user.password"
+            >
+            <label for="password"
+                class="alert alert-danger p-2"
+                v-text="errors.password"
+                v-if="errors.password">
+            </label>
+        </div> -->
+        <button type="submit" class="btn btn-primary w-100 mt-5">登録</button>
+    </form>
+    <div class="modal" tabindex="-1" ref="showModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>アカウント作成中です</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -28,6 +68,7 @@
         movie_id: '',
         auth: false,
         error: {},
+        value: null,
       }
     },
     created() {
@@ -47,5 +88,41 @@
         this.error = error.response
       })
     },
+    methods: {
+        async upload(event) {
+            const files = event.target.files || event.dataTransfer.files;
+            const file = files[0];
+            var self = this;
+            console.log('upload event');
+
+            if(this.checkFile(file)){
+                const picture = await this.getBase64(file);
+                self.value = picture;
+                console.log('set picture');
+            }
+        },
+        getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        },
+        checkFile(file) {
+            let result =  true;
+            const SIZE_LIMIT = 5000000;
+            if(!file) {
+                result = false;
+            }
+            if(file.type !== 'image/jpeg' && file.type !== 'image/png') {
+                result = false;
+            }
+            if(file.size > SIZE_LIMIT){
+                result = false;
+            }
+            return result;
+        }
+    }
   }
 </script>
