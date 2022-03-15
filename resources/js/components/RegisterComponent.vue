@@ -94,9 +94,11 @@ import { Modal } from 'bootstrap';
                 this.showModalObj.show();
                 axios.post('/api/users/register', this.user)
                     .then((res) => {
+                        self.showModalObj.hide();
                         this.$router.push({name: 'home'});
                     })
                     .catch(function(error) {
+                        self.showModalObj.hide();
                         var responseErrors = error.response.data.errors;
                         var errors = {};
 

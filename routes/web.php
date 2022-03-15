@@ -21,4 +21,4 @@ Route::get('/{any}', function () {
 //     Route::get('/user/auth', 'App\Hppt\Controllers\Auth\LoginController@auth');
 // });
 
-Route::post('/login', 'App\Http\Controllers\Auth\LoginController@login');
+// Route::post('/login', 'App\Http\Controllers\Auth\LoginController@login');

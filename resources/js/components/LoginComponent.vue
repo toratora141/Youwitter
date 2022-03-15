@@ -70,18 +70,24 @@ export default {
                 this.showModalObj.show();
                 axios.get('/sanctum/csrf-cookie',{withCredentials: true}).then(response => {
                     axios.post('/api/user/login', this.user, {withCredentials: true})
-                        .then(function(res) {
+                        .then((res) => {
                             self.showModalObj.hide();
-                            self.errors = res.data;
-                            this.$router.push({name: 'home'});
-                        }).catch(function(error){
-                            self.showModalObj.hide();
-                            var responseErrors = error.response.data.errors;
-                            var errors = {};
-                            for(var key in responseErrors){
-                                errors[key] = responseErrors[key][0];
+                            if(!res.data.result){
+                                self.errors = res.data;
                             }
-                            self.errors = errors;
+                            this.$router.push({name: 'home'});
+                        }).catch((error) => {
+                            console.log(error.response);
+                            self.showModalObj.hide();
+                            // if(!error.response === 'undefined'){
+                            // if(false){
+                                var responseErrors = error.response.data.errors;
+                                var errors = {};
+                                for(var key in responseErrors){
+                                    errors[key] = responseErrors[key][0];
+                                }
+                            // }
+                            // self.errors = errors;
                         });
                         return false;
                 });
