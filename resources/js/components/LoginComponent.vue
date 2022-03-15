@@ -77,7 +77,6 @@ export default {
                             }
                             this.$router.push({name: 'home'});
                         }).catch((error) => {
-                            console.log(error.response);
                             self.showModalObj.hide();
                             // if(!error.response === 'undefined'){
                             // if(false){
