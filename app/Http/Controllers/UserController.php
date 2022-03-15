@@ -19,7 +19,7 @@ class UserController extends Controller
         return User::create($param);
     }
 
-    public function gUser(Request $request): JsonResponse
+    public function gUser(Request $request)
     {
         $result = false;
         $user = [];
@@ -28,13 +28,12 @@ class UserController extends Controller
             $result = true;
         }
         return response()->json(['result' => $result, 'user' => $user]);
+        return ['result' => $result, 'user' => $user];
 
         $user = $request->user();
-        dd($user);
         // return new JsonResponse([
         //     'user' => $user,
         //     'result' => $result,
         // ]);
-        return $user;
     }
 }

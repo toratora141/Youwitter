@@ -1,13 +1,13 @@
 <template>
-<div class="mx-auto p-2" style="max-width: 600px;">
+<div class="mx-auto p-2 justify-content-center w-50" style="max-width: 600px;">
     <div class="alert alert-dark" role="alert" v-show="checkUser">
         ログインされていません。<br>
         <router-link v-bind:to="{name:'user.login'}">
-            <button class="btn btn-primary">ログイン</button>
+            <button class="btn btn-secondary">ログイン</button>
         </router-link>
 
         <router-link v-bind:to="{name:'user.register'}">
-            <button class="btn btn-primary" href="#">アカウント作成</button>
+            <button class="btn btn-secondary" href="#">アカウント作成</button>
         </router-link>
     </div>
 
@@ -27,15 +27,16 @@
       }
     },
     created() {
-      axios.get('/api/gUser')
+        var self = this;
+      axios.get('/api/user/gUser')
       .then((res) => {
-          var self = this;
-        if (atempt(res.data.user)) {
-            console.log(res.data);
+          console.log(res.data);
+        if (atempt(res.data.result)) {
             self.checkUser = true;
         }
       })
       .catch((err) => {
+          console.log('error');
           self.checkUser = true;
       })
     },
