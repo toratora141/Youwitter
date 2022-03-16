@@ -1,27 +1,74 @@
 <template>
+
 <div class="mx-auto p-2" style="max-width: 600px;">
-  <div>
-    <div class="p-2">
-      <label>アカウントID</label>
-      <p class="mb-2">{{account_name}}</p>
-      <label>アカウント名</label>
-      <p>{{display_name}}</p>
+    <div class="card">
+        <!-- <div class="card-header">
+            {{account_name}}}
+        </div> -->
+        <div class="card-body">
+            <div class="card-title">
+                <button class="btn btn-sedondary" v-on:click="updateMyProfile">編集</button>
+                <!-- <img> -->
+                <h5>{{display_name}}</h5>
+                <h3>{{account_name}}</h3>
+            <div>
+            <div class="card-text">
+
+            </div>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+
+
+    <div>
+        <div class="p-2">
+            <label>アカウントID</label>
+            <p class="mb-2">{{account_name}}</p>
+            <label>アカウント名</label>
+            <p>{{display_name}}</p>
+        </div>
     </div>
   </div>
-  <form v-on:submit.prevent="submit">
-        <div class="form-group row" >
-            <label v-if="!value" for="account-icon" class="default col-sm-3 col-form-label w-100">
-                <input type="file"
-                    class="col-sm-9 form-control"
-                    id="account-icon"
-                    ref='file'
-                    @change="upload"
-                >
-            </label>
-            <img :src="value">
+    <div class="modal" tabindex="-1" ref="updateModal">
+        <div class="modal-dialog card">
+            <div class="modal-content card-header">
+                <h3>編集</h3>
+                <form v-on:submit.prevent="update" class="card-body">
+                    <div class="form-group row" >
+                        <img :src="value" class="img-fluid img-thumdnail rounded-circle w-25 h-25 m-auto">
+                        <div class="container py-3">
+                            <div class="input-group custom-file-button">
+                                <label v-if="!value" for="account-icon" class="input-group-text w-100 justify-content-center p-0">
+                                    <div class="d-flex h-50 align-content-center">
+                                        <p class="text-center">アイコン画像</p>
+                                        <i class="bi bi-file-person-fill fs-5"></i>
+                                    </div>
+                                </label>
+                                <input type="file"
+                                    class="form-control"
+                                    id="account-icon"
+                                    ref='file'
+                                    @change="upload"
+                                >
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="form-group">
+                        <label for="display_name" class="col-sm-3 col-from-lable w-100">表示アカウント名</label>
+                        <input type="text"
+                            class="col-sm-9 form-control"
+                            id="display_name"
+                            >
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mt-5">完了</button>
+                </form>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary w-100 mt-5">登録</button>
-    </form>
+    </div>
+
+  </div>
     <div class="modal" tabindex="-1" ref="showModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -33,8 +80,27 @@
     </div>
 </div>
 </template>
+<style>
+.custom-file-button input[type=file] {
+  margin-left: -2px !important;
+}
 
+.custom-file-button input[type=file]::-webkit-file-upload-button {
+  display: none;
+}
+
+.custom-file-button input[type=file]::file-selector-button {
+  display: none;
+}
+
+.custom-file-button:hover label {
+  background-color: #dde0e3;
+  cursor: pointer;
+}
+
+</style>
 <script>
+import { Modal } from 'bootstrap';
   export default {
     data() {
       return {
@@ -44,7 +110,11 @@
         auth: false,
         error: {},
         value: null,
+        updateModalObj: null,
       }
+    },
+    mounted() {
+        this.updateModalObj = new Modal(this.$refs.updateModal, {keyboard: true});
     },
     created() {
         var self = this;
@@ -64,6 +134,9 @@
       })
     },
     methods: {
+        updateMyProfile(){
+            this.updateModalObj.show();
+        },
         async upload(event) {
             const files = event.target.files || event.dataTransfer.files;
             const file = files[0];
@@ -73,7 +146,6 @@
             if(this.checkFile(file)){
                 const picture = await this.getBase64(file);
                 self.value = picture;
-                console.log('set picture');
             }
         },
         getBase64(file) {
