@@ -19,7 +19,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::get('/user/gUser', 'App\Http\Controllers\UserController@getUser');
+    Route::get('/user/fetch', 'App\Http\Controllers\UserController@fetch');
+    Route::post('/user/update', 'App\Http\Controllers\UserController@update');
     Route::post('/user/movieList/create', 'App\Http\Controllers\MovieController@listCreate');
 });
 Route::post('/users/register', 'App\Http\Controllers\UserController@register');

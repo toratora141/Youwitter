@@ -75,14 +75,14 @@ export default {
                             if(!res.data.result){
                                 self.errors = res.data;
                             }
-                            this.$router.push({name: 'home'});
+                            // this.$router.push({name: 'home'});
                         }).catch((error) => {
                             self.showModalObj.hide();
-                                var responseErrors = error.response.data.errors;
-                                var errors = {};
-                                for(var key in responseErrors){
-                                    errors[key] = responseErrors[key][0];
-                                }
+                            var responseErrors = error.response.data.errors;
+                            var errors = {};
+                            for(var key in responseErrors){
+                                errors[key] = responseErrors[key][0];
+                            }
                             self.errors = errors;
                         });
                         return false;

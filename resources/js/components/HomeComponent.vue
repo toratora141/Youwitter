@@ -28,7 +28,7 @@
     },
     created() {
         var self = this;
-      axios.get('/api/user/gUser')
+      axios.get('/api/user/fetch')
       .then((res) => {
           console.log(res.data);
         if (!res.data.result) {

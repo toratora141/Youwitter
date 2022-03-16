@@ -19,7 +19,7 @@ class UserController extends Controller
         return User::create($param);
     }
 
-    public function getUser(Request $request)
+    public function fetch(Request $request)
     {
         $result = false;
         $user = [];
@@ -30,10 +30,33 @@ class UserController extends Controller
         return response()->json(['result' => $result, 'user' => $user]);
         return ['result' => $result, 'user' => $user];
 
+
+
         $user = $request->user();
         // return new JsonResponse([
         //     'user' => $user,
         //     'result' => $result,
         // ]);
+    }
+
+    public function update(Request $request)
+    {
+        $result = false;
+        $update = $request->only('display_name', 'account_name');
+        // if(Auth::update()){
+        //     $user = Auth::user();
+        // }
+
+        // dd($update['account_name']);
+
+        // $user = User::find($update['account_name']);
+        // $user->display_name = $update['display_name'];
+        // $user->save();
+
+        User::where('account_name', $update['account_name'])
+            ->update([
+                'display_name' => $update['display_name']
+            ]);
+        return;
     }
 }

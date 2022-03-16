@@ -7,15 +7,15 @@
         </div> -->
         <div class="card-body">
             <div class="card-title">
-                <button class="btn btn-sedondary" v-on:click="updateMyProfile">編集</button>
-                <!-- <img> -->
-                <h5>{{display_name}}</h5>
-                <h3>{{account_name}}</h3>
+                <button class="btn btn-sedondary" v-on:click="showUpdateModal">編集</button>
+                <img>
+                <h3 v-if="user.display_name" v-text="user.display_name"></h3>
+                <h5 v-if="user.account_name" v-text="user.account_name"></h5>
             <div>
             <div class="card-text">
 
             </div>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
         </div>
     </div>
 
@@ -23,9 +23,9 @@
     <div>
         <div class="p-2">
             <label>アカウントID</label>
-            <p class="mb-2">{{account_name}}</p>
+            <p class="mb-2">{{user.account_name}}</p>
             <label>アカウント名</label>
-            <p>{{display_name}}</p>
+            <p>{{user.display_name}}</p>
         </div>
     </div>
   </div>
@@ -33,12 +33,12 @@
         <div class="modal-dialog card">
             <div class="modal-content card-header">
                 <h3>編集</h3>
-                <form v-on:submit.prevent="update" class="card-body">
+                <form v-on:submit.prevent="updateMyProfile" class="card-body">
                     <div class="form-group row" >
-                        <img :src="value" class="img-fluid img-thumdnail rounded-circle w-25 h-25 m-auto">
+                        <img :src="user.icon" class="img-fluid img-thumdnail rounded-circle w-25 h-25 m-auto">
                         <div class="container py-3">
                             <div class="input-group custom-file-button">
-                                <label v-if="!value" for="account-icon" class="input-group-text w-100 justify-content-center p-0">
+                                <label v-if="!user.icon" for="account-icon" class="input-group-text w-100 justify-content-center p-0">
                                     <div class="d-flex h-50 align-content-center">
                                         <p class="text-center">アイコン画像</p>
                                         <i class="bi bi-file-person-fill fs-5"></i>
@@ -60,6 +60,7 @@
                         <input type="text"
                             class="col-sm-9 form-control"
                             id="display_name"
+                            v-model="user.display_name"
                             >
                     </div>
                     <button type="submit" class="btn btn-primary w-100 mt-5">完了</button>
@@ -69,11 +70,11 @@
     </div>
 
   </div>
-    <div class="modal" tabindex="-1" ref="showModal">
+    <div class="modal" tabindex="-10" ref="waitModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <p>アカウント作成中です</p>
+                    <p>変更中です</p>
                 </div>
             </div>
         </div>
@@ -104,38 +105,55 @@ import { Modal } from 'bootstrap';
   export default {
     data() {
       return {
-        account_name: '',
-        display_name: '',
         movie_id: '',
         auth: false,
         error: {},
-        value: null,
+        user:{},
         updateModalObj: null,
+        waitModalObj: null,
       }
     },
     mounted() {
         this.updateModalObj = new Modal(this.$refs.updateModal, {keyboard: true});
+        this.waitModalObj = new Modal(this.$refs.waitModal, {keyboard: true});
     },
     created() {
         var self = this;
-      axios.get('/api/user')
+      axios.get('/api/user/fetch')
       .then((res) => {
           var user = {};
         if (res.data.result) {
-          user['account_name'] = res.data.account_name;
-          user['display_name'] = res.data.display_name;
-          this.auth = true
+          user['account_name'] = res.data.user.account_name;
+          user['display_name'] = res.data.user.display_name;
+          self.user = user;
         }
-          self.account_name = res.data.account_name;
-          self.display_name = res.data.display_name;
       })
       .catch((error) => {
         this.error = error.response
       })
     },
     methods: {
-        updateMyProfile(){
+        showUpdateModal(){
             this.updateModalObj.show();
+        },
+        updateMyProfile(){
+            var self = this;
+            var param = this.user;
+            this.waitModalObj.show();
+
+            axios.post('/api/user/update', param)
+                .then((res) => {
+                    this.waitModalObj.hide();
+                    var message = res.data.message;
+                    self.message = message;
+                    self.updateMyProfile.hide();
+                })
+                .catch((error) => {
+                    this.waitModalObj.hide();
+                    // console.log(error.response.data);
+                    // var error = error.response.data.errors;
+                    console.log('update error');
+                })
         },
         async upload(event) {
             const files = event.target.files || event.dataTransfer.files;
@@ -145,7 +163,7 @@ import { Modal } from 'bootstrap';
 
             if(this.checkFile(file)){
                 const picture = await this.getBase64(file);
-                self.value = picture;
+                self.user['icon'] = picture;
             }
         },
         getBase64(file) {
