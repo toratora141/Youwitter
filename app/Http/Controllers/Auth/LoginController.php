@@ -61,8 +61,8 @@ class LoginController extends Controller
         } else {
             $login_message = 'アカウントIDまたはパスワードが間違っています。';
         }
-        return ['result' => $result, 'login_message' => $login_message];
-        // return response()->json(['result' => $result, 'login_message' => $login_message, 'account_name' => $request->user()->account_name];);
+        // return ['result' => $result, 'login_message' => $login_message];
+        return response()->json(['result' => $result, 'login_message' => $login_message, 'account_name' => $credentials['account_name']]);
     }
 
     public function me(Request $request): JsonResponse

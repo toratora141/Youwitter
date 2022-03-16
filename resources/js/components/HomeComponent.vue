@@ -31,7 +31,7 @@
       axios.get('/api/user/gUser')
       .then((res) => {
           console.log(res.data);
-        if (atempt(res.data.result)) {
+        if (!res.data.result) {
             self.checkUser = true;
         }
       })

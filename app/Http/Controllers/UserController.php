@@ -19,7 +19,7 @@ class UserController extends Controller
         return User::create($param);
     }
 
-    public function gUser(Request $request)
+    public function getUser(Request $request)
     {
         $result = false;
         $user = [];
