@@ -120,17 +120,17 @@ import { Modal } from 'bootstrap';
     created() {
         var self = this;
       axios.get('/api/user/fetch')
-      .then((res) => {
-          var user = {};
-        if (res.data.result) {
-          user['account_name'] = res.data.user.account_name;
-          user['display_name'] = res.data.user.display_name;
-          self.user = user;
-        }
-      })
-      .catch((error) => {
-        this.error = error.response
-      })
+        .then((res) => {
+            var user = {};
+            if (res.data.result) {
+            user['account_name'] = res.data.user.account_name;
+            user['display_name'] = res.data.user.display_name;
+            self.user = user;
+            }
+        })
+        .catch((error) => {
+            this.error = error.response
+        })
     },
     methods: {
         showUpdateModal(){
