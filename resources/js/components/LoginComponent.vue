@@ -75,7 +75,7 @@ export default {
                             if(!res.data.result){
                                 self.errors = res.data;
                             }
-                            // this.$router.push({name: 'home'});
+                            this.$router.push({name: 'home'});
                         }).catch((error) => {
                             self.showModalObj.hide();
                             var responseErrors = error.response.data.errors;
