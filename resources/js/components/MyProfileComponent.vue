@@ -2,13 +2,12 @@
 
 <div class="mx-auto p-2" style="max-width: 600px;">
     <div class="card">
-        <!-- <div class="card-header">
-            {{account_name}}}
-        </div> -->
         <div class="card-body">
-            <div class="card-title">
-                <button class="btn btn-sedondary" v-on:click="showUpdateModal">編集</button>
-                <img>
+            <div class="card-title d-flex flex-column" style="height:250px">
+                <div class="text-end">
+                <button class="btn btn-secondary" v-on:click="showUpdateModal">編集</button>
+                </div>
+                <img :src="user.icon" class="img-fluid img-thumbnail rounded-circle w-25 h-25 m-auto">
                 <h3 v-if="user.display_name" v-text="user.display_name"></h3>
                 <h5 v-if="user.account_name" v-text="user.account_name"></h5>
             <div>
@@ -18,16 +17,6 @@
             <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
         </div>
     </div>
-
-
-    <div>
-        <div class="p-2">
-            <label>アカウントID</label>
-            <p class="mb-2">{{user.account_name}}</p>
-            <label>アカウント名</label>
-            <p>{{user.display_name}}</p>
-        </div>
-    </div>
   </div>
     <div class="modal" tabindex="-1" ref="updateModal">
         <div class="modal-dialog card">
@@ -35,10 +24,10 @@
                 <h3>編集</h3>
                 <form v-on:submit.prevent="updateMyProfile" class="card-body">
                     <div class="form-group row" >
-                        <img :src="user.icon" class="img-fluid img-thumdnail rounded-circle w-25 h-25 m-auto">
+                        <img :src="user.upload_icon" class="img-fluid img-thumdnail rounded-circle w-25 h-25 m-auto">
                         <div class="container py-3">
                             <div class="input-group custom-file-button">
-                                <label v-if="!user.icon" for="account-icon" class="input-group-text w-100 justify-content-center p-0">
+                                <label v-if="!user.upload_icon" for="account-icon" class="input-group-text w-100 justify-content-center p-0">
                                     <div class="d-flex h-50 align-content-center">
                                         <p class="text-center">アイコン画像</p>
                                         <i class="bi bi-file-person-fill fs-5"></i>
@@ -119,18 +108,20 @@ import { Modal } from 'bootstrap';
     },
     created() {
         var self = this;
-      axios.get('/api/user/fetch')
-        .then((res) => {
-            var user = {};
-            if (res.data.result) {
-            user['account_name'] = res.data.user.account_name;
-            user['display_name'] = res.data.user.display_name;
-            self.user = user;
-            }
-        })
-        .catch((error) => {
-            this.error = error.response
-        })
+        axios.get('/api/user/fetch')
+            .then((res) => {
+                var user = {};
+                if (res.data.result) {
+                user['account_name'] = res.data.user.account_name;
+                user['display_name'] = res.data.user.display_name;
+                user['icon'] = '/storage/' + res.data.user.icon;
+                console.log(res.data.user.icon);
+                self.user = user;
+                }
+            })
+            .catch((error) => {
+                this.error = error.response
+            })
     },
     methods: {
         showUpdateModal(){
@@ -144,6 +135,7 @@ import { Modal } from 'bootstrap';
             axios.post('/api/user/update', param)
                 .then((res) => {
                     this.waitModalObj.hide();
+                    this.updateModalObj.hide();
                     var message = res.data.message;
                     self.message = message;
                     self.updateMyProfile.hide();
@@ -159,11 +151,10 @@ import { Modal } from 'bootstrap';
             const files = event.target.files || event.dataTransfer.files;
             const file = files[0];
             var self = this;
-            console.log('upload event');
 
             if(this.checkFile(file)){
                 const picture = await this.getBase64(file);
-                self.user['icon'] = picture;
+                self.user['icon_base64'] = picture;
             }
         },
         getBase64(file) {

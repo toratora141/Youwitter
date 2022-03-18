@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UserInputPost;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -41,22 +42,37 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        $result = false;
-        $update = $request->only('display_name', 'account_name');
-        // if(Auth::update()){
-        //     $user = Auth::user();
-        // }
+        $user = $request->only('account_name', 'display_name', 'icon_base64');
+        preg_match('/data:image\/(\w+);base64,/', $user['icon_base64'], $matches);
+        $extention = $matches[1];
 
-        // dd($update['account_name']);
+        $img = preg_replace('/^data:image.*base64,/', '', $user['icon_base64']);
+        $img = str_replace(' ', '+', $img);
+        $file_data = base64_decode($img);
 
-        // $user = User::find($update['account_name']);
-        // $user->display_name = $update['display_name'];
-        // $user->save();
+        $dir = rtrim($user['account_name'], '/') . '/';
+        $fileName = md5($img);
+        $path = $dir . $fileName . '.' . $extention;
 
-        User::where('account_name', $update['account_name'])
+        Storage::disk('public')->put($path, $file_data);
+        // $file_data->store('public');
+        User::where('account_name', $user['account_name'])
             ->update([
-                'display_name' => $update['display_name']
+                'icon' => $path
+            ]);
+
+        $result = false;
+
+        User::where('account_name', $user['account_name'])
+            ->update([
+                'display_name' => $user['display_name']
             ]);
         return;
+    }
+
+    public function setIcon(Request $request, $storage)
+    {
+
+        return response()->json(['result' => true]);
     }
 }
