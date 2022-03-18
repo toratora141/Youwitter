@@ -42,6 +42,7 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+
         $user = $request->only('account_name', 'display_name', 'icon_base64');
         preg_match('/data:image\/(\w+);base64,/', $user['icon_base64'], $matches);
         $extention = $matches[1];
@@ -55,19 +56,15 @@ class UserController extends Controller
         $path = $dir . $fileName . '.' . $extention;
 
         Storage::disk('public')->put($path, $file_data);
-        // $file_data->store('public');
+
         User::where('account_name', $user['account_name'])
             ->update([
+                'display_name' => $user['display_name'],
                 'icon' => $path
             ]);
 
-        $result = false;
-
-        User::where('account_name', $user['account_name'])
-            ->update([
-                'display_name' => $user['display_name']
-            ]);
-        return;
+        $result = true;
+        return response()->json(['result' => $result, 'path' => $path, 'display_name' => $user['display_name']]);
     }
 
     public function setIcon(Request $request, $storage)
