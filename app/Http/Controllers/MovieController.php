@@ -49,9 +49,9 @@ class MovieController extends Controller
         // dd($request);
         $user = Auth::user();
 
-        $movie_list = MovieList::where('user_id', $user['account_name'])
+        $video_list = MovieList::where('user_id', $user['account_name'])
             ->get()
             ->first();
-        return response()->json(['movie_list' => $movie_list]);
+        return response()->json(['video_list' => $video_list]);
     }
 }

@@ -55,7 +55,7 @@ import { Modal } from 'bootstrap';
       }
     },
     mounted() {
-        this.showModalObj = new Modal(this.$refs.showModal, {keyboard: true})
+        this.showModalObj = new Modal(this.$refs.showModal, {keyboard: true});
     },
     created() {
         var self = this;
