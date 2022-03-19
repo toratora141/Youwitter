@@ -15,7 +15,9 @@ class MovieList extends Model
 
     protected $fillable = [
         'id',
-        'user_id'
+        'user_id',
+        'thumbnail',
+        'first_video'
     ];
 
     protected $table = 'movie_lists';

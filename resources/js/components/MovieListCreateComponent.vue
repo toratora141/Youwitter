@@ -90,12 +90,14 @@ import { Modal } from 'bootstrap';
                 .then((res) => {
                     self.showModalObj.hide();
                     self.alertSuccess = true;
+                    console.log(res.data.data);
                 })
                 .catch((error) => {
                     self.showModalObj.hide();
                     var errors_temp = {};
                     //送信後、画面に表示させるため一度tempに格納
-                    errors_temp['movieList_id'] = error.response.data.errors['id'][0];
+                    // errors_temp['movieList_id'] = error.response.data.errors['id'][0];
+                    console.log(error.response.data.message);
                     self.errors = errors_temp;
                 });
         }

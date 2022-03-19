@@ -7,8 +7,6 @@
         <meta name="viewport" content="width=device-widthm initial-scale=1">
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        {{-- <title>{{ config('app.name', 'Youwitter') }}</title>
-         --}}
          <title>Youwitter</title>
 
         <link rel="stylesheet" href="{{ mix('/css/app.css') }}">

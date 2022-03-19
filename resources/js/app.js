@@ -9,6 +9,7 @@ import HeaderComponent from "./components/HeaderComponent";
 import RegisterComponent from "./components/RegisterComponent";
 import LoginComponent from "./components/LoginComponent";
 import MyProfileComponent from "./components/MyProfileComponent";
+import MovieListComponent from "./components/MovieListComponent";
 import MovieListCreateComponent from "./components/MovieListCreateComponent";
 import HomeComponent from "./components/HomeComponent";
 require('./bootstrap');
@@ -27,6 +28,7 @@ window.Vue = require('vue').default;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('header-component', HeaderComponent);
+Vue.component('movie-list-component', MovieListComponent);
 
 Vue.use(VueRouter);
 

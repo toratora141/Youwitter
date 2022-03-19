@@ -75,6 +75,7 @@
             </div>
         </div>
     </div>
+<movie-list-component ref="movieList"></movie-list-component>
 </div>
 </template>
 <style>
@@ -98,16 +99,20 @@
 </style>
 <script>
 import { Modal } from 'bootstrap';
+import MovieListComponent from './MovieListComponent';
   export default {
-    data() {
-      return {
-          message: null,
-        errors: {},
-        user:{},
-        update_param: {},
-        updateModalObj: null,
-        waitModalObj: null,
-      }
+    components: {
+        'movie-list-component': MovieListComponent,
+    },
+    data: function() {
+      return{
+            message: null,
+            errors: {},
+            user:{},
+            update_param: {},
+            updateModalObj: null,
+            waitModalObj: null,
+        }
     },
     mounted() {
         this.updateModalObj = new Modal(this.$refs.updateModal, {keyboard: true});
@@ -119,11 +124,11 @@ import { Modal } from 'bootstrap';
             .then((res) => {
                 var user = {};
                 if (res.data.result) {
-                user['account_name'] = res.data.user.account_name;
-                user['display_name'] = res.data.user.display_name;
-                user['icon'] = '/storage/' + res.data.user.icon;
-                console.log(res.data.user.icon);
-                self.user = user;
+                    user['account_name'] = res.data.user.account_name;
+                    user['display_name'] = res.data.user.display_name;
+                    user['icon'] = '/storage/' + res.data.user.icon;
+                    self.user = user;
+                    this.$refs.movieList.fetch();
                 }
             })
             .catch((error) => {

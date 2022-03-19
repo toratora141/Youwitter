@@ -31,18 +31,13 @@ class UserController extends Controller
         return response()->json(['result' => $result, 'user' => $user]);
         return ['result' => $result, 'user' => $user];
 
-
-
         $user = $request->user();
-        // return new JsonResponse([
-        //     'user' => $user,
-        //     'result' => $result,
-        // ]);
     }
 
     public function update(Request $request)
     {
 
+        //Todo: Userクラス関数を作成
         $user = $request->only('account_name', 'display_name', 'icon_base64');
         preg_match('/data:image\/(\w+);base64,/', $user['icon_base64'], $matches);
         $extention = $matches[1];
