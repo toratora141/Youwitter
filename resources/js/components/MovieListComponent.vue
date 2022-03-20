@@ -6,6 +6,9 @@
                 v-if="video.thumbnail">
                 <img :src="video.thumbnail" class="img-fluid " style="width:260px; height:200px; object-fit:cover;" v-on:click="showVideoPlayerModal">
             </div>
+            <!-- <div v-else="video.thumbnail">
+
+            </div> -->
         </div>
         <div class="modal" tabindex="-1" ref="videoPlayerModal">
             <div class="modal-dialog h-75">

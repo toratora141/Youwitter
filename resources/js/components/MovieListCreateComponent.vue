@@ -86,7 +86,7 @@ import { Modal } from 'bootstrap';
             var param = {};
             param['id'] = this.movieList_id;
             param['user_id'] = this.account_name;
-            axios.post('/api/user/movieList/create',param)
+            axios.post('/api/user/videoList/create',param)
                 .then((res) => {
                     self.showModalObj.hide();
                     self.alertSuccess = true;

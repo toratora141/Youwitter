@@ -29,6 +29,8 @@ class MovieController extends Controller
         $param['user_id'] = Auth::user()->account_name;
         $param['first_video'] = $videos[0];
 
+        MovieList::prepareNewPlaylist(Auth::user()->account_name, $request);
+        Storage::disk('public')->put($thumbnailPath, $thumbnailImg);
         //TODO: Movieクラス関数の作成
         $thumbnailImg = file_get_contents($thumbnail);
         $thumbnailPath = $param['user_id'] . '/' . $param['first_video'] . '.jpg';

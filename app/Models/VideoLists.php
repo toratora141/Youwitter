@@ -10,10 +10,10 @@ use Laravel\Sanctum\HasApiTokens;
 //youtubeAPI用のクラス
 use App\Http\Vender\CallYoutubeApi;
 
-class MovieList extends Model
-{
-    use HasApiTokens, HasFactory, Notifiable;
 
+class VideoLists extends Model
+{
+    use HasFactory;
 
     protected $fillable = [
         'id',
@@ -22,27 +22,28 @@ class MovieList extends Model
         'first_video'
     ];
 
-    protected $table = 'movie_lists';
+    protected $table = 'video_lists';
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     public $incrementing = false;
 
-    public function prepareNewPlaylist($movieInfo, $userId)
+    public function prepareNewPlaylist($userId, $input)
     {
         $youtubeApi = new CallYoutubeApi();
-        $playlistId = $movieInfo->id;
+        $playlistId = $input->id;
         $data = $youtubeApi->fetchPlayList($playlistId);
-        $thumbnail = $youtubeApi->fetchLastThumbnail($data);
+        $getThumbnailPath = $youtubeApi->fetchLastThumbnail($data);
         $videos = $youtubeApi->fetchVideoIdInPlaylist($data);
         $param['id'] = $playlistId;
         $param['user_id'] = $userId;
         $param['first_video'] = $videos[0];
 
         //TODO: Movieクラス関数の作成
-        $thumbnailImg = file_get_contents($thumbnail);
-        $thumbnailPath = $this->createPath($param['user_id'], $param['playlistId']);
-        $param['thumbnail'] = $thumbnailPath;
-        return [$param, $thumbnailImg];
+        // var_dump($thumbnail);
+        // $thumbnailImg = file_get_contents($thumbnail);
+        $saveThumbnailPath = $this->createPath($param['user_id'], $param['id']);
+        $param['thumbnail'] = $saveThumbnailPath;
+        return [$param, $getThumbnailPath];
     }
 
     public function createPath($userId, $movieId)
