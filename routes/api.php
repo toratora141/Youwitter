@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/update', 'App\Http\Controllers\UserController@update');
     Route::post('/user/videoList/create', 'App\Http\Controllers\VideoListController@listCreate');
 
-    Route::get('/videoList/fetch', 'App\Http\Controllers\MovieController@fetch');
+    Route::get('/videoList/fetch', 'App\Http\Controllers\VideoListController@fetch');
 });
 Route::post('/users/register', 'App\Http\Controllers\UserController@register');
 Route::post('/user/login', 'App\Http\Controllers\Auth\LoginController@login');

@@ -6,9 +6,12 @@
                 v-if="video.thumbnail">
                 <img :src="video.thumbnail" class="img-fluid " style="width:260px; height:200px; object-fit:cover;" v-on:click="showVideoPlayerModal">
             </div>
-            <!-- <div v-else="video.thumbnail">
-
-            </div> -->
+            <div v-show="!havePlaylist" class="alert alert-dark" role="alert" ref="alertCreatePlaylist">
+                プレイリストを作成しましょう！
+                <router-link v-bind:to="{name:'movieList.create'}">
+                    <button class="btn btn-secondary">マイリストの作成</button>
+                </router-link>
+            </div>
         </div>
         <div class="modal" tabindex="-1" ref="videoPlayerModal">
             <div class="modal-dialog h-75">
@@ -32,10 +35,12 @@
             return {
                 video: {},
                 videoPlayerObj: null,
+                havePlaylist: true,
             }
         },
         mounted() {
             this.videoPlayerObj = new Modal(this.$refs.videoPlayerModal, {keyboard: true});
+            this.havePlaylistObj = new Modal(this.$refs.alertCeatePlaylist, {keyboard: true});
         },
         methods:{
             fetch() {
@@ -48,11 +53,11 @@
                             'url': 'https://www.youtube.com/embed/' + res.data.video_list.first_video
                         };
                         this.video = video_list;
-                        console.log(video_list.url);
+                        console.log(res.data.video_list);
+                        this.havePlaylist = true;;
                     })
                     .catch((error) => {
-                        console.log(error.response.data.message);
-                        console.log('get error');
+                        this.havePlaylist = false;
                     });
             },
             showVideoPlayerModal() {

@@ -24,14 +24,12 @@ class VideoListController extends Controller
         return response()->json(['result' => 'true']);
     }
 
-    public function fetch(Request $request)
+    public function fetch()
     {
-        $param = $request->only('account_name');
         $user = Auth::user();
-
         $video_list = VideoLists::where('user_id', $user['account_name'])
             ->get()
             ->first();
-        return response()->json(['video_list' => $video_list]);
+        return response()->json(['video_list' => $video_list, 'result' => true]);
     }
 }
