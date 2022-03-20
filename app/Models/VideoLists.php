@@ -33,17 +33,18 @@ class VideoLists extends Model
         $playlistId = $input->id;
         $data = $youtubeApi->fetchPlayList($playlistId);
         $getThumbnailPath = $youtubeApi->fetchLastThumbnail($data);
-        $videos = $youtubeApi->fetchVideoIdInPlaylist($data);
+        $videos = $youtubeApi->fetchVideoIdInPlaylist($data, $userId);
         $param['id'] = $playlistId;
         $param['user_id'] = $userId;
-        $param['first_video'] = $videos[0];
+        $param['first_video'] = $videos[0]['id'];
 
-        //TODO: Movieクラス関数の作成
-        // var_dump($thumbnail);
-        // $thumbnailImg = file_get_contents($thumbnail);
         $saveThumbnailPath = $this->createPath($param['user_id'], $param['id']);
         $param['thumbnail'] = $saveThumbnailPath;
-        return [$param, $getThumbnailPath];
+        return [
+            'param' => $param,
+            'thumbnailPath' => $getThumbnailPath,
+            'videos' => $videos
+        ];
     }
 
     public function createPath($userId, $movieId)

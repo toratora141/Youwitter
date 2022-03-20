@@ -53,13 +53,22 @@ class CallYoutubeApi
         return $thumbnail;
     }
 
-    public function fetchVideoIdInPlaylist(Object $data)
+    public function fetchVideoIdInPlaylist(Object $data, String $userId)
     {
         $videoIds = [];
         foreach ($data->items as $video) {
-            array_push($videoIds, $video->snippet->resourceId->videoId);
+            $videoId = $video->snippet->resourceId->videoId;
+            $thumbnail = $video->snippet->thumbnails->default->url;
+            // dd($thumbnail);/
+            array_push($videoIds, ['id' => $videoId, 'path' => $this->setPath($userId, $videoId), 'thumbnail' => $thumbnail]);
         }
+        // dd('temp');
         return $videoIds;
+    }
+
+    public function setPath($userId, $fileName)
+    {
+        return '/storage/' . $userId . '/' . $fileName . '.jpg';
     }
 
     /**

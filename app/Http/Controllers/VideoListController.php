@@ -8,18 +8,30 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class VideoListController extends Controller
 {
     public function listCreate(VideoListsCreate $request)
     {
         $videoListModel = new VideoLists;
+        // dd(Auth::user()->account_name);
         $prepare = $videoListModel->prepareNewPlaylist(Auth::user()->account_name, $request);
-        $param = $prepare[0];
-        $thumbnailPath = $prepare[1];
+        $param = $prepare['param'];
+        $thumbnailPath = $prepare['thumbnailPath'];
+        $videos = $prepare['videos'];
         $thumbnailImg = file_get_contents($thumbnailPath);
-        Storage::disk('public')->put($param['thumbnail'], $thumbnailImg);
         VideoLists::create($param);
+        Storage::disk('public')->put($thumbnailPath, $thumbnailImg);
+        // dd('temp');
+
+        $videoParam = [];
+        foreach ($videos as $video) {
+            array_push($videoParam, ['id' => $video['id'], 'video_list_id' => $param['id'], 'thumbnail' => $video['thumbnail']]);
+            $videoImg = file_get_contents($video['thumbnail']);
+            Storage::disk('public')->put($video['path'], $videoImg);
+        }
+        DB::table('videos')->insert($videoParam);
 
         return response()->json(['result' => 'true']);
     }
