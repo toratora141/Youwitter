@@ -33,17 +33,21 @@ class VideoLists extends Model
         $playlistId = $input->id;
         $data = $youtubeApi->fetchPlayList($playlistId);
         $getThumbnailPath = $youtubeApi->fetchLastThumbnail($data);
-        $videos = $youtubeApi->fetchVideoIdInPlaylist($data, $userId);
-        $param['id'] = $playlistId;
-        $param['user_id'] = $userId;
-        $param['first_video'] = $videos[0]['id'];
+        $videos = $youtubeApi->fetchVideoIdInPlaylist($data, $userId, $playlistId);
+        $videosParam = $videos['videosParam'];
+        $videoListParam['id'] = $playlistId;
+        $videoListParam['user_id'] = $userId;
+        $videoListParam['first_video'] = $videosParam[0]['id'];
 
-        $saveThumbnailPath = $this->createPath($param['user_id'], $param['id']);
-        $param['thumbnail'] = $saveThumbnailPath;
+        $saveThumbnailPath = $this->createPath($videoListParam['user_id'], $videoListParam['id']);
+        $videoListParam['thumbnail'] = $saveThumbnailPath;
         return [
-            'param' => $param,
+            'videoListParam' => $videoListParam,
             'thumbnailPath' => $getThumbnailPath,
-            'videos' => $videos
+            'saveThumbnailPath' => $saveThumbnailPath,
+            'videosParam' => $videos['videosParam'],
+            'videosThumbnails' => $videos['videosThumbnails'],
+
         ];
     }
 

@@ -17,31 +17,43 @@ class VideoListController extends Controller
         $videoListModel = new VideoLists;
         // dd(Auth::user()->account_name);
         $prepare = $videoListModel->prepareNewPlaylist(Auth::user()->account_name, $request);
-        $param = $prepare['param'];
+        $videoListParam = $prepare['videoListParam'];
         $thumbnailPath = $prepare['thumbnailPath'];
-        $videos = $prepare['videos'];
         $thumbnailImg = file_get_contents($thumbnailPath);
-        VideoLists::create($param);
-        Storage::disk('public')->put($thumbnailPath, $thumbnailImg);
+        VideoLists::create($videoListParam);
+        Storage::disk('public')->put($prepare['saveThumbnailPath'], $thumbnailImg);
         // dd('temp');
 
-        $videoParam = [];
-        foreach ($videos as $video) {
-            array_push($videoParam, ['id' => $video['id'], 'video_list_id' => $param['id'], 'thumbnail' => $video['thumbnail']]);
-            $videoImg = file_get_contents($video['thumbnail']);
-            Storage::disk('public')->put($video['path'], $videoImg);
+        $videosThumbnail = $prepare['videosThumbnails'];
+        // $videos = $prepare['videosParam'];
+        $videoParam = $prepare['videosParam'];
+
+        foreach ($videosThumbnail as $thumbnail) {
+            // array_push($videoParam, ['id' => $video['id'], 'video_list_id' => $videoListParam['id'], 'thumbnail' => $video['thumbnail']]);
+            $videoImg = file_get_contents($thumbnail['url']);
+            Storage::disk('public')->put($thumbnail['putPath'], $videoImg);
         }
         DB::table('videos')->insert($videoParam);
 
         return response()->json(['result' => 'true']);
     }
 
+    // public function fetch()
+    // {
+    //     $user = Auth::user();
+    //     $video_list = VideoLists::where('user_id', $user['account_name'])
+    //     ->get()
+    //     ->first();
+    //     return response()->json(['video_list' => $video_list, 'result' => true]);
+    // }
     public function fetch()
     {
         $user = Auth::user();
-        $video_list = VideoLists::where('user_id', $user['account_name'])
+        $videoList = VideoLists::where('user_id', $user['account_name'])
             ->get()
             ->first();
-        return response()->json(['video_list' => $video_list, 'result' => true]);
+        $videos_array = DB::table('videos')->where('video_list_id', $videoList['id'])
+            ->get();
+        return response()->json(['video_list' => $videoList, 'videos_array' => $videos_array, 'result' => true]);
     }
 }

@@ -53,22 +53,25 @@ class CallYoutubeApi
         return $thumbnail;
     }
 
-    public function fetchVideoIdInPlaylist(Object $data, String $userId)
+    public function fetchVideoIdInPlaylist(Object $data, String $userId, String $playlistId)
     {
-        $videoIds = [];
+        $videos = [];
+        $thumbnails = [];
         foreach ($data->items as $video) {
             $videoId = $video->snippet->resourceId->videoId;
-            $thumbnail = $video->snippet->thumbnails->default->url;
-            // dd($thumbnail);/
-            array_push($videoIds, ['id' => $videoId, 'path' => $this->setPath($userId, $videoId), 'thumbnail' => $thumbnail]);
+            $getThumbnailUrl = $video->snippet->thumbnails->default->url;
+            $putThumbnailPath = $this->putPath($userId, $videoId);
+            array_push($thumbnails, ['url' => $getThumbnailUrl, 'putPath' => $putThumbnailPath]);
+            // array_push($videos, ['id' => $videoId, 'path' => $this->setPath($userId, $videoId), 'thumbnail' => $thumbnail]);
+            array_push($videos, ['id' => $videoId, 'video_list_id' => $playlistId, 'thumbnail' => $putThumbnailPath]);
         }
         // dd('temp');
-        return $videoIds;
+        return ['videosParam' => $videos, 'videosThumbnails' => $thumbnails];
     }
 
-    public function setPath($userId, $fileName)
+    public function putPath($userId, $fileName)
     {
-        return '/storage/' . $userId . '/' . $fileName . '.jpg';
+        return  $userId . '/' . $fileName . '.jpg';
     }
 
     /**

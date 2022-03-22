@@ -20,6 +20,9 @@
                         <iframe class="w-100" :src="video.url" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         作成中
                     </div>
+                    <div class="modal-body p-0" v-for="video in videos_array" :key="video.id">
+                        <iframe class="w-100" :src="'https://www.youtube.com/embed/'+video.id" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
                 </div>
             </div>
         </div>
@@ -34,6 +37,7 @@
         data: function() {
             return {
                 video: {},
+                videos_array: {},
                 videoPlayerObj: null,
                 havePlaylist: true,
             }
@@ -52,8 +56,13 @@
                             'thumbnail': '/storage/' + res.data.video_list.thumbnail,
                             'url': 'https://www.youtube.com/embed/' + res.data.video_list.first_video
                         };
+                        var temp = res.data.videos_array;
+                        this.videos_array = temp;
+                        console.log(this.videos_array[0].id);
+                        // for(var key in this.videos_array){
+                        //     console.log(key);
+                        // }
                         this.video = video_list;
-                        console.log(res.data.video_list);
                         this.havePlaylist = true;;
                     })
                     .catch((error) => {
