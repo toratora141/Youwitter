@@ -20,8 +20,13 @@
             >
             <label for="movieList-id"
                 class="alert alert-danger p-2"
-                v-text="errors.movieList_id"
-                v-if="errors.movieList_id">
+                v-text="errors.id"
+                v-if="errors.id">
+            </label>
+            <label for="movieList-id"
+                class="alert alert-danger p-2"
+                v-text="errors.message"
+                v-if="errors.message">
             </label>
         </div>
         <button type="submit" class="btn btn-primary w-100 mt-5">登録</button>
@@ -69,11 +74,7 @@ import { Modal } from 'bootstrap';
                 self.account_name = res.data.account_name;
             })
             .catch((error) => {
-                if(error.response.data.message ==="Unauthenticated."){
-                    var errors = {};
-                    errors['unauth'] = 'ログインされていません。';
-                    self.errors = errors;
-                }
+
             })
     },
     methods:{
@@ -94,11 +95,13 @@ import { Modal } from 'bootstrap';
                 })
                 .catch((error) => {
                     self.showModalObj.hide();
-                    var errors_temp = {};
-                    //送信後、画面に表示させるため一度tempに格納
-                    // errors_temp['movieList_id'] = error.response.data.errors['id'][0];
-                    console.log(error.response.data.message);
-                    self.errors = errors_temp;
+                    var insertError = {};
+                    if(error.response.data.message === undefined){
+                        insertError.id = error.response.data.errors.id[0];
+                    }else{
+                        insertError.message = error.response.data.message;
+                    }
+                    this.errors = insertError;
                 });
         }
     }

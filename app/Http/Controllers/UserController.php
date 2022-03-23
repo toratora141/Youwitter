@@ -34,6 +34,17 @@ class UserController extends Controller
         $user = $request->user();
     }
 
+    public function fetchProf()
+    {
+        $result = false;
+        $user = Auth::user();
+        $fetch = User::find($user['id'])
+            ->videoLists()
+            ->get();
+        $result = true;
+        return response()->json(['result' => $result, 'user' => $user, 'videoLists' => $fetch]);
+    }
+
     public function update(Request $request)
     {
 

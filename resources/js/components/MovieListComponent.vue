@@ -3,8 +3,8 @@
         <div class="card-body">
             <h6>再生リスト</h6>
             <div class="video-list"
-                v-if="video.thumbnail">
-                <img :src="video.thumbnail" class="img-fluid " style="width:260px; height:200px; object-fit:cover;" v-on:click="showVideoPlayerModal">
+                v-if="videoList.thumbnail">
+                <img :src="videoList.thumbnail" class="img-fluid " style="width:260px; height:200px; object-fit:cover;" v-on:click="showVideoPlayerModal">
             </div>
             <div v-show="!havePlaylist" class="alert alert-dark" role="alert" ref="alertCreatePlaylist">
                 プレイリストを作成しましょう！
@@ -17,10 +17,10 @@
             <div class="modal-dialog h-75">
                 <div class="modal-content h-100 m-auto">
                     <div class="modal-body p-0">
-                        <iframe class="w-100 h-100" :src="'https://www.youtube.com/embed/'+video.url" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe class="w-100 h-100" :src="'https://www.youtube.com/embed/' + playVideo.url" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                     <div class="modal-body p-0 overflow-auto d-flex flex-column">
-                        <div class="video m-1 d-flex" v-for="video in videos_array" :key="video.code" v-on:click="changeVideo(video.code)">
+                        <div class="video m-1 d-flex" v-for="video in videos" :key="video.code" v-on:click="changeVideo(video.code)">
                             <img :src="'/storage/' + video.thumbnail" >
                             <p v-text="video.title" class="fz-1 mt-1"></p>
                         </div>
@@ -38,8 +38,9 @@
         ],
         data: function() {
             return {
-                video: {},
-                videos_array: {},
+                videoList: {},
+                videos: {},
+                playVideo: {},
                 videoPlayerObj: null,
                 havePlaylist: true,
             }
@@ -49,35 +50,34 @@
             this.havePlaylistObj = new Modal(this.$refs.alertCreatePlaylist, {keyboard: true});
         },
         methods:{
-            fetch() {
-                axios.get('/api/videoList/fetch')
+            fetch(videoLists) {
+                this.videoList = {
+                    'id':videoLists.id,
+                    'thumbnail': '/storage/' + videoLists.thumbnail,
+                    'url': videoLists.first_video
+                }
+                this.playVideo = {
+                    url: videoLists.first_video
+                };
+                axios.get('/api/videoList/fetch',{
+                    params:{
+                        id: videoLists.id
+                    }
+                })
                     .then((res) => {
-                        var video_ids = [];
-                        var video_list = {
-                            'id':res.data.video_list.id,
-                            'thumbnail': '/storage/' + res.data.video_list.thumbnail,
-                            'url': res.data.video_list.first_video
-                        };
-                        var temp = res.data.videos_array;
-                        this.videos_array = temp;
-                        console.log(this.videos_array[0].id);
-                        // for(var key in this.videos_array){
-                        //     console.log(key);
-                        // }
-                        this.video = video_list;
+                        this.videos = res.data.videos;
                         this.havePlaylist = true;;
                     })
                     .catch((error) => {
                         this.havePlaylist = false;
+                        console.log(error);
                     });
             },
             showVideoPlayerModal() {
-                var self = this;
-                self.videoPlayerObj.show();
+                this.videoPlayerObj.show();
             },
             changeVideo(code){
-                var changeUrl = code +' ?autoplay=1';
-                this.video.url = code + '?autoplay=1';
+                this.playVideo.url = code + '?autoplay=1';
             }
         }
     }

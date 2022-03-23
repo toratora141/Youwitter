@@ -26,36 +26,29 @@ class VideoListController extends Controller
             Storage::disk('public')->put($prepare['saveThumbnailPath'], $thumbnailImg);
 
             //Todo::リレーション
-            DB::table('videos')->insert($prepare['videosParam']);
+            // DB::table('videos')->insert($prepare['videosParam']);
+            VideoList::find(Auth::user()->id)
+                ->videoLists()
+                ->create($prepare['videoParam']);
         } catch (\Throwable $th) {
             DB::rollBack();
-            throw $th;
+            throw new \Exception('失敗しました。');
+            // return response()->json(['result' => false]);
         }
         DB::commit();
         return response()->json(['result' => 'true']);
     }
 
-    // public function fetch()
-    // {
-    //     $user = Auth::user();
-    //     $video_list = VideoLists::where('user_id', $user['account_name'])
-    //     ->get()
-    //     ->first();
-    //     return response()->json(['video_list' => $video_list, 'result' => true]);
-    // }
-    public function fetch()
+    /*
+     * プレイリストの動画を取ってくる
+     * @param $reuqest: クエリ文字列にid
+    */
+    public function fetch(Request $request)
     {
         $user = Auth::user();
-        $videoList = VideoList::where('user_id', $user['account_name'])
-            ->get()
-            ->first();
-        // $videos = VideoList::where('user_id', $user['account_name'])
-        $videos = VideoList::find($videoList['id'])
+        $videos = VideoList::find($request->input('id'))
             ->videos()
             ->get();
-        // $videos_array = DB::table('videos')->where('video_list_id', $videoList['id'])
-        //     ->get();
-        // dd($videos);
-        return response()->json(['video_list' => $videoList, 'videos_array' => $videos, 'result' => true]);
+        return response()->json(['videos' => $videos, 'result' => true]);
     }
 }

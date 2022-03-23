@@ -128,7 +128,8 @@ import MovieListComponent from './MovieListComponent';
                     user['display_name'] = res.data.user.display_name;
                     user['icon'] = '/storage/' + res.data.user.icon;
                     self.user = user;
-                    this.$refs.movieList.fetch();
+                    console.log(res.data.videoLists);
+                    this.$refs.movieList.fetch(res.data.videoLists[0]);
                 }
             })
             .catch((error) => {

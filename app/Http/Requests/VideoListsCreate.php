@@ -28,6 +28,7 @@ class VideoListsCreate extends FormRequest
     {
         return [
             'id' => ['required', 'unique:video_lists', new VideoListIdCheck],
+            'user_id' => ['unipue:video_lists']
         ];
     }
 
@@ -36,6 +37,7 @@ class VideoListsCreate extends FormRequest
         return [
             'id.required' => 'プレイリストのURLが入力されていません。',
             'id.unique' => 'すでに登録されているプレイリストです。',
+            'user_id.unique' => 'プレイリストは1つしか作成できません。',
         ];
     }
 
