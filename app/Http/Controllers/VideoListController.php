@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VideoLists;
+use App\Models\VideoList;
 use App\Http\Requests\VideoListsCreate;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,27 +14,24 @@ class VideoListController extends Controller
 {
     public function listCreate(VideoListsCreate $request)
     {
-        $videoListModel = new VideoLists;
-        // dd(Auth::user()->account_name);
-        $prepare = $videoListModel->prepareNewPlaylist(Auth::user()->account_name, $request);
-        $videoListParam = $prepare['videoListParam'];
-        $thumbnailPath = $prepare['thumbnailPath'];
-        $thumbnailImg = file_get_contents($thumbnailPath);
-        VideoLists::create($videoListParam);
-        Storage::disk('public')->put($prepare['saveThumbnailPath'], $thumbnailImg);
-        // dd('temp');
+        DB::beginTransaction();
+        try {
+            $videoListModel = new VideoList;
+            $prepare = $videoListModel->prepareNewPlaylist(Auth::user()->account_name, $request);
+            $videoListParam = $prepare['videoListParam'];
+            $thumbnailPath = $prepare['thumbnailPath'];
+            VideoList::create($videoListParam);
 
-        $videosThumbnail = $prepare['videosThumbnails'];
-        // $videos = $prepare['videosParam'];
-        $videoParam = $prepare['videosParam'];
+            $thumbnailImg = file_get_contents($thumbnailPath);
+            Storage::disk('public')->put($prepare['saveThumbnailPath'], $thumbnailImg);
 
-        foreach ($videosThumbnail as $thumbnail) {
-            // array_push($videoParam, ['id' => $video['id'], 'video_list_id' => $videoListParam['id'], 'thumbnail' => $video['thumbnail']]);
-            $videoImg = file_get_contents($thumbnail['url']);
-            Storage::disk('public')->put($thumbnail['putPath'], $videoImg);
+            //Todo::リレーション
+            DB::table('videos')->insert($prepare['videosParam']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
-        DB::table('videos')->insert($videoParam);
-
+        DB::commit();
         return response()->json(['result' => 'true']);
     }
 
@@ -49,11 +46,16 @@ class VideoListController extends Controller
     public function fetch()
     {
         $user = Auth::user();
-        $videoList = VideoLists::where('user_id', $user['account_name'])
+        $videoList = VideoList::where('user_id', $user['account_name'])
             ->get()
             ->first();
-        $videos_array = DB::table('videos')->where('video_list_id', $videoList['id'])
+        // $videos = VideoList::where('user_id', $user['account_name'])
+        $videos = VideoList::find($videoList['id'])
+            ->videos()
             ->get();
-        return response()->json(['video_list' => $videoList, 'videos_array' => $videos_array, 'result' => true]);
+        // $videos_array = DB::table('videos')->where('video_list_id', $videoList['id'])
+        //     ->get();
+        // dd($videos);
+        return response()->json(['video_list' => $videoList, 'videos_array' => $videos, 'result' => true]);
     }
 }

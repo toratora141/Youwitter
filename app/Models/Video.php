@@ -5,18 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Videos extends Model
+class Video extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'id',
+        'code',
         'video_list_id',
-        'thumbnail'
+        'thumbnail',
+        'title'
     ];
 
     protected $table = 'videos';
-    protected $primaryKey = 'id';
-    protected $keyType = 'string';
-    public $incrementing = false;
+
+    public function videoList()
+    {
+        return $this->belongsTo(VideoList::class);
+    }
 }

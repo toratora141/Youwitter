@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Http\Vender\CallYoutubeApi;
 
 
-class VideoLists extends Model
+class VideoList extends Model
 {
     use HasFactory;
 
@@ -27,6 +27,11 @@ class VideoLists extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
+
     public function prepareNewPlaylist($userId, $input)
     {
         $youtubeApi = new CallYoutubeApi();
@@ -37,7 +42,7 @@ class VideoLists extends Model
         $videosParam = $videos['videosParam'];
         $videoListParam['id'] = $playlistId;
         $videoListParam['user_id'] = $userId;
-        $videoListParam['first_video'] = $videosParam[0]['id'];
+        $videoListParam['first_video'] = $videosParam[0]['code'];
 
         $saveThumbnailPath = $this->createPath($videoListParam['user_id'], $videoListParam['id']);
         $videoListParam['thumbnail'] = $saveThumbnailPath;

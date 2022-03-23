@@ -5,6 +5,8 @@ namespace App\Http\Vender;
 use Google_Client;
 use Google_Service_YouTube;
 
+use Illuminate\Support\Facades\Storage;
+
 class CallYoutubeApi
 {
     private $key = 'AIzaSyD84yQx4yaM7rfYrP4Uv6OD0eb9U7jv3OQ';
@@ -59,13 +61,14 @@ class CallYoutubeApi
         $thumbnails = [];
         foreach ($data->items as $video) {
             $videoId = $video->snippet->resourceId->videoId;
+            $title = $video->snippet->title;
             $getThumbnailUrl = $video->snippet->thumbnails->default->url;
             $putThumbnailPath = $this->putPath($userId, $videoId);
-            array_push($thumbnails, ['url' => $getThumbnailUrl, 'putPath' => $putThumbnailPath]);
-            // array_push($videos, ['id' => $videoId, 'path' => $this->setPath($userId, $videoId), 'thumbnail' => $thumbnail]);
-            array_push($videos, ['id' => $videoId, 'video_list_id' => $playlistId, 'thumbnail' => $putThumbnailPath]);
+            array_push($videos, ['code' => $videoId, 'video_list_id' => $playlistId, 'thumbnail' => $putThumbnailPath, 'title' => $title]);
+
+            $thumbnailImg = file_get_contents($getThumbnailUrl);
+            Storage::disk('public')->put($putThumbnailPath, $thumbnailImg);
         }
-        // dd('temp');
         return ['videosParam' => $videos, 'videosThumbnails' => $thumbnails];
     }
 
