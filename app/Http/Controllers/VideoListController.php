@@ -26,14 +26,13 @@ class VideoListController extends Controller
             Storage::disk('public')->put($prepare['saveThumbnailPath'], $thumbnailImg);
 
             //Todo::リレーション
-            // DB::table('videos')->insert($prepare['videosParam']);
-            VideoList::find(Auth::user()->id)
-                ->videoLists()
-                ->create($prepare['videoParam']);
+            VideoList::find($videoListParam['id'])
+                ->videos()
+                ->createMany($prepare['videosParam']);
         } catch (\Throwable $th) {
             DB::rollBack();
+            // dd($th);
             throw new \Exception('失敗しました。');
-            // return response()->json(['result' => false]);
         }
         DB::commit();
         return response()->json(['result' => 'true']);

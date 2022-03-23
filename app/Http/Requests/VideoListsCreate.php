@@ -28,7 +28,7 @@ class VideoListsCreate extends FormRequest
     {
         return [
             'id' => ['required', 'unique:video_lists', new VideoListIdCheck],
-            'user_id' => ['unipue:video_lists']
+            'user_id' => ['unique:video_lists']
         ];
     }
 

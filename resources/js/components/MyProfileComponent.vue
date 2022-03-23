@@ -66,7 +66,7 @@
     </div>
 
   </div>
-    <div class="modal" tabindex="-10" ref="waitModal">
+    <div class="modal" tabindex="-10" ref="waitModal" data-bs-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">

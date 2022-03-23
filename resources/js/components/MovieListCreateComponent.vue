@@ -4,18 +4,14 @@
         リストを作成しました！
     </div>
   <div>
-  account info
-    <div class="p-2">
-      <label>アカウントID</label>
-      <p class="mb-2">{{account_name}}</p>
-    </div>
+    <h3>マイリストの作成</h3>
     <form v-on:submit.prevent="submit">
         <div class="form-group row" >
             <label for="movieList-id" class="col-sm-3 col-form-label w-100">プレイリストURL</label>
             <input type="text"
                 class="col-sm-9 form-control"
                 id="movieList-id"
-                v-model="movieList_id"
+                v-model="videoList.id"
                 placeholder="https://www.youtube.com/watch?v=xxxxxxx&list=xxxxxxxxxx"
             >
             <label for="movieList-id"
@@ -31,7 +27,7 @@
         </div>
         <button type="submit" class="btn btn-primary w-100 mt-5">登録</button>
     </form>
-    <div class="modal" tabindex="-1" ref="showModal">
+    <div class="modal" tabindex="-1" ref="showModal" data-bs-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
@@ -52,8 +48,7 @@ import { Modal } from 'bootstrap';
     data() {
       return {
         account_name: '',
-        movieList_id: '',
-        auth: false,
+        videoList: {},
         errors: {},
         showModalObj: null,
         alertSuccess: false,
@@ -63,19 +58,19 @@ import { Modal } from 'bootstrap';
         this.showModalObj = new Modal(this.$refs.showModal, {keyboard: true});
     },
     created() {
-        var self = this;
-        axios.get('/api/user')
-            .then((res) => {
-                var user = {};
-                if (res.data.result) {
-                    user['account_name'] = res.data.account_name;
-                this.auth = true
-                }
-                self.account_name = res.data.account_name;
-            })
-            .catch((error) => {
+        // var self = this;
+        // axios.get('/api/user')
+        //     .then((res) => {
+        //         var user = {};
+        //         if (res.data.result) {
+        //             user['account_name'] = res.data.account_name;
+        //         this.auth = true
+        //         }
+        //         self.account_name = res.data.account_name;
+        //     })
+        //     .catch((error) => {
 
-            })
+        //     })
     },
     methods:{
         submit() {
@@ -85,8 +80,7 @@ import { Modal } from 'bootstrap';
             self.alertSuccess = false;
 
             var param = {};
-            param['id'] = this.movieList_id;
-            param['user_id'] = this.account_name;
+            param['id'] = this.videoList.id;
             axios.post('/api/user/videoList/create',param)
                 .then((res) => {
                     self.showModalObj.hide();

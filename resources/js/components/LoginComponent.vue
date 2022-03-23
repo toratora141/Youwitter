@@ -36,7 +36,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary w-100 mt-5">ログイン</button>
                 </form>
-                <div class="modal" tabindex="-1" ref="showModal">
+                <div class="modal" tabindex="-1" ref="showModal" data-bs-backdrop="static">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-body">

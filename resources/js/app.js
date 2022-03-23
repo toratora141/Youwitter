@@ -55,11 +55,17 @@ const router = new VueRouter({
             path: '/myprofile',
             name: 'user.myprofile',
             component: MyProfileComponent,
+            meta: {
+                isAuthenticated: true,
+            },
         },
         {
             path: '/movieList/create',
             name: 'movieList.create',
             component: MovieListCreateComponent,
+            meta: {
+                isAuthenticated: true,
+            },
         }
     ]
 })
@@ -73,4 +79,15 @@ const router = new VueRouter({
 const app = new Vue({
     el: '#app',
     router
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.isAuthenticated)) {
+    if (!Store.state.auth.isAuth) {
+      next({ name: 'user.login' });
+    } else {
+      next();
+    }
+  }
+  next();
 });
