@@ -55,17 +55,17 @@ const router = new VueRouter({
             path: '/myprofile',
             name: 'user.myprofile',
             component: MyProfileComponent,
-            meta: {
-                isAuthenticated: true,
-            },
+            // meta: {
+            //     isAuthenticated: true,
+            // },
         },
         {
             path: '/movieList/create',
             name: 'movieList.create',
             component: MovieListCreateComponent,
-            meta: {
-                isAuthenticated: true,
-            },
+            // meta: {
+            //     isAuthenticated: true,
+            // },
         }
     ]
 })
