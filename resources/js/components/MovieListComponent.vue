@@ -7,7 +7,7 @@
                 <img :src="videoList.thumbnail" class="img-fluid " style="width:260px; height:200px; object-fit:cover;" v-on:click="showVideoPlayerModal">
             </div>
             <div v-show="!havePlaylist" class="alert alert-dark" role="alert" ref="alertCreatePlaylist">
-                プレイリストを作成しましょう！
+                <!-- {{message}} -->
                 <router-link v-bind:to="{name:'movieList.create'}">
                     <button class="btn btn-secondary">マイリストの作成</button>
                 </router-link>
@@ -50,7 +50,18 @@
             this.havePlaylistObj = new Modal(this.$refs.alertCreatePlaylist, {keyboard: true});
         },
         methods:{
-            fetch(videoLists) {
+            fetch(videoLists, user) {
+                console.log(videoLists);
+                //todo 条件の変更 vuex
+                if(videoLists === undefined && user.who ==='other'){
+                    this.havePlaylist = false;
+                    this.message = 'プレイリストを準備中のようです...';
+                    return;
+                }else if(videoLists === undefined){
+                    this.havePlaylist = false;
+                    return;
+                }
+                console.log(this.havePlaylist);
                 this.videoList = {
                     'id':videoLists.id,
                     'thumbnail': '/storage/' + videoLists.thumbnail,
@@ -66,10 +77,12 @@
                 })
                     .then((res) => {
                         this.videos = res.data.videos;
-                        this.havePlaylist = true;;
+                        this.havePlaylist = true;
+                        if(videoLists === undefined) this.havePlaylist =false;
                     })
                     .catch((error) => {
                         this.havePlaylist = false;
+                        this.message = 'プレイリストを作成しましょう！'
                         console.log(error);
                     });
             },

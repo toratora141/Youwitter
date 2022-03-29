@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container w-100 p-0">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <router-link v-bind:to="{name:'home'}" >
                 <a class="navbar-brand .text-decoration-none">Youwitter</a>
@@ -21,6 +21,11 @@
                 </router-link>
             </li>
             <li class="nav-item">
+                <router-link v-bind:to="{name:'user.search'}">
+                    <a a class="nav-link" href="#">検索</a>
+                </router-link>
+            </li>
+            <li class="nav-item">
                 <router-link v-bind:to="{name:'user.myprofile'}">
                     <a class="nav-link" href="#">プロフィール</a>
                 </router-link>
@@ -37,5 +42,12 @@
 </template>
 
 <script>
-    export default {}
+    export default {
+        date() {
+            return {
+            };
+        },
+        created(){
+        },
+    }
 </script>

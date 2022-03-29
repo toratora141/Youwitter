@@ -38,11 +38,31 @@ class UserController extends Controller
     {
         $result = false;
         $user = Auth::user();
-        $fetch = User::find($user['id'])
-            ->videoLists()
+        $fetch = User::where('account_name', $user['account_name'])
+            ->with('videoLists.videos')
             ->get();
         $result = true;
-        return response()->json(['result' => $result, 'user' => $user, 'videoLists' => $fetch]);
+        return response()->json(['result' => $result, 'user' => $user, 'videoLists' => $fetch[0]->videoLists]);
+    }
+
+    public function fetchUser(Request $request)
+    {
+        $fetch = User::where('account_name', $request->input('account_name'))
+            ->with('videoLists.videos')
+            ->get();
+        $result = true;
+        // dd($fetch);
+        return response()->json(['result' => $result, 'user' => $fetch[0], 'videoLists' => $fetch[0]->videoLists]);
+    }
+
+    public function searchUser(Request $request)
+    {
+        $keyword = $request->input('searchKeyword');
+        $pat = '%' . addcslashes($keyword, '%_\\') . '%';
+        $users = User::where('account_name', 'LIKE', $pat)
+            ->get();
+
+        return response()->json(['users' => $users]);
     }
 
     public function update(Request $request)
@@ -50,6 +70,7 @@ class UserController extends Controller
 
         //Todo: Userクラス関数を作成
         $user = $request->only('account_name', 'display_name', 'icon_base64');
+        $user['account_name'] = Auth::user()->account_name;
         preg_match('/data:image\/(\w+);base64,/', $user['icon_base64'], $matches);
         $extention = $matches[1];
 
@@ -70,7 +91,12 @@ class UserController extends Controller
             ]);
 
         $result = true;
-        return response()->json(['result' => $result, 'path' => $path, 'display_name' => $user['display_name']]);
+        $updateUser = [
+            'account_name' => Auth::user()->account_name,
+            'display_name' => $user['display_name'],
+            'icon' => '/storage/' . $path
+        ];
+        return response()->json(['result' => $result, 'user' => $updateUser]);
     }
 
     public function setIcon(Request $request, $storage)

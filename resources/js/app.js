@@ -4,11 +4,15 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 import Vue from 'vue';
+import store from './store';
 import VueRouter from 'vue-router';
 import HeaderComponent from "./components/HeaderComponent";
+import AlertLogin from "./components/AlertLogin";
 import RegisterComponent from "./components/RegisterComponent";
 import LoginComponent from "./components/LoginComponent";
+import SearchUserComponent from "./components/SearchUserComponent";
 import MyProfileComponent from "./components/MyProfileComponent";
+import Profile from "./components/Profile";
 import MovieListComponent from "./components/MovieListComponent";
 import MovieListCreateComponent from "./components/MovieListCreateComponent";
 import HomeComponent from "./components/HomeComponent";
@@ -27,7 +31,9 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+// Vue.component('header-component', require('./components/HeaderComponent.vue').default);
 Vue.component('header-component', HeaderComponent);
+Vue.component('alert-login', AlertLogin);
 Vue.component('movie-list-component', MovieListComponent);
 
 Vue.use(VueRouter);
@@ -52,6 +58,11 @@ const router = new VueRouter({
             component: LoginComponent,
         },
         {
+            path: '/search',
+            name: 'user.search',
+            component: SearchUserComponent,
+        },
+        {
             path: '/myprofile',
             name: 'user.myprofile',
             component: MyProfileComponent,
@@ -60,12 +71,20 @@ const router = new VueRouter({
             // },
         },
         {
-            path: '/movieList/create',
-            name: 'movieList.create',
-            component: MovieListCreateComponent,
+            path: '/profile/:account_name',
+            name: 'user.profile',
+            component: Profile,
             // meta: {
             //     isAuthenticated: true,
             // },
+        },
+        {
+            path: '/movieList/create',
+            name: 'movieList.create',
+            component: MovieListCreateComponent,
+            meta: {
+                isAuthenticated: true,
+            },
         }
     ]
 })
@@ -78,12 +97,14 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
-    router
+    store: store,
+    router,
+
 });
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.isAuthenticated)) {
-    if (!Store.state.auth.isAuth) {
+    if (!store.state.isLoggedIn) {
       next({ name: 'user.login' });
     } else {
       next();

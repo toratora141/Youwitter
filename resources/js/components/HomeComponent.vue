@@ -27,17 +27,20 @@
       }
     },
     created() {
-        var self = this;
+        console.log(this.$store.state.isLoggedIn);
+        console.log(this.$store.state.user);
+        console.log(this.$store.state.videoLists);
+        console.log(this.$store.state.videos);
       axios.get('/api/user/fetch')
       .then((res) => {
           console.log(res.data);
         if (!res.data.result) {
-            self.checkUser = true;
+            this.checkUser = true;
         }
       })
       .catch((err) => {
           console.log('error');
-          self.checkUser = true;
+          this.checkUser = true;
       })
     },
   }

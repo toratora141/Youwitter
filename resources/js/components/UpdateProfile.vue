@@ -1,27 +1,6 @@
 <template>
+<div class="content">
 
-<div class="mx-auto p-2" style="max-width: 600px;">
-    <div class="card">
-        <div class="card-body">
-            <div class="card-title d-flex flex-column" style="height:250px">
-                <div class="text-end">
-                    <button class="btn btn-secondary" v-on:click="showUpdateModal">編集</button>
-                </div>
-                <div class="text-start d-flex flex-column">
-                    <img :src="user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:100px; height:100px; object-fit:cover;">
-                    <div class="mt-3">
-                        <h3 v-if="user.display_name" v-text="user.display_name"></h3>
-                        <h6 v-if="user.account_name" v-text="user.account_name"></h6>
-                    </div>
-                </div>
-            <div>
-            <div class="card-text">
-
-            </div>
-            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
-        </div>
-    </div>
-  </div>
     <div class="modal" tabindex="-1" ref="updateModal">
         <div class="modal-dialog card">
             <div class="modal-content card-header">
@@ -56,7 +35,8 @@
                         <input type="text"
                             class="col-sm-9 form-control"
                             id="update-display-name"
-                            v-model="update_param.display_name"
+                            v-bind:value="user.display_name"
+                            v-on:input="inputDisplayName"
                             >
                     </div>
                     <button type="submit" class="btn btn-primary w-100 mt-5">完了</button>
@@ -64,104 +44,64 @@
             </div>
         </div>
     </div>
-
-  </div>
-    <div class="modal" tabindex="-10" ref="waitModal" data-bs-backdrop="static">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <p>変更中です</p>
+        <div class="modal" tabindex="-10" ref="waitModal" data-bs-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>変更中です</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-<movie-list-component ref="movieList"></movie-list-component>
 </div>
 </template>
-<style>
-.custom-file-button input[type=file] {
-  margin-left: -2px !important;
-}
 
-.custom-file-button input[type=file]::-webkit-file-upload-button {
-  display: none;
-}
-
-.custom-file-button input[type=file]::file-selector-button {
-  display: none;
-}
-
-.custom-file-button:hover label {
-  background-color: #dde0e3;
-  cursor: pointer;
-}
-
-</style>
 <script>
 import { Modal } from 'bootstrap';
-import MovieListComponent from './MovieListComponent';
-  export default {
-    components: {
-        'movie-list-component': MovieListComponent,
-    },
-    data: function() {
-      return{
-            message: null,
-            errors: {},
-            user:{},
-            update_param: {},
+
+export default ({
+    data() {
+        return {
+            user: this.$parent.user,
             updateModalObj: null,
             waitModalObj: null,
+            message: null,
+            error_message: null,
+            updateParam: {},
         }
     },
     mounted() {
-        this.updateModalObj = new Modal(this.$refs.updateModal, {keyboard: true});
-        this.waitModalObj = new Modal(this.$refs.waitModal, {keyboard: true});
+        console.log(this.$store.state.user);
+        this.updateModalObj = new Modal(this.$refs.updateModal,{keyboard: true})
+        this.waitModalObj = new Modal(this.$refs.waitModal,{keyboard: true})
     },
-    created() {
-        var self = this;
-        axios.get('/api/user/fetch')
-            .then((res) => {
-                var user = {};
-                if (res.data.result) {
-                    user['account_name'] = res.data.user.account_name;
-                    user['display_name'] = res.data.user.display_name;
-                    user['icon'] = '/storage/' + res.data.user.icon;
-                    self.user = user;
-                    this.$refs.movieList.fetch(res.data.videoLists[0],user);
-                }
-            })
-            .catch((error) => {
-                this.errors = error.response
-            })
+    created(){
+        this.updateParam.display_name = this.user.display_name;
     },
-    methods: {
+    methods:{
         showUpdateModal(){
             this.message = null;
             this.updateModalObj.show();
         },
+        inputDisplayName(){
+            this.updateParam.display_name = event.target.value;
+        },
         updateMyProfile(){
-            var self = this;
-            var update_param = this.update_param;
-            update_param['account_name'] = this.user.account_name;
             this.waitModalObj.show();
 
-            axios.post('/api/user/update', update_param)
+            axios.post('/api/user/update', this.updateParam)
                 .then((res) => {
                     this.waitModalObj.hide();
                     this.updateModalObj.hide();
-                    // var message = res.data.message;
-                    // self.message = message;
-                    var icon_path = res.data.path;
-                    self.user.display_name = res.data.display_name;
-                    self.user.icon = '/storage/' + icon_path;
-                    self.updateMyProfile.hide();
+                    this.$parent.user = res.data.user;
+                    this.$store.commit('updateUser', res.data.user);
+                    this.updateMyProfile.hide();
                 })
                 .catch((error) => {
                     this.waitModalObj.hide();
                     if(error !== true){
                         var error_message = '編集に失敗しました。';
-                        self.message = error_message;
+                        this.message = error_message;
                     console.log(self.errors);
                     }
                 })
@@ -173,7 +113,7 @@ import MovieListComponent from './MovieListComponent';
 
             if(this.checkFile(file)){
                 const picture = await this.getBase64(file);
-                self.update_param['icon_base64'] = picture;
+                self.updateParam['icon_base64'] = picture;
             }
         },
         getBase64(file) {
@@ -199,5 +139,5 @@ import MovieListComponent from './MovieListComponent';
             return result;
         }
     }
-  }
+})
 </script>

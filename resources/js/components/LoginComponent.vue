@@ -61,10 +61,11 @@ export default {
             }
         },
         mounted() {
-            this.showModalObj = new Modal(this.$refs.showModal, {keyboard: true})
+            // console.log(this.$store.state.isLoggedIn);
+            this.showModalObj = new Modal(this.$refs.showModal, {keyboard: true});
         },
         methods: {
-            login:function() {
+            login() {
                 this.errors = {};
                 var self = this;
                 this.showModalObj.show();
@@ -75,17 +76,18 @@ export default {
                             if(!res.data.result){
                                 self.errors = res.data;
                             }
+                            this.$store.commit('login',res.data);
                             this.$router.push({name: 'home'});
                         }).catch((error) => {
                             self.showModalObj.hide();
-                            var responseErrors = error.response.data.errors;
-                            var errors = {};
-                            for(var key in responseErrors){
-                                errors[key] = responseErrors[key][0];
-                            }
-                            self.errors = errors;
+                            console.log(error)
+                            // var responseErrors = error.response.data.errors;
+                            // var errors = {};
+                            // for(var key in responseErrors){
+                            //     errors[key] = responseErrors[key][0];
+                            // }
+                            // self.errors = errors;
                         });
-                        return false;
                 });
             }
         }

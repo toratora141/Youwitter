@@ -58,11 +58,14 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $result = true;
+            $param = User::find(1)->prepareUserCookie($credentials['account_name']);
+            $param['result'] = true;
+            $param['login_message'] = 'ログインしました！';
         } else {
             $login_message = 'アカウントIDまたはパスワードが間違っています。';
+            return response()->json(['result' => $result, 'login_message' => $login_message]);
         }
-        // return ['result' => $result, 'login_message' => $login_message];
-        return response()->json(['result' => $result, 'login_message' => $login_message, 'account_name' => $credentials['account_name']]);
+        return response()->json($param);
     }
 
     public function me(Request $request): JsonResponse
