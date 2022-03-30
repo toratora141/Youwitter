@@ -7,11 +7,13 @@
                 <img :src="videoLists.thumbnail" class="img-fluid " style="width:260px; height:200px; object-fit:cover;" v-on:click="showVideoPlayerModal">
             </div>
         </div>
-        <div v-show="!havePlaylist" class="alert alert-dark" role="alert" ref="alertCreatePlaylist">
+        <div v-if="alert" class="alert alert-dark" role="alert" ref="alertCreatePlaylist">
             {{message}}
-            <router-link v-bind:to="{name:'movieList.create'}">
-                <button class="btn btn-secondary">マイリストの作成</button>
-            </router-link>
+            <div v-if="isMyProfile">
+                <router-link v-bind:to="{name:'movieList.create'}">
+                    <button class="btn btn-secondary">マイリストの作成</button>
+                </router-link>
+            </div>
         </div>
         <div class="modal" tabindex="-1" ref="videoPlayerModal">
             <div class="modal-dialog h-75">
@@ -42,20 +44,22 @@
                 videos: this.$parent.videos,
                 playVideo: {},
                 videoPlayerObj: null,
-                havePlaylist: null,
+                havePlaylist: false,
                 message: null,
+                alert: false,
+                isMyProfile: this.$parent.isMyProfile
             }
         },
         mounted() {
             this.videoPlayerObj = new Modal(this.$refs.videoPlayerModal, {keyboard: true});
-            this.havePlaylistObj = new Modal(this.$refs.alertCreatePlaylist, {keyboard: true});
         },
         methods:{
             fetch(videoLists, user) {
                 console.log(this.videoLists);
-                if(this.videoLists === null && !this.$parent.myProfile){
+                if(this.videoLists === null && !this.$parent.isMyProfile){
                     console.log('otherUser page and no playlist');
                     this.havePlaylist = false;
+                    this.alert = true;
                     this.message = 'プレイリストを準備中のようです...';
                     return;
                 }else if(videoLists === undefined){

@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-title d-flex flex-column" style="height:250px">
-                    <div class="text-end" v-if="!myProfile">
+                    <div class="text-end" v-if="!isMyProfile">
                         <div v-if="isFollow">
                             <button class="btn btn-secondary" v-on:click="deleteFollowing" >フォローを外す</button>
                         </div>
@@ -28,7 +28,6 @@
                 <div class="card-text">
 
                 </div>
-                <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
             </div>
         </div>
         <div>
@@ -52,7 +51,7 @@ import UpdateProfile from './UpdateProfile.vue';
       return{
             errors: {},
             user:{},
-            myProfile: false,
+            isMyProfile: false,
             message: null,
             isFollow: false,
             videoLists: null,
@@ -62,12 +61,12 @@ import UpdateProfile from './UpdateProfile.vue';
     created() {
         if(this.$route.params.account_name === this.$store.state.user.account_name){
             this.user = this.$store.state.user;
-            this.myProfile = true;
+            this.isMyProfile = true;
             // return;
         }
         axios.get('/api/user/fetchProf', {params:{
             account_name: this.$route.params.account_name,
-            myProfile: this.myProfile
+            isMyProfile: this.isMyProfile
         }})
             .then((res) => {
                 var user = {};
