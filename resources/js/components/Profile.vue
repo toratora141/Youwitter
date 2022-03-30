@@ -5,8 +5,13 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-title d-flex flex-column" style="height:250px">
-                    <div class="text-end" v-if="!myPage">
-                        <button class="btn btn-secondary" v-on:click="follow" >フォロー</button>
+                    <div class="text-end" v-if="!myProfile">
+                        <div v-if="isFollow">
+                            <button class="btn btn-secondary" v-on:click="deleteFollowing" >フォローを外す</button>
+                        </div>
+                        <div v-else>
+                            <button class="btn btn-secondary" v-on:click="doFollowing" >フォロー</button>
+                        </div>
                     </div>
                     <div class="text-end" v-else>
                         <button class="btn btn-secondary" v-on:click="updateProfile">編集</button>
@@ -47,27 +52,35 @@ import UpdateProfile from './UpdateProfile.vue';
       return{
             errors: {},
             user:{},
-            myPage: false,
+            myProfile: false,
             message: null,
+            isFollow: false,
+            videoLists: null,
+            videos: null,
         }
     },
     created() {
         if(this.$route.params.account_name === this.$store.state.user.account_name){
             this.user = this.$store.state.user;
-            this.myPage = true;
+            this.myProfile = true;
             // return;
         }
-        axios.get('/api/user/fetchUser', {params:{
-            account_name: this.$route.params.account_name
+        axios.get('/api/user/fetchProf', {params:{
+            account_name: this.$route.params.account_name,
+            myProfile: this.myProfile
         }})
             .then((res) => {
                 var user = {};
                 if (res.data.result) {
-                    user['who'] = 'other';
                     user['account_name'] = res.data.user.account_name;
                     user['display_name'] = res.data.user.display_name;
                     user['icon'] = '/storage/' + res.data.user.icon;
+                    this.videoLists = res.data.videoLists[0];
+                    this.videos = res.data.videos;
+                    this.isFollow = res.data.isFollow;
                     this.user = user;
+                    // console.log(res.data.videoLists[0]);
+                    console.log(res.data.isFollow);
                     this.$refs.movieList.fetch(res.data.videoLists[0], user);
                 }
             })
@@ -80,21 +93,25 @@ import UpdateProfile from './UpdateProfile.vue';
             this.message = null;
             this.updateModalObj.show();
         },
-        follow() {
-            axios.post('/api/user/follow')
-                .then((res) => {
-                    this.message = 'フォローしました！';
-                })
-        },
         updateProfile(){
             this.$refs.updateProfile.showUpdateModal();
         },
-        follow(){
+        doFollowing(){
             axios.post('/api/user/follow', {
                 'followAccountName': this.$route.params.account_name
             })
                 .then((res) => {
                     console.log('followed');
+                    this.isFollow = true;
+                })
+        },
+        deleteFollowing(){
+            axios.post('/api/user/follow/delete', {
+                'followAccountName': this.$route.params.account_name
+            })
+                .then((res) => {
+                    console.log('following destroy');
+                    this.isFollow = false;
                 })
         }
     }

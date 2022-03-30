@@ -52,6 +52,11 @@ class User extends Authenticatable
         return $this->hasMany(VideoList::class, 'user_id', 'account_name');
     }
 
+    public function follows()
+    {
+        return $this->hasMany(VideoList::class, 'user_id', 'account_name');
+    }
+
     /*
      * ログイン時にcookieに保存する貯めの情報と取得、準備
      * [0]を指定しているので複数プレイリスト作成する場合は修正が必要

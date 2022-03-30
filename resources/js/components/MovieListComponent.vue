@@ -1,17 +1,17 @@
 <template>
     <div class="card" style="height:600px;">
-        <div class="card-body">
-            <h6>再生リスト</h6>
+        <h6>再生リスト</h6>
+        <div class="card-body" v-if="havePlaylist">
             <div class="video-list"
-                v-if="videoList.thumbnail">
-                <img :src="videoList.thumbnail" class="img-fluid " style="width:260px; height:200px; object-fit:cover;" v-on:click="showVideoPlayerModal">
+                v-if="videoLists.thumbnail">
+                <img :src="videoLists.thumbnail" class="img-fluid " style="width:260px; height:200px; object-fit:cover;" v-on:click="showVideoPlayerModal">
             </div>
-            <div v-show="!havePlaylist" class="alert alert-dark" role="alert" ref="alertCreatePlaylist">
-                <!-- {{message}} -->
-                <router-link v-bind:to="{name:'movieList.create'}">
-                    <button class="btn btn-secondary">マイリストの作成</button>
-                </router-link>
-            </div>
+        </div>
+        <div v-show="!havePlaylist" class="alert alert-dark" role="alert" ref="alertCreatePlaylist">
+            {{message}}
+            <router-link v-bind:to="{name:'movieList.create'}">
+                <button class="btn btn-secondary">マイリストの作成</button>
+            </router-link>
         </div>
         <div class="modal" tabindex="-1" ref="videoPlayerModal">
             <div class="modal-dialog h-75">
@@ -38,11 +38,12 @@
         ],
         data: function() {
             return {
-                videoList: {},
-                videos: {},
+                videoLists: this.$parent.videoLists,
+                videos: this.$parent.videos,
                 playVideo: {},
                 videoPlayerObj: null,
-                havePlaylist: true,
+                havePlaylist: null,
+                message: null,
             }
         },
         mounted() {
@@ -51,9 +52,9 @@
         },
         methods:{
             fetch(videoLists, user) {
-                console.log(videoLists);
-                //todo 条件の変更 vuex
-                if(videoLists === undefined && user.who ==='other'){
+                console.log(this.videoLists);
+                if(this.videoLists === null && !this.$parent.myProfile){
+                    console.log('otherUser page and no playlist');
                     this.havePlaylist = false;
                     this.message = 'プレイリストを準備中のようです...';
                     return;
@@ -61,30 +62,30 @@
                     this.havePlaylist = false;
                     return;
                 }
-                console.log(this.havePlaylist);
-                this.videoList = {
-                    'id':videoLists.id,
-                    'thumbnail': '/storage/' + videoLists.thumbnail,
-                    'url': videoLists.first_video
-                }
-                this.playVideo = {
-                    url: videoLists.first_video
-                };
-                axios.get('/api/videoList/fetch',{
-                    params:{
-                        id: videoLists.id
-                    }
-                })
-                    .then((res) => {
-                        this.videos = res.data.videos;
-                        this.havePlaylist = true;
-                        if(videoLists === undefined) this.havePlaylist =false;
-                    })
-                    .catch((error) => {
-                        this.havePlaylist = false;
-                        this.message = 'プレイリストを作成しましょう！'
-                        console.log(error);
-                    });
+                // console.log(this.havePlaylist);
+                // this.videoLists = {
+                //     'id':videoLists.id,
+                //     'thumbnail': '/storage/' + videoLists.thumbnail,
+                //     'url': videoLists.first_video
+                // }
+                // this.playVideo = {
+                //     url: videoLists.first_video
+                // };
+                // axios.get('/api/videoList/fetch',{
+                //     params:{
+                //         id: videoLists.id
+                //     }
+                // })
+                //     .then((res) => {
+                //         this.videos = res.data.videos;
+                //         this.havePlaylist = true;
+                //         if(videoLists === undefined) this.havePlaylist =false;
+                //     })
+                //     .catch((error) => {
+                //         this.havePlaylist = false;
+                //         this.message = 'プレイリストを作成しましょう！'
+                //         console.log(error);
+                //     });
             },
             showVideoPlayerModal() {
                 this.videoPlayerObj.show();

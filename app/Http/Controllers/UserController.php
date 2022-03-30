@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Follow;
 use App\Http\Requests\UserInputPost;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Mockery\Undefined;
 
 class UserController extends Controller
 {
@@ -34,15 +36,45 @@ class UserController extends Controller
         $user = $request->user();
     }
 
-    public function fetchProf()
+    public function fetchProf(Request $request)
     {
         $result = false;
-        $user = Auth::user();
-        $fetch = User::where('account_name', $user['account_name'])
+        $isfollow = false;
+        $myUser = Auth::user();
+        //ToDo:
+        // 変数名
+        // followモデルにメソッドを作って、userモデルから呼び出し。全部移動
+        $fetch = User::where('account_name', $request->input('account_name'))
             ->with('videoLists.videos')
             ->get();
+        $user = [
+            'account_name' => $fetch[0]->account_name,
+            'display_name' => $fetch[0]->display_name,
+            'icon' => $fetch[0]->icon,
+        ];
+        $followed = User::where('account_name', $request->input('account_name'))
+            ->with('follows')
+            ->get();
+        $follower = Follow::where('follower', $request->input('account_name'))
+            ->get();
+        $follows = [
+            'follower' => $follower,
+            'followed' => $followed
+        ];
+        //マイプロフィールかどうかでDBからのfetchを変える
+        // $myProfile = (bool)($request->input('myProfile'));
+        // dd($myProfile);
+        if ($request->input('myProfile') === 'false') {
+            $fetchFollow = Follow::where('user_id', $request->input('account_name'))
+                ->where('follower', $myUser['account_name'])
+                ->first();
+        }
+        if (isset($fetchFollow)) {
+            $isfollow = true;
+        }
+        // dd($fetch[0]->videoLists);
         $result = true;
-        return response()->json(['result' => $result, 'user' => $user, 'videoLists' => $fetch[0]->videoLists]);
+        return response()->json(['result' => $result, 'user' => $user, 'videoLists' => $fetch[0]->videoLists, 'follows' => $follows, 'isFollow' => $isfollow]);
     }
 
     public function fetchUser(Request $request)

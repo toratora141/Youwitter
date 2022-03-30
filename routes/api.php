@@ -21,10 +21,12 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::get('/user/fetch', 'App\Http\Controllers\UserController@fetchProf');
     Route::get('/user/fetchUser', 'App\Http\Controllers\UserController@fetchUser');
+    Route::get('/user/fetchProf', 'App\Http\Controllers\UserController@fetchProf');
     Route::post('/user/update', 'App\Http\Controllers\UserController@update');
     Route::post('/user/videoList/create', 'App\Http\Controllers\VideoListController@listCreate');
 
     Route::post('/user/follow', 'App\Http\Controllers\FollowController@follow');
+    Route::post('/user/follow/delete', 'App\Http\Controllers\FollowController@delete');
 
     Route::get('/videoList/fetch', 'App\Http\Controllers\VideoListController@fetch');
 });

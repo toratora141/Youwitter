@@ -71,7 +71,7 @@ export default ({
         }
     },
     mounted() {
-        console.log(this.$store.state.user);
+        // console.log(this.$store.state.user);
         this.updateModalObj = new Modal(this.$refs.updateModal,{keyboard: true})
         this.waitModalObj = new Modal(this.$refs.waitModal,{keyboard: true})
     },
