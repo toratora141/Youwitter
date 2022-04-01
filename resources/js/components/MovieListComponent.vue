@@ -4,7 +4,7 @@
         <div class="card-body" v-if="havePlaylist">
             <div class="video-list"
                 v-if="videoLists.thumbnail">
-                <img :src="videoLists.thumbnail" class="img-fluid " style="width:260px; height:200px; object-fit:cover;" v-on:click="showVideoPlayerModal">
+                <img :src="'/storage/' + videoLists.thumbnail" class="img-fluid " style="width:260px; height:200px; object-fit:cover;" v-on:click="showVideoPlayerModal">
             </div>
         </div>
         <div v-if="alert" class="alert alert-dark" role="alert" ref="alertCreatePlaylist">
@@ -40,8 +40,8 @@
         ],
         data: function() {
             return {
-                videoLists: this.$parent.videoLists,
-                videos: this.$parent.videos,
+                videoLists: {},
+                videos: {},
                 playVideo: {},
                 videoPlayerObj: null,
                 havePlaylist: false,
@@ -54,42 +54,40 @@
             this.videoPlayerObj = new Modal(this.$refs.videoPlayerModal, {keyboard: true});
         },
         methods:{
-            fetch(videoLists, user) {
-                console.log(this.videoLists);
-                if(this.videoLists === null && !this.$parent.isMyProfile){
-                    console.log('otherUser page and no playlist');
+            fetch(videoLists, videos) {
+                console.log('fetch');
+                if(videoLists === undefined && !this.$parent.isMyProfile){
                     this.havePlaylist = false;
                     this.alert = true;
                     this.message = 'プレイリストを準備中のようです...';
                     return;
                 }else if(videoLists === undefined){
                     this.havePlaylist = false;
+                    this.alert = true;
+                    this.message = 'プレイリストを作成しましょう!';
                     return;
                 }
-                // console.log(this.havePlaylist);
-                // this.videoLists = {
-                //     'id':videoLists.id,
-                //     'thumbnail': '/storage/' + videoLists.thumbnail,
-                //     'url': videoLists.first_video
-                // }
-                // this.playVideo = {
-                //     url: videoLists.first_video
-                // };
-                // axios.get('/api/videoList/fetch',{
-                //     params:{
-                //         id: videoLists.id
-                //     }
-                // })
-                //     .then((res) => {
-                //         this.videos = res.data.videos;
-                //         this.havePlaylist = true;
-                //         if(videoLists === undefined) this.havePlaylist =false;
-                //     })
-                //     .catch((error) => {
-                //         this.havePlaylist = false;
-                //         this.message = 'プレイリストを作成しましょう！'
-                //         console.log(error);
-                //     });
+                this.havePlaylist = true;
+                this.videoLists = videoLists;
+                this.videos = videos;
+                this.playVideo.url = this.videoLists.first_video;
+            },
+            timeline(follows) {
+                if(videoLists === undefined && !this.$parent.isMyProfile){
+                    this.havePlaylist = false;
+                    this.alert = true;
+                    this.message = 'プレイリストを準備中のようです...';
+                    return;
+                }else if(videoLists === undefined){
+                    this.havePlaylist = false;
+                    this.alert = true;
+                    this.message = 'プレイリストを作成しましょう!';
+                    return;
+                }
+                this.havePlaylist = true;
+                this.videoLists = videoLists;
+                this.videos = videos;
+                this.playVideo.url = this.videoLists.first_video;
             },
             showVideoPlayerModal() {
                 this.videoPlayerObj.show();

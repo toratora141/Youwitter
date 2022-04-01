@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/update', 'App\Http\Controllers\UserController@update');
     Route::post('/user/videoList/create', 'App\Http\Controllers\VideoListController@listCreate');
 
+    Route::get('/user/follow/fetch', 'App\Http\Controllers\FollowController@fetch');
     Route::post('/user/follow', 'App\Http\Controllers\FollowController@follow');
     Route::post('/user/follow/delete', 'App\Http\Controllers\FollowController@delete');
 

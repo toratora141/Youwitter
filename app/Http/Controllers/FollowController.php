@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Auth;
 class FollowController extends Controller
 {
     /*
+     * フォローしているユーザをfetch
+     */
+    public function fetch()
+    {
+        $follows = Follow::where('follower', Auth::user()->account_name)
+            ->with(['user', 'videoList'])
+            ->get();
+        return response()->json(['follows' => $follows]);
+    }
+    /*
      * フォローメソッド
      */
     public function follow(Request $request)

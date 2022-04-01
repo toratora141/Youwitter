@@ -26,7 +26,6 @@
                     </div>
                 </div>
                 <div class="card-text">
-
                 </div>
             </div>
         </div>
@@ -62,6 +61,11 @@ import UpdateProfile from './UpdateProfile.vue';
         if(this.$route.params.account_name === this.$store.state.user.account_name){
             this.user = this.$store.state.user;
             this.isMyProfile = true;
+            console.log('mypage');
+            // this.videoLists = this.$store.state.videoLists;
+            // this.videos = this.$store.state.videos;
+            // console.log(videos);
+            // console.log(videoLists);
             // return;
         }
         axios.get('/api/user/fetchProf', {params:{
@@ -75,16 +79,20 @@ import UpdateProfile from './UpdateProfile.vue';
                     user['display_name'] = res.data.user.display_name;
                     user['icon'] = '/storage/' + res.data.user.icon;
                     this.videoLists = res.data.videoLists[0];
-                    this.videos = res.data.videos;
+                    if(this.videoLists === undefined){
+                        this.videos = undefined;
+                    }else{
+                        this.videos = res.data.videoLists[0].videos;
+
+                    }
+                    console.log(this.$refs);
                     this.isFollow = res.data.isFollow;
                     this.user = user;
-                    // console.log(res.data.videoLists[0]);
-                    console.log(res.data.isFollow);
-                    this.$refs.movieList.fetch(res.data.videoLists[0], user);
+                    this.$refs.movieList.fetch(this.videoLists, this.videos);
                 }
             })
             .catch((error) => {
-                this.errors = error.response
+                this.errors = error.response;
             })
     },
     methods: {

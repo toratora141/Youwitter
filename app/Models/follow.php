@@ -30,4 +30,13 @@ class follow extends Model
             ->first();
         return isset($searchFollowing);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'account_name');
+    }
+    public function videoList()
+    {
+        return $this->belongsTo(videoList::class, 'user_id', 'user_id');
+    }
 }
