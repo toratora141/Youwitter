@@ -9,7 +9,9 @@ export default new Vuex.Store({
     namespaced: true,
     state: {
         isLoggedIn: false,
-        user: null,
+        user: {
+            account_name:null
+        },
         videoLists: null,
         videos: null,
         noLoggedInAlert: null,
