@@ -68,6 +68,15 @@ class LoginController extends Controller
         return response()->json($param);
     }
 
+    public function logout(Request $request)
+    {
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json(['result' => true]);
+    }
+
     public function me(Request $request): JsonResponse
     {
         $result = false;

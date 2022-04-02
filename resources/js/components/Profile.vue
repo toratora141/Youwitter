@@ -20,8 +20,8 @@
                     <div class="text-start d-flex flex-column">
                         <img :src="user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:100px; height:100px; object-fit:cover;">
                         <div class="mt-3">
-                            <h3 v-if="user.display_name" v-text="user.display_name"></h3>
-                            <h6 v-if="user.account_name" v-text="user.account_name"></h6>
+                            <p class="fs-3 m-0" v-if="user.display_name" v-text="user.display_name"></p>
+                            <p class="fs-6" v-if="user.account_name" v-text="user.account_name"></p>
                         </div>
                     </div>
                 </div>

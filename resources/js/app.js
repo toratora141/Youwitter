@@ -7,6 +7,7 @@ import Vue from 'vue';
 import store from './store';
 import VueRouter from 'vue-router';
 import HeaderComponent from "./components/HeaderComponent";
+import Setting from "./components/Setting";
 import AlertLogin from "./components/AlertLogin";
 import RegisterComponent from "./components/RegisterComponent";
 import LoginComponent from "./components/LoginComponent";
@@ -66,22 +67,30 @@ const router = new VueRouter({
             path: '/myprofile',
             name: 'user.myprofile',
             component: MyProfileComponent,
-            // meta: {
-            //     isAuthenticated: true,
-            // },
+            meta: {
+                isAuthenticated: true,
+            },
         },
         {
             path: '/profile/:account_name',
             name: 'user.profile',
             component: Profile,
-            // meta: {
-            //     isAuthenticated: true,
-            // },
+            meta: {
+                isAuthenticated: true,
+            },
         },
         {
             path: '/movieList/create',
             name: 'movieList.create',
             component: MovieListCreateComponent,
+            meta: {
+                isAuthenticated: true,
+            },
+        },
+        {
+            path: '/setting',
+            name: 'user.setting',
+            component: Setting,
             meta: {
                 isAuthenticated: true,
             },
@@ -104,8 +113,9 @@ const app = new Vue({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.isAuthenticated)) {
-    if (!store.state.isLoggedIn) {
-      next({ name: 'user.login' });
+      if (!store.state.isLoggedIn) {
+        store.state.noLoggedInAlert = true;
+        next({ name: 'user.login' });
     } else {
       next();
     }

@@ -19,10 +19,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+
+    Route::post('/user/logout', 'App\Http\Controllers\Auth\LoginController@logout');
+    Route::post('/user/update', 'App\Http\Controllers\UserController@update');
     Route::get('/user/fetch', 'App\Http\Controllers\UserController@fetchProf');
     Route::get('/user/fetchUser', 'App\Http\Controllers\UserController@fetchUser');
     Route::get('/user/fetchProf', 'App\Http\Controllers\UserController@fetchProf');
-    Route::post('/user/update', 'App\Http\Controllers\UserController@update');
     Route::post('/user/videoList/create', 'App\Http\Controllers\VideoListController@listCreate');
 
     Route::get('/user/follow/fetch', 'App\Http\Controllers\FollowController@fetch');

@@ -1,5 +1,11 @@
 <template>
     <div class="container">
+        <div class="alert alert-primary" role="alert" v-if="noLoggedInAlert">
+            <p>機能を使うにはログインしてください。</p>
+            <router-link v-bind:to="{name:'user.login'}">
+                <button class="btn btn-secondary">新規アカウント作成</button>
+            </router-link>
+        </div>
         <div class="row justify-content-center">
             <div class="col-sm-6">
                 <form v-on:submit.prevent="login">
@@ -57,7 +63,7 @@ export default {
                 user: {},
                 errors: {},
                 showModalObj: null,
-
+                noLoggedInAlert: this.$store.state.noLoggedInAlert,
             }
         },
         mounted() {
@@ -73,11 +79,12 @@ export default {
                     axios.post('/api/user/login', this.user, {withCredentials: true})
                         .then((res) => {
                             self.showModalObj.hide();
-                            if(!res.data.result){
+                            if(res.data.result){
                                 self.errors = res.data;
+                                this.$store.commit('login',res.data);
+                                this.$router.push({name: 'home'});
                             }
-                            this.$store.commit('login',res.data);
-                            this.$router.push({name: 'home'});
+                            this.errors = res.data;
                         }).catch((error) => {
                             self.showModalObj.hide();
                             console.log(error)

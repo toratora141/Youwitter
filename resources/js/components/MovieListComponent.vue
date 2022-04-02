@@ -1,5 +1,6 @@
 <template>
-    <div class="card" style="height:600px;">
+    <!-- <div class="card" style="height:600px;"> -->
+    <div class="card">
         <h6>再生リスト</h6>
         <div class="card-body" v-if="havePlaylist">
             <div class="video-list"
@@ -55,30 +56,13 @@
         },
         methods:{
             fetch(videoLists, videos) {
-                console.log('fetch');
-                if(videoLists === undefined && !this.$parent.isMyProfile){
+                console.log(videoLists);
+                if(videoLists === null && !this.$parent.isMyProfile){
                     this.havePlaylist = false;
                     this.alert = true;
                     this.message = 'プレイリストを準備中のようです...';
                     return;
-                }else if(videoLists === undefined){
-                    this.havePlaylist = false;
-                    this.alert = true;
-                    this.message = 'プレイリストを作成しましょう!';
-                    return;
-                }
-                this.havePlaylist = true;
-                this.videoLists = videoLists;
-                this.videos = videos;
-                this.playVideo.url = this.videoLists.first_video;
-            },
-            timeline(follows) {
-                if(videoLists === undefined && !this.$parent.isMyProfile){
-                    this.havePlaylist = false;
-                    this.alert = true;
-                    this.message = 'プレイリストを準備中のようです...';
-                    return;
-                }else if(videoLists === undefined){
+                }else if(videoLists === null){
                     this.havePlaylist = false;
                     this.alert = true;
                     this.message = 'プレイリストを作成しましょう!';

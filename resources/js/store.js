@@ -12,11 +12,16 @@ export default new Vuex.Store({
         user: null,
         videoLists: null,
         videos: null,
+        noLoggedInAlert: null,
     },
     mutations: {
         login(state, data) {
             state.isLoggedIn = true;
             state.user = data.user;
+        },
+        logout(state) {
+            state.isLoggedIn = false;
+            state.user = null;
         },
         updateUser(state, user) {
             state.user = user;

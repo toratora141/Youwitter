@@ -10,21 +10,6 @@
       </button>
       <div class="collapse navbar-collapse" id="Nav1">
         <ul class="navbar-nav mt-3">
-            <li class="nav-item active">
-                <router-link v-bind:to="{name:'user.register'}">
-                    <a a class="nav-link" href="#">アカウント作成</a>
-                </router-link>
-            </li>
-            <li class="nav-item">
-                <router-link v-bind:to="{name:'user.login'}">
-                    <a a class="nav-link" href="#">ログイン</a>
-                </router-link>
-            </li>
-            <li class="nav-item">
-                <router-link v-bind:to="{name:'user.search'}">
-                    <a a class="nav-link" href="#">検索</a>
-                </router-link>
-            </li>
             <li class="nav-item">
                 <router-link v-bind:to="{name:'user.myprofile'}">
                     <a class="nav-link" href="#">プロフィール</a>
@@ -33,6 +18,16 @@
             <li class="nav-item">
                 <router-link v-bind:to="{name:'movieList.create'}">
                     <a class="nav-link" href="#">マイリストの作成</a>
+                </router-link>
+            </li>
+            <li class="nav-item">
+                <router-link v-bind:to="{name:'user.search'}">
+                    <a a class="nav-link" href="#">検索</a>
+                </router-link>
+            </li>
+            <li class="nav-item">
+                <router-link v-bind:to="{name:'user.setting'}">
+                    <a class="nav-link" href="#">設定</a>
                 </router-link>
             </li>
         </ul>

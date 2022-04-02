@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 use App\Models\VideoList;
 use App\Models\Video;
-
+use Mockery\Undefined;
 
 class User extends Authenticatable
 {
@@ -63,9 +63,6 @@ class User extends Authenticatable
     */
     public function prepareUserCookie($account_name)
     {
-        $user = User::where('account_name', $account_name)
-            ->with('VideoLists.Videos')
-            ->get();
         $fetch = User::where('account_name', $account_name)
             ->with('VideoLists.Videos')
             ->get();
@@ -74,8 +71,12 @@ class User extends Authenticatable
             'display_name' => $fetch[0]->display_name,
             'icon' => $fetch[0]->icon
         ];
-        $param['videoLists'] = $fetch[0]->VideoLists;
-        $param['videos'] = $fetch[0]->VideoLists[0]->Videos;
+        if (isset($fetch[0]->videoLists[0])) {
+            $param['videoLists'] = $fetch[0]->VideoLists;
+            $param['videos'] = $fetch[0]->VideoLists[0]->Videos;
+        }
+        $param['videoLists'] = 'undefined';
+        $param['videos'] = 'undefined';
         return $param;
     }
 }
