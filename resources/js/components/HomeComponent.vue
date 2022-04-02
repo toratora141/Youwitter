@@ -61,7 +61,12 @@
                     });
             })
             .catch((error) => {
-                console.log(error);
+                if(error === 'Unauthenticated'){
+                    axios.post('/api/user/remember')
+                        .then((res) => {
+                            console.log('remember');
+                        })
+                }
             })
     },
     created() {

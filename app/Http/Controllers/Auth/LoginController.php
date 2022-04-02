@@ -76,22 +76,4 @@ class LoginController extends Controller
 
         return response()->json(['result' => true]);
     }
-
-    public function me(Request $request): JsonResponse
-    {
-        $result = false;
-        $user = [];
-        if (Auth::check()) {
-            $user = Auth::user();
-            $result = true;
-        }
-        return response()->json(['result' => $result, 'user' => $user]);
-
-        $user = $request->user();
-
-        return new JsonResponse([
-            'account_name' => $user->account_name,
-            'display_name' => $user->display_name,
-        ]);
-    }
 }

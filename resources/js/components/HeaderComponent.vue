@@ -11,7 +11,7 @@
       <div class="collapse navbar-collapse" id="Nav1" ref="nav">
         <ul class="navbar-nav mt-3">
             <li class="nav-item"  v-on:click="menuBtn">
-                <router-link v-bind:to="{name:'user.myprofile'}">
+                <router-link v-bind:to="{name:'user.profile', params:{account_name:$store.state.user.account_name}}">
                     <a class="nav-link" href="#">プロフィール</a>
                 </router-link>
             </li>
