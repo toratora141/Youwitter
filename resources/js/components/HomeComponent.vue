@@ -70,10 +70,10 @@
             })
     },
     created() {
-        // console.log(this.$store.state.isLoggedIn);
-        // console.log(this.$store.state.user);
-        // console.log(this.$store.state.videoLists);
-        // console.log(this.$store.state.videos);
+        console.log(this.$store.state.isLoggedIn);
+        console.log(this.$store.state.user);
+        console.log(this.$store.state.videoLists);
+        console.log(this.$store.state.videos);
     },
   }
 </script>
