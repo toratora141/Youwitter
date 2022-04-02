@@ -54,11 +54,11 @@ class LoginController extends Controller
         $result = false;
         $login_message = '';
         $user = [];
-        $credentials = $request->only('account_name', 'password');
-        if (Auth::attempt($credentials)) {
+        $param = $request->only('account_name', 'password');
+        if (Auth::attempt($param, $remember = true)) {
             $request->session()->regenerate();
             $result = true;
-            $param = User::find(1)->prepareUserCookie($credentials['account_name']);
+            $param = User::find(1)->prepareUserCookie($param['account_name']);
             $param['result'] = true;
             $param['login_message'] = 'ログインしました！';
         } else {

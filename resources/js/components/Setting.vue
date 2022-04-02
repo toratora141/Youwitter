@@ -1,5 +1,8 @@
 <template>
     <div>
+        <router-link v-bind:to="{name:'user.login'}">
+            <button class="btn btn-secondary">ログイン</button>
+        </router-link>
         <button class="btn btn-secondary" v-on:click="logout">ログアウト</button>
     </div>
 </template>

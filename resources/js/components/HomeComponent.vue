@@ -30,7 +30,6 @@
 </template>
 
 <script>
-// import MovieListComponent from './MovieListComponent.vue';
   export default {
     data() {
       return {
@@ -52,8 +51,11 @@
                     this.follows.forEach(follow => {
                         this.$nextTick(()=>{
                             var user = follow.user_id;
-                            // this.$refs.movieList[count].fetch(follow.video_list, follow.video_list.videos);
-                            this.$refs.movieList[count].fetch(follow.video_list, undefined);
+                            if(follow.video_list === null){
+                                this.$refs.movieList[count].fetch(null, null);
+                            }else{
+                                this.$refs.movieList[count].fetch(follow.video_list, follow.video_list.videos);
+                            }
                             count++;
                         });
                     });
@@ -63,10 +65,10 @@
             })
     },
     created() {
-        console.log(this.$store.state.isLoggedIn);
-        console.log(this.$store.state.user);
-        console.log(this.$store.state.videoLists);
-        console.log(this.$store.state.videos);
+        // console.log(this.$store.state.isLoggedIn);
+        // console.log(this.$store.state.user);
+        // console.log(this.$store.state.videoLists);
+        // console.log(this.$store.state.videos);
     },
   }
 </script>
