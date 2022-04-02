@@ -57,12 +57,12 @@
         methods:{
             fetch(videoLists, videos) {
                 console.log(videoLists);
-                if(videoLists === null && !this.$parent.isMyProfile){
+                if(videoLists === null || videoLists === undefined && !this.$parent.isMyProfile){
                     this.havePlaylist = false;
                     this.alert = true;
                     this.message = 'プレイリストを準備中のようです...';
                     return;
-                }else if(videoLists === null){
+                }else if(videoLists === null || videoLists === undefined){
                     this.havePlaylist = false;
                     this.alert = true;
                     this.message = 'プレイリストを作成しましょう!';
