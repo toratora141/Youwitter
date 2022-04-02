@@ -7,7 +7,7 @@
             <div class="card-content">
                 <div class="card-body">
                     <label for="search"></label>
-                    <input type="text" id="search" v-model="searchKeyword">
+                    <input type="text" id="search" v-on:input="setKeyword">
                     <label for="search" v-if="errors.search" v-text="errors.search"></label>
                     <button v-on:click="search" class="btn btn-secondary">検索</button>
                 </div>
@@ -41,12 +41,16 @@ export default {
     },
     methods:{
         search(){
-            axios.get('/api/searchUser', {
+            axios.get('/api/searchUser', {params:{
                 searchKeyword: this.searchKeyword
-            })
+            }})
                 .then((res) => {
                     this.users = res.data.users;
                 });
+        },
+        setKeyword(event){
+            this.searchKeyword = event.target.value;
+            console.log(this.searchKeyword);
         }
     }
 };
