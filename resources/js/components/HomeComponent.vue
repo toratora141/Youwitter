@@ -51,7 +51,7 @@
                     this.follows.forEach(follow => {
                         this.$nextTick(()=>{
                             var user = follow.user_id;
-                            if(follow.video_list === null){
+                            if(follow.video_list === null || follow.video_list === undefined){
                                 this.$refs.movieList[count].fetch(null, null);
                             }else{
                                 this.$refs.movieList[count].fetch(follow.video_list, follow.video_list.videos);
