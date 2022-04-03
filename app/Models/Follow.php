@@ -35,8 +35,8 @@ class Follow extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'account_name');
     }
-    public function videoList()
+    public function videoLists()
     {
-        return $this->belongsTo(videoList::class, 'user_id', 'user_id');
+        return $this->belongsTo(VideoList::class, 'user_id', 'user_id');
     }
 }
