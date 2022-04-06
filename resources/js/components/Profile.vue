@@ -117,7 +117,7 @@ import UpdateProfile from './UpdateProfile.vue';
         },
         doFollowing(){
             axios.post('/api/user/follow', {
-                'followAccountName': this.$route.params.account_name
+                'followAccountName': this.$route.params.accountName
             })
                 .then((res) => {
                     console.log('followed');
@@ -126,7 +126,7 @@ import UpdateProfile from './UpdateProfile.vue';
         },
         deleteFollowing(){
             axios.post('/api/user/follow/delete', {
-                'followAccountName': this.$route.params.account_name
+                'followAccountName': this.$route.params.accountName
             })
                 .then((res) => {
                     console.log('following destroy');
