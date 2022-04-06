@@ -3,6 +3,7 @@
 use App\Models\YoutubeList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\MovieListCreate;
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,8 @@ use App\Http\Requests\MovieListCreate;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+// Auth::routes();
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -28,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/videoList/create', 'App\Http\Controllers\VideoListController@listCreate');
 
     Route::get('/user/follow/fetch', 'App\Http\Controllers\FollowController@fetch');
+    Route::get('/user/follow/list', 'App\Http\Controllers\FollowController@list');
     Route::post('/user/follow', 'App\Http\Controllers\FollowController@follow');
     Route::post('/user/follow/delete', 'App\Http\Controllers\FollowController@delete');
 
@@ -35,4 +39,4 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 Route::get('/searchUser', 'App\Http\Controllers\UserController@searchUser');
 Route::post('/users/register', 'App\Http\Controllers\UserController@register');
-Route::post('/user/login', 'App\Http\Controllers\Auth\LoginController@login');
+Route::post('/user/login', 'App\Http\Controllers\Auth\LoginController@originalLogin');

@@ -33,7 +33,8 @@
         </div>
     </div>
 </template>
-<script>import { Modal } from 'bootstrap';
+<script>
+import { Modal } from 'bootstrap';
 
     export default{
         props: [

@@ -10,7 +10,7 @@
                             <button class="btn btn-secondary" v-on:click="deleteFollowing" >フォローを外す</button>
                         </div>
                         <div v-else>
-                            <button class="btn btn-secondary" v-on:click="doFollowing" >フォロー</button>
+                            <button class="btn btn-secondary" v-on:click="doFollowing" >フォローする</button>
                         </div>
                     </div>
                     <div class="text-end" v-else>
@@ -23,6 +23,14 @@
                             <p class="fs-3 m-0" v-if="user.display_name" v-text="user.display_name"></p>
                             <p class="fs-6" v-if="user.account_name" v-text="user.account_name"></p>
                         </div>
+                    </div>
+                    <div class="d-flex flex-row">
+                        <router-link v-bind:to="{name:'user.followed', params:{accountName:$route.params.accountName}}" style="text-decoration: none; color: #141619;">
+                            フォロー
+                        </router-link>
+                        <router-link v-bind:to="{name:'user.follower', params:{accountName:$route.params.accountName}}" style="text-decoration: none; color: #141619;">
+                            フォロワー
+                        </router-link>
                     </div>
                 </div>
                 <div class="card-text">
@@ -58,7 +66,7 @@ import UpdateProfile from './UpdateProfile.vue';
         }
     },
     created() {
-        if(this.$route.params.account_name === this.$store.state.user.account_name){
+        if(this.$route.params.accountName === this.$store.state.user.accountName){
             this.user = this.$store.state.user;
             this.isMyProfile = true;
             console.log('mypage');
@@ -69,7 +77,7 @@ import UpdateProfile from './UpdateProfile.vue';
             // return;
         }
         axios.get('/api/user/fetchProf', {params:{
-            account_name: this.$route.params.account_name,
+            accountName: this.$route.params.accountName,
             isMyProfile: this.isMyProfile
         }})
             .then((res) => {

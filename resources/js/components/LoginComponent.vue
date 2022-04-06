@@ -3,7 +3,7 @@
         <div class="alert alert-primary" role="alert" v-if="noLoggedInAlert">
             <p>機能を使うにはログインしてください。</p>
             <router-link v-bind:to="{name:'user.login'}">
-                <button class="btn btn-secondary">新規アカウント作成</button>
+                <button class="btn btn-secondary">アカウント作成</button>
             </router-link>
         </div>
         <div class="row justify-content-center">

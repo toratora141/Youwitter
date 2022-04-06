@@ -45,4 +45,15 @@ class FollowController extends Controller
             ->delete();
         return response()->json(['result' => true]);
     }
+
+    public function list(Request $request)
+    {
+        $followed = Follow::where('follower', $request->input('accountName'))
+            ->with('user')
+            ->get();
+        $follower = Follow::where('user_id', $request->input('accountName'))
+            ->with('followUser')
+            ->get();
+        return response()->json(['followed' => $followed, 'follower' => $follower]);
+    }
 }

@@ -9,9 +9,9 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="Nav1" ref="nav">
-        <ul class="navbar-nav mt-3">
-            <li class="nav-item"  v-on:click="menuBtn">
-                <router-link v-bind:to="{name:'user.profile', params:{account_name:$store.state.user.account_name}}">
+        <ul class="navbar-nav mt-3" >
+            <li class="nav-item"  v-on:click="menuBtn" v-if="$store.state.isLoggedIn">
+                <router-link v-bind:to="{name:'user.profile', params:{accountName:$store.state.user.accountName}}">
                     <a class="nav-link" href="#">プロフィール</a>
                 </router-link>
             </li>
@@ -38,9 +38,10 @@
 
 <script>
     export default {
-        date: function() {
+        date() {
             return {
                 isOpen: false,
+                isLoggedIn: false,
             }
         },
         created(){

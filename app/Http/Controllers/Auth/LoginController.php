@@ -12,6 +12,9 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
+
 class LoginController extends Controller
 {
     /*
@@ -39,28 +42,37 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('guest')->except('logout');
+    // }
 
     public function username()
     {
         return 'account_name';
     }
 
-    public function login(UserLoginRequest $request)
+    public function originalLogin(UserLoginRequest $request)
     {
         $result = false;
         $login_message = '';
         $user = [];
         $param = $request->only('account_name', 'password');
-        if (Auth::attempt($param, $remember = true)) {
+        if (Auth::attempt($param, true)) {
             $request->session()->regenerate();
             $result = true;
             $param = User::find(1)->prepareUserCookie($param['account_name']);
             $param['result'] = true;
             $param['login_message'] = 'ログインしました！';
+            $remember_cookie_name = Auth::getRecallerName();
+            // Cookie::queue(
+            //     $name = $remember_cookie_name,
+            //     $value = Cookie::queued($remember_cookie_name)->getValue(),
+            //     $minutes = 10080, // 7日
+            //     $path = '/',
+            //     $domain = null
+            // );
+            // dd(Session::all());
         } else {
             $login_message = 'アカウントIDまたはパスワードが間違っています。';
             return response()->json(['result' => $result, 'login_message' => $login_message]);

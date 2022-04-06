@@ -14,6 +14,8 @@ import LoginComponent from "./components/LoginComponent";
 import SearchUserComponent from "./components/SearchUserComponent";
 import MyProfileComponent from "./components/MyProfileComponent";
 import Profile from "./components/Profile";
+import Followed from "./components/Followed";
+import Follower from "./components/Follower";
 import MovieListComponent from "./components/MovieListComponent";
 import MovieListCreateComponent from "./components/MovieListCreateComponent";
 import HomeComponent from "./components/HomeComponent";
@@ -72,7 +74,7 @@ const router = new VueRouter({
             },
         },
         {
-            path: '/profile/:account_name',
+            path: '/profile/:accountName',
             name: 'user.profile',
             component: Profile,
             meta: {
@@ -94,6 +96,16 @@ const router = new VueRouter({
             meta: {
                 isAuthenticated: true,
             },
+        },
+        {
+            path: '/followed/:accountName',
+            name: 'user.followed',
+            component: Followed,
+        },
+        {
+            path: '/follower/:accountName',
+            name: 'user.follower',
+            component: Follower,
         }
     ]
 })

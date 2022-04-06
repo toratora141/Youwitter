@@ -10,7 +10,7 @@ export default new Vuex.Store({
     state: {
         isLoggedIn: false,
         user: {
-            account_name:null
+            accountName:null
         },
         videoLists: null,
         videos: null,
@@ -20,6 +20,8 @@ export default new Vuex.Store({
         login(state, data) {
             state.isLoggedIn = true;
             state.user = data.user;
+            //データベースから取ってきた引数のため変数名がスネークケースをキャメルケースに戻す
+            state.user.accountName = data.user.account_name;
         },
         logout(state) {
             state.isLoggedIn = false;
@@ -27,6 +29,7 @@ export default new Vuex.Store({
         },
         updateUser(state, user) {
             state.user = user;
+            state.user.accountName = user.account_name;
         }
     },
     actions: {
