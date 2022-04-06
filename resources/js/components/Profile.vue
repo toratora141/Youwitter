@@ -5,16 +5,18 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-title d-flex flex-column" style="height:250px">
-                    <div class="text-end" v-if="!isMyProfile">
-                        <div v-if="isFollow">
-                            <button class="btn btn-secondary" v-on:click="deleteFollowing" >フォローを外す</button>
+                    <div v-if="showBtn">
+                        <div class="text-end" v-if="!isMyProfile">
+                            <div v-if="isFollow">
+                                <button class="btn btn-secondary" v-on:click="deleteFollowing" >フォローを外す</button>
+                            </div>
+                            <div v-else>
+                                <button class="btn btn-secondary" v-on:click="doFollowing" >フォローする</button>
+                            </div>
                         </div>
-                        <div v-else>
-                            <button class="btn btn-secondary" v-on:click="doFollowing" >フォローする</button>
+                        <div class="text-end" v-else>
+                            <button class="btn btn-secondary" v-on:click="updateProfile">編集</button>
                         </div>
-                    </div>
-                    <div class="text-end" v-else>
-                        <button class="btn btn-secondary" v-on:click="updateProfile">編集</button>
                     </div>
                     <update-profile ref="updateProfile"></update-profile>
                     <div class="text-start d-flex flex-column">
@@ -59,8 +61,9 @@ import UpdateProfile from './UpdateProfile.vue';
             errors: {},
             user:{},
             isMyProfile: false,
-            message: null,
             isFollow: false,
+            showBtn: false,
+            message: null,
             videoLists: null,
             videos: null,
         }
@@ -95,6 +98,7 @@ import UpdateProfile from './UpdateProfile.vue';
                     }
                     console.log(this.$refs);
                     this.isFollow = res.data.isFollow;
+                    this.showFollowBtn = true;
                     this.user = user;
                     this.$refs.movieList.fetch(this.videoLists, this.videos);
                 }

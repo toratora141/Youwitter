@@ -39,7 +39,7 @@ class UserController extends Controller
     public function fetchProf(Request $request)
     {
         $result = false;
-        $isfollow = false;
+        $isFollow = false;
         $myUser = Auth::user();
         //ToDo:
         // 変数名
@@ -62,19 +62,18 @@ class UserController extends Controller
             'followed' => $followed
         ];
         //マイプロフィールかどうかでDBからのfetchを変える
-        // $myProfile = (bool)($request->input('myProfile'));
-        // dd($myProfile);
-        if ($request->input('myProfile') === 'false') {
+        // $isMyProfile = (bool)($request->input('isMyProfile'));
+        // dd($isMyProfile);
+        if ($request->input('isMyProfile') === 'false') {
             $fetchFollow = Follow::where('user_id', $request->input('accountName'))
                 ->where('follower', $myUser['account_name'])
                 ->first();
         }
         if (isset($fetchFollow)) {
-            $isfollow = true;
+            $isFollow = true;
         }
-        // dd($fetch[0]->videoLists);
         $result = true;
-        return response()->json(['result' => $result, 'user' => $user, 'videoLists' => $fetch[0]->videoLists, 'follows' => $follows, 'isFollow' => $isfollow]);
+        return response()->json(['result' => $result, 'user' => $user, 'videoLists' => $fetch[0]->videoLists, 'follows' => $follows, 'isFollow' => $isFollow]);
     }
 
     public function fetchUser(Request $request)

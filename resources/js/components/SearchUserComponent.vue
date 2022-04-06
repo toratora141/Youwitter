@@ -17,7 +17,7 @@
             <div class="card-content">
                 <div class="card-body">
                     <div v-for="user in users" :key="user.id">
-                        <router-link v-bind:to="{name:'user.profile', params:{account_name: user.account_name}}">
+                        <router-link v-bind:to="{name:'user.profile', params:{accountName: user.account_name}}">
                             <div><img :src="'/storage/' +user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:100px; height:100px; object-fit:cover;">
                                 <p>{{user.account_name}}</p>
                             </div>
