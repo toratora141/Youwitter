@@ -18,6 +18,7 @@ class UserController extends Controller
     {
         $param['account_name'] = $request['account_name'];
         $param['display_name'] = $request['display_name'];
+        $param['remember_token'] = true;
         $param['password'] = Hash::make($request['password']);
         return User::create($param);
     }
