@@ -11,19 +11,17 @@
             <button class="btn btn-secondary" href="#">アカウント作成</button>
         </router-link>
     </div>
+    <h4 class="m-auto pt-3 pb-1 text-center">タイムライン</h4>
     <div class="card" v-for="follow in follows" :key="follow.account_name">
         <div class="card-body d-flex flex-column">
-                <div class="text-start d-flex flex-row">
-                    <router-link style="text-decoration: none; color: #141619;" v-bind:to="{name:'user.profile', params:{accountName: follow.user.account_name}}">
-                    <img :src="'/storage/' + follow.user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:100px; height:100px; object-fit:cover;">
-                        <div class="m-3" >
-                            <p class="fs-4 m-0" v-if="follow.user.display_name" v-text="follow.user.display_name"></p>
-                            <p class="fs-6" v-if="follow.user.account_name" v-text="follow.user.account_name"></p>
-                        </div>
-                    </router-link>
-                </div>
-                    <movie-list-component ref="movieList"></movie-list-component>
-
+                <router-link class="text-start d-flex flex-row" style="text-decoration: none; color: #141619;" v-bind:to="{name:'user.profile', params:{accountName: follow.user.account_name}}">
+                <img :src="'/storage/' + follow.user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:60px; height:60px; object-fit:cover;">
+                    <div class="m-3" >
+                        <p class="fs-4 m-0" v-if="follow.user.display_name" v-text="follow.user.display_name"></p>
+                        <p class="fs-6 m-0" v-if="follow.user.account_name" v-text="follow.user.account_name"></p>
+                    </div>
+                </router-link>
+                <movie-list-component ref="movieList"></movie-list-component>
             <div class="card-text">
             </div>
         </div>
