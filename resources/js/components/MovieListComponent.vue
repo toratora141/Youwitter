@@ -19,8 +19,9 @@
         <div class="modal" tabindex="-1" ref="videoPlayerModal">
             <div class="modal-dialog h-75">
                 <div class="modal-content h-100 m-auto">
-                    <div class="modal-body p-0">
-                        <iframe class="w-100 h-100" :src="'https://www.youtube.com/embed/' + playVideo.url" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="modal-body p-0" v-html="iframe">
+                    <!-- <div class="modal-body p-0">
+                        <iframe class="w-100 h-100" :src="'https://www.youtube.com/embed/'+playVideo.url" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
                     </div>
                     <div class="modal-body p-0 overflow-auto d-flex flex-column">
                         <div class="video m-1 d-flex" v-for="video in videos" :key="video.code" v-on:click="changeVideo(video.code)">
@@ -49,7 +50,9 @@ import { Modal } from 'bootstrap';
                 havePlaylist: false,
                 message: null,
                 alert: false,
-                isMyProfile: this.$parent.isMyProfile
+                isMyProfile: this.$parent.isMyProfile,
+
+                iframe: null,
             }
         },
         mounted() {
@@ -73,12 +76,21 @@ import { Modal } from 'bootstrap';
                 this.videoLists = videoLists;
                 this.videos = videos;
                 this.playVideo.url = this.videoLists.first_video;
+                this.iframe = "<iframe class=\"w-100 h-100\" src=\"https://www.youtube.com/embed/" + this.videoLists.first_video + "\"title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";
             },
             showVideoPlayerModal() {
                 this.videoPlayerObj.show();
             },
             changeVideo(code){
-                this.playVideo.url = code + '?autoplay=1';
+                console.log('changevideo');
+                var self = this;
+                    self.playVideo.url = code + '?autoplay=1';
+                    console.log(this.playVideo.url);
+                this.$set(this.playVideo, 'url', code);
+                    console.log(this.playVideo.url);
+                this.$nextTick(() => {
+                    this.iframe = "<iframe class=\"w-100 h-100\" src=\"https://www.youtube.com/embed/" + this.playVideo.url + "\"title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";
+                });
             }
         }
     }
