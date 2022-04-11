@@ -46,6 +46,24 @@ class CallYoutubeApi
 
         return $playlist;
     }
+    public function fetchPlaylistItems(String $playlistId)
+    {
+        $playlist = $this->youtube->playlistItems->listPlaylistItems('snippet', array(
+            'playlistId' => $playlistId,
+            'maxResults' => 100,
+        ));
+
+        return $playlist;
+    }
+
+    public function playlistToVideosArray($newPlaylist)
+    {
+        $videos = [];
+        foreach ($newPlaylist->items as $video) {
+            $videos[] = $video->snippet->resourceId->videoId;
+        }
+        return $videos;
+    }
 
     public function fetchLastThumbnail(Object $data)
     {
@@ -55,21 +73,25 @@ class CallYoutubeApi
         return $thumbnail;
     }
 
-    public function fetchVideoIdInPlaylist(Object $data, String $userId, String $playlistId)
+    public function prepareVidoesParam(Object $data, String $userId, String $playlistId)
     {
         $videos = [];
         $thumbnails = [];
         foreach ($data->items as $video) {
-            $videoId = $video->snippet->resourceId->videoId;
-            $title = $video->snippet->title;
-            $getThumbnailUrl = $video->snippet->thumbnails->default->url;
-            $putThumbnailPath = $this->putPath($userId, $videoId);
-            array_push($videos, ['code' => $videoId, 'video_list_id' => $playlistId, 'thumbnail' => $putThumbnailPath, 'title' => $title]);
+            if (isset($video->snippet)) {
+                $videoId = $video->snippet->resourceId->videoId;
+                if (!isset($data['add']) || in_array($videoId, $data['add'])) {
+                    $title = $video->snippet->title;
+                    $getThumbnailUrl = $video->snippet->thumbnails->default->url;
+                    $putThumbnailPath = $this->putPath($userId, $videoId);
+                    array_push($videos, ['code' => $videoId, 'video_list_id' => $playlistId, 'thumbnail' => $putThumbnailPath, 'title' => $title]);
 
-            $thumbnailImg = file_get_contents($getThumbnailUrl);
-            Storage::disk('public')->put($putThumbnailPath, $thumbnailImg);
+                    $thumbnailImg = file_get_contents($getThumbnailUrl);
+                    Storage::disk('public')->put($putThumbnailPath, $thumbnailImg);
+                }
+            }
         }
-        return ['videosParam' => $videos, 'videosThumbnails' => $thumbnails];
+        return ['videosParam' => $videos];
     }
 
     public function putPath($userId, $fileName)

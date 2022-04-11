@@ -38,7 +38,7 @@ class VideoList extends Model
         $playlistId = $input->id;
         $data = $youtubeApi->fetchPlayList($playlistId);
         $getThumbnailPath = $youtubeApi->fetchLastThumbnail($data);
-        $videos = $youtubeApi->fetchVideoIdInPlaylist($data, $userId, $playlistId);
+        $videos = $youtubeApi->prepareVidoesParam($data, $userId, $playlistId);
         $videosParam = $videos['videosParam'];
         $videoListParam['id'] = $playlistId;
         $videoListParam['user_id'] = $userId;
@@ -51,8 +51,6 @@ class VideoList extends Model
             'thumbnailPath' => $getThumbnailPath,
             'saveThumbnailPath' => $saveThumbnailPath,
             'videosParam' => $videos['videosParam'],
-            'videosThumbnails' => $videos['videosThumbnails'],
-
         ];
     }
 
