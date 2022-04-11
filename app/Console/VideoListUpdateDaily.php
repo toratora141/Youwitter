@@ -43,6 +43,8 @@ class VideoListUpdateDaily
                 $newVideoList['add'] = array_diff($newVideos, $currentVideos);
                 $newVideoList['delete'] = array_diff($currentVideos, $newVideos);
 
+                var_dump($newVideoList['add']);
+
                 //更新用の動画パラメータを準備
                 $updateVideos = $youtube->prepareVidoesParam($newVideoList, $userId, $videoListId);
 
