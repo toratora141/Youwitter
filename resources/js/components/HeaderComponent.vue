@@ -4,28 +4,28 @@
       <router-link v-bind:to="{name:'home'}" >
                 <a class="navbar-brand .text-decoration-none">Youwitter</a>
     </router-link>
-      <button type="button" class="navbar-toggler" v-on:click="menuBtn" data-bs-toggle="collapse" data-bs-target="#Nav1" aria-controls="Nav1"
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#Nav" aria-controls="Nav"
         aria-expanded="false" aria-label="ナビゲーションの切替">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="Nav1" ref="nav">
+      <div class="collapse navbar-collapse" id="Nav" ref="nav">
         <ul class="navbar-nav mt-3" >
-            <li class="nav-item"  v-on:click="menuBtn" v-if="$store.state.isLoggedIn">
+            <li class="nav-item"  v-if="$store.state.isLoggedIn">
                 <router-link v-bind:to="{name:'user.profile', params:{accountName:$store.state.user.accountName}}">
                     <a class="nav-link" href="#">プロフィール</a>
                 </router-link>
             </li>
-            <li class="nav-item"  v-on:click="menuBtn">
+            <li class="nav-item" >
                 <router-link v-bind:to="{name:'movieList.create'}">
                     <a class="nav-link" href="#">マイリストの作成</a>
                 </router-link>
             </li>
-            <li class="nav-item"  v-on:click="menuBtn">
+            <li class="nav-item" >
                 <router-link v-bind:to="{name:'user.search'}">
                     <a a class="nav-link" href="#">検索</a>
                 </router-link>
             </li>
-            <li class="nav-item"  v-on:click="menuBtn">
+            <li class="nav-item" >
                 <router-link v-bind:to="{name:'user.setting'}">
                     <a class="nav-link" href="#">設定</a>
                 </router-link>
@@ -38,21 +38,17 @@
 
 <script>
     export default {
-        date() {
+        date: function() {
             return {
-                isOpen: false,
                 isLoggedIn: false,
             }
         },
         created(){
         },
         methods:{
-            menuBtn(){
-                this.$nextTick(function(){
-                    this.isOpen = !this.isOpen;
-                    console.log(this.isOpen);
-                });
-            }
         }
     }
+    $(document).on('click', '#Nav', function(){
+        $('.navbar-collapse').collapse('hide');
+    });
 </script>
