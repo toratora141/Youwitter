@@ -1,6 +1,6 @@
 <template>
     <!-- <div class="card" style="height:600px;"> -->
-    <div class="card">
+    <div class="card text-center p-3">
         <h6>再生リスト</h6>
         <div class="card-body" v-if="havePlaylist">
             <div class="video-list"
@@ -8,7 +8,7 @@
                 <img :src="'/storage/' + videoLists.thumbnail" class="img-fluid " style="width:260px; height:200px; object-fit:cover;" v-on:click="showVideoPlayerModal">
             </div>
         </div>
-        <div v-if="alert" class="alert alert-dark" role="alert" ref="alertCreatePlaylist">
+        <div v-if="alert" class="alert alert-dark w-75 m-auto" role="alert" ref="alertCreatePlaylist">
             {{message}}
             <div v-if="isMyProfile">
                 <router-link v-bind:to="{name:'movieList.create'}">
@@ -19,11 +19,11 @@
         <div class="modal" tabindex="-1" ref="videoPlayerModal">
             <div class="modal-dialog h-75">
                 <div class="modal-content h-100 m-auto">
-                    <div class="modal-body p-0" v-html="iframe">
+                    <div class="modal-body p-0 h-75" v-html="iframe">
                     <!-- <div class="modal-body p-0">
                         <iframe class="w-100 h-100" :src="'https://www.youtube.com/embed/'+playVideo.url" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
                     </div>
-                    <div class="modal-body p-0 overflow-auto d-flex flex-column">
+                    <div class="modal-body p-0 overflow-auto d-flex flex-column h-100">
                         <div class="video m-1 d-flex" v-for="video in videos" :key="video.code" v-on:click="changeVideo(video.code)">
                             <img :src="'/storage/' + video.thumbnail" >
                             <p v-text="video.title" class="fz-1 mt-1"></p>
