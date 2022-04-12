@@ -24,12 +24,12 @@
         "vue": "^2.6.12",
         "vue-loader": "^15.9.8",
         "vue-router": "^3.5.3",
-        "vue-template-compiler": "^2.6.12"
+        "vue-template-compiler": "^2.6.12",
+        "vuex": "^3.6.2"
     },
     "dependencies": {
         "cookie": "^0.4.2",
         "js-cookie": "^3.0.1",
-        "vuex": "^3.6.2",
         "vuex-persistedstate": "^4.1.0"
     }
 }
