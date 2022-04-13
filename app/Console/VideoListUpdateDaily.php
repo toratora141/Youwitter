@@ -66,17 +66,11 @@ class VideoListUpdateDaily
                 }
             }
         } catch (\Throwable $th) {
-<<<<<<< HEAD
             var_dump($th);
             DB::rollBack();
-        }
-=======
-		DB::rollBack();
-		var_dump('error');
+	
 	}
-	var_dump('success');
->>>>>>> 3e27951c9b043cb54aed31117102873088f5f8f9
-        DB::commit();
+	DB::commit();
         var_dump('success');
     }
 }
