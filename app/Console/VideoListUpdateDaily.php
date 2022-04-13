@@ -60,7 +60,8 @@ class VideoListUpdateDaily
                     foreach ($newVideoList['delete'] as $deleteVideo) {
                         VideoList::find($videoListId)
                             ->videos()
-                            ->where('code', $deleteVideo);
+                            ->where('code', $deleteVideo)
+                            ->delete();
                         Storage::disk('public')->delete($youtube->putPath($userId, $deleteVideo));
                     }
                 }
