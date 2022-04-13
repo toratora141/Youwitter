@@ -26,6 +26,8 @@
             </div>
         </div>
     </div>
+
+    <button v-on:click="debagCookie">debug</button>
 </div>
 </template>
 
@@ -76,5 +78,10 @@
         console.log(this.$store.state.videoLists);
         console.log(this.$store.state.videos);
     },
+    methods: {
+        debagCookie(){
+            alert(document.cookie);
+        }
+    }
   }
 </script>
