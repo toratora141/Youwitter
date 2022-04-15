@@ -12,12 +12,12 @@
                             v-if="message"></label>
                     </div>
                     <div class="form-group row" >
-                        <img :src="user.upload_icon" class="img-fluid img-thumdnail rounded-circle w-25 h-25 m-auto">
                         <div class="container py-3">
                             <div class="input-group custom-file-button">
                                 <label v-if="!user.upload_icon" for="account-icon" class="input-group-text w-100 justify-content-center p-0">
                                     <div class="d-flex h-50 align-content-center">
-                                        <p class="text-center">アイコン画像</p>
+                                        <p class="text-center">画像を選択
+                                        </p>
                                         <i class="bi bi-file-person-fill fs-5"></i>
                                     </div>
                                 </label>
@@ -27,6 +27,9 @@
                                     ref='file'
                                     @change="upload"
                                 >
+                            </div>
+                            <div class="text-center mt-3">
+                                <img :src="picture" class="img-fluid img-thumbnail rounded-circle text-center" style="width:100px; height:100px; object-fit:cover;">
                             </div>
                         </div>
                     </div>
@@ -68,6 +71,7 @@ export default ({
             message: null,
             error_message: null,
             updateParam: {},
+            picture: this.$parent.user.icon,
         }
     },
     mounted() {
@@ -113,6 +117,7 @@ export default ({
 
             if(this.checkFile(file)){
                 const picture = await this.getBase64(file);
+                this.picture = picture
                 self.updateParam['icon_base64'] = picture;
             }
         },

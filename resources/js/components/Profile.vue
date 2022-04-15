@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-title d-flex flex-column" style="height:250px">
-                    <div v-if="showBtn">
+                    <div class="h-100" v-if="showBtn">
                         <div class="text-end" v-if="!isMyProfile">
                             <div v-if="isFollow">
                                 <button class="btn btn-secondary" v-on:click="deleteFollowing" >フォローを外す</button>
@@ -28,10 +28,14 @@
                     </div>
                     <div class="d-flex flex-row">
                         <router-link v-bind:to="{name:'user.followed', params:{accountName:$route.params.accountName}}" style="text-decoration: none; color: #141619;">
-                            フォロー
+                            <p class="mr-2">
+                                フォロー
+                            </p>
                         </router-link>
                         <router-link v-bind:to="{name:'user.follower', params:{accountName:$route.params.accountName}}" style="text-decoration: none; color: #141619;">
-                            フォロワー
+                            <p>
+                                フォロワー
+                            </p>
                         </router-link>
                     </div>
                 </div>
