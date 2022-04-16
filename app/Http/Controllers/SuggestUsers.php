@@ -18,6 +18,7 @@ class SuggestUsers extends Controller
     {
         $users = User::limit(5)
             ->with('videoLists.videos')
+            ->has('videoLists')
             ->get();
 
         return response()->json(['suggestUsers' => $users]);

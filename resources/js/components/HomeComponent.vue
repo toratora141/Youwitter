@@ -33,6 +33,9 @@
                 <button class="btn btn-secondary">検索</button>
             </router-link>
         </div>
+        <div class="mt-4">
+            <h3>おすすめのユーザー</h3>
+        </div>
          <div class="card" v-for="suggestUser in suggestUsers" :key="suggestUser.account_name">
                 <div class="card-body d-flex flex-column">
                     <router-link class="text-start d-flex flex-row" style="text-decoration: none; color: #141619;" v-bind:to="{name:'user.profile', params:{accountName: suggestUser.account_name}}">
