@@ -55,12 +55,17 @@ class VideoListController extends Controller
     {
         DB::beginTransaction();
         try {
-            $fetchVideoLists = VideoList::with('videos')->get();
+            $fetchVideoLists = VideoList::where('user_id', Auth::user()->account_name)
+                ->with('videos')
+                ->first();
             VideoList::updateVideoList($fetchVideoLists);
         } catch (\Throwable $th) {
-            //throw $th;
+            dd($th);
+            DB::rollBack();
+            return response()->json(['result' => false]);
         }
 
+        DB::commit();
         return response()->json(['result' => true]);
     }
 }

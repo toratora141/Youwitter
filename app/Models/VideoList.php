@@ -70,6 +70,7 @@ class VideoList extends Model
         $newVideoList = $youtube->fetchPlaylistItems($videoListId);
         $newVideos = $youtube->playlistToVideosArray($newVideoList);
 
+
         //新しい再生リストと比べるために今の再生リストを配列で定義
         $currentVideos = [];
         foreach ($currentVideoList->videos as $video) {
@@ -79,8 +80,6 @@ class VideoList extends Model
         //追加、削除された動画
         $newVideoList['add'] = array_diff($newVideos, $currentVideos);
         $newVideoList['delete'] = array_diff($currentVideos, $newVideos);
-
-        var_dump($newVideoList['add']);
 
         //更新用の動画パラメータを準備
         $updateVideos = $youtube->prepareVidoesParam($newVideoList, $userId, $videoListId);
