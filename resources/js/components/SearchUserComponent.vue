@@ -17,9 +17,13 @@
             <div class="card-content">
                 <div class="card-body">
                     <div v-for="user in users" :key="user.id">
-                        <router-link v-bind:to="{name:'user.profile', params:{accountName: user.account_name}}">
-                            <div><img :src="'/storage/' +user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:100px; height:100px; object-fit:cover;">
-                                <p>{{user.account_name}}</p>
+                        <router-link style="text-decoration: none; color: rgb(20, 22, 25);" v-bind:to="{name:'user.profile', params:{accountName: user.account_name}}">
+                            <div class="d-flex flex-row align-items-center">
+                                <img :src="'/storage/' +user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:100px; height:100px; object-fit:cover;">
+                                <div class="d-flex flex-column">
+                                    <h5>{{user.account_name}}</h5>
+                                    <p>{{user.account_name}}</p>
+                                </div>
                             </div>
                         </router-link>
                     </div>

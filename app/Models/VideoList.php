@@ -60,6 +60,8 @@ class VideoList extends Model
         return $userId . '/' . $movieId . '.jpg';
     }
 
+    //再生リストを更新する
+    //@return $newVideoList 最新の再生リスト
     public function updateVideoList($currentVideoList)
     {
         $youtube = new CallYoutubeApi();
@@ -100,6 +102,8 @@ class VideoList extends Model
                     ->delete();
                 Storage::disk('public')->delete($youtube->putPath($userId, $deleteVideo));
             }
+            // VideoList::find($videoListId)
+            //     ->update(['thumbnail' => $updateVideos['videosParam']])
         }
     }
 }

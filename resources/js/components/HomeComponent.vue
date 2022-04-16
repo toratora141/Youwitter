@@ -115,7 +115,7 @@
                             if(follow.video_lists === null || follow.video_lists === undefined){
                                 this.$refs.movieList[count].fetch(null, null);
                             }else{
-                                this.$refs.movieList[count].fetch(follow.video_lists[0], follow.video_lists.videos);
+                                this.$refs.movieList[count].fetch(follow.video_lists[0], follow.video_lists[0].videos);
                             }
                             count++;
                         });

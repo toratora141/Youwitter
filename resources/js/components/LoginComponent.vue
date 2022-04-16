@@ -10,7 +10,7 @@
             <div class="col-sm-6">
                 <form v-on:submit.prevent="login">
                     <div class="form-group row" >
-                        <label for="account-name" class="col-sm-3 col-form-label w-100">アカウントID</label>
+                        <label for="account-name" class="col-sm-3 col-form-label w-100">ID</label>
                         <input type="text"
                             class="col-sm-9 form-control"
                             id="account-name"

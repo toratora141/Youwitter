@@ -45,10 +45,11 @@ class VideoListController extends Controller
     public function fetch(Request $request)
     {
         $user = Auth::user();
-        $videos = VideoList::find($request->input('id'))
-            ->videos()
-            ->get();
-        return response()->json(['videos' => $videos, 'result' => true]);
+        $videoLists = VideoList::find($request->input('id'))
+            ->where('id', $request->input('id'))
+            ->with('videos')
+            ->first();
+        return response()->json(['videoLists' => $videoLists, 'result' => true]);
     }
 
     public function update(Request $requst)

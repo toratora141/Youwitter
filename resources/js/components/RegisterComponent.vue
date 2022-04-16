@@ -4,10 +4,11 @@
             <div class="col-sm-6">
                 <form v-on:submit.prevent="submit">
                     <div class="form-group row" >
-                        <label for="account-name" class="col-sm-3 col-form-label w-100">アカウントID</label>
+                        <label for="account-name" class="col-sm-3 col-form-label w-100">ID</label>
                         <input type="text"
                             class="col-sm-9 form-control"
                             id="account-name"
+                            placeholder="例：taro"
                             v-model="user.account_name"
                         >
                         <label for="account-name"
@@ -17,10 +18,11 @@
                         </label>
                     </div>
                     <div class="form-group row" >
-                        <label for="display-name" class="col-sm-3 col-form-label w-100">アカウント名</label>
+                        <label for="display-name" class="col-sm-3 col-form-label w-100">名前</label>
                         <input type="text"
                             class="col-sm-9 form-control"
                             id="display-name"
+                            placeholder="例：太郎"
                             v-model="user.display_name"
                         >
                         <label for="display-name"

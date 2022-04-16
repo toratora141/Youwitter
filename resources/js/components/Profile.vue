@@ -47,6 +47,18 @@
         <div>
             <movie-list-component ref="movieList"></movie-list-component>
         </div>
+        <div>
+            <p class="text-secondary mt-1">※最新の再生リストのデータ反映までに5分ほどかかります。更新されない場合は5分後に再度お願いします。</p>
+        </div>
+        <div class="modal" tabindex="-10" ref="waitModal" data-bs-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>更新中です</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -71,18 +83,13 @@ import UpdateProfile from './UpdateProfile.vue';
             message: null,
             videoLists: null,
             videos: null,
+            waitModalObj: null,
         }
     },
     created() {
         if(this.$route.params.accountName === this.$store.state.user.accountName){
             this.user = this.$store.state.user;
             this.isMyProfile = true;
-            console.log('mypage');
-            // this.videoLists = this.$store.state.videoLists;
-            // this.videos = this.$store.state.videos;
-            // console.log(videos);
-            // console.log(videoLists);
-            // return;
         }
         axios.get('/api/user/fetchProf', {params:{
             accountName: this.$route.params.accountName,
@@ -101,7 +108,6 @@ import UpdateProfile from './UpdateProfile.vue';
                         this.videos = res.data.videoLists[0].videos;
 
                     }
-                    console.log(this.$refs);
                     this.isFollow = res.data.isFollow;
                     this.showBtn = true;
                     this.user = user;
@@ -111,6 +117,9 @@ import UpdateProfile from './UpdateProfile.vue';
             .catch((error) => {
                 this.errors = error.response;
             })
+    },
+    mounted(){
+        this.waitModalObj = new Modal(this.$refs.waitModal,{keyboard: true})
     },
     methods: {
         showUpdateModal(){
@@ -139,13 +148,27 @@ import UpdateProfile from './UpdateProfile.vue';
                 })
         },
         updateVideoList(){
+            this.waitModalObj.show();
             axios.post('/api/videoList/update')
                 .then((res) => {
-                    console.log('update');
+                    this.waitModalObj.hide();
                 })
                 .catch((error) => {
-                    console.log('update error');
+                    this.waitModalObj.hide();
                 });
+            axios.get('/api/videoList/fetch', {
+                params: {
+                    id: this.videoLists.id
+                }
+            })
+                .then((res) => {
+                    this.videoLists = res.data.videoLists;
+                    console.log(res.data.videoLists);
+                    this.videos = res.data.videoLists[0].videos;
+                    console.log(res.data.videoLists[0].videos);
+                    this.$refs.movieList.fetch(this.videoLists, this.videos);
+                    this.$forceUpdate()
+                })
         }
     }
   }
