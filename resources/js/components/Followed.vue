@@ -3,11 +3,11 @@
         <div class="navbar navbar-expand-lg pb-0">
             <ul class="navbar-nav d-flex flex-row justify-content-center align-content-center w-100">
                 <li class="nav-item border w-25">
-                    <router-link v-bind:to="{name:'user.followed'}" style="text-decoration: none; color: #141619;">
+                    <router-link v-bind:to="{name:'user.profile', params:{'accountName':$route.params.accountName}}" style="text-decoration: none; color: #141619;">
                         戻る
                     </router-link>
-                <li class="nav-item border text-center w-50">
-                    <router-link v-bind:to="{name:'user.followed', params:{accountName:$route.params.accountName}}" style="text-decoration: none; color: #141619;">
+                <li class="nav-item border text-center w-50 bg-secondary">
+                    <router-link class="text-white" v-bind:to="{name:'user.followed', params:{accountName:$route.params.accountName}}" style="text-decoration: none; color: #141619;">
                         フォロー
                     </router-link>
                 <li class="nav-item border text-center w-50">
@@ -29,6 +29,14 @@
                 </router-link>
             </div>
         </div>
+        <div v-if="!hasFollowed">
+            <div class="alert alert-secondary text-center w-75 m-auto mt-3">
+                ユーザーをフォローしましょう！
+                <router-link v-bind:to="{name:'user.search'}">
+                    <button class="btn btn-secondary">検索</button>
+                </router-link>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -39,6 +47,7 @@ export default {
     data:function() {
         return {
             followedArray: null,
+            hasFollowed: true,
         }
     },
     created() {
@@ -54,6 +63,9 @@ export default {
             .then((res)=>{
                 this.followedArray = res.data.followed;
                 console.log(this.followerArray);
+                if(this.followerArray === undefined){
+                    this.hasFollowed = false;
+                }
             });
         }
     }
