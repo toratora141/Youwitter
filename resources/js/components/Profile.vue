@@ -39,9 +39,10 @@
                         </router-link>
                     </div>
                 </div>
-                <div class="card-text">
-                </div>
             </div>
+        </div>
+        <div class="text-center mt-3 mb-2" v-if="isMyProfile">
+            <button class="btn btn-secondary" v-on:click="updateVideoList">再生リスト更新</button>
         </div>
         <div>
             <movie-list-component ref="movieList"></movie-list-component>
@@ -136,6 +137,15 @@ import UpdateProfile from './UpdateProfile.vue';
                     console.log('following destroy');
                     this.isFollow = false;
                 })
+        },
+        updateVideoList(){
+            axios.post('/api/videoList/update')
+                .then((res) => {
+                    console.log('update');
+                })
+                .catch((error) => {
+                    console.log('update error');
+                });
         }
     }
   }

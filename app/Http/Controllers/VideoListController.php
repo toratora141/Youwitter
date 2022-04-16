@@ -50,4 +50,17 @@ class VideoListController extends Controller
             ->get();
         return response()->json(['videos' => $videos, 'result' => true]);
     }
+
+    public function update(Request $requst)
+    {
+        DB::beginTransaction();
+        try {
+            $fetchVideoLists = VideoList::with('videos')->get();
+            VideoList::updateVideoList($fetchVideoLists);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        return response()->json(['result' => true]);
+    }
 }

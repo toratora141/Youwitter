@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 //youtubeAPI用のクラス
 use App\Http\Vender\CallYoutubeApi;
+use Illuminate\Support\Facades\Storage;
 
 
 class VideoList extends Model
@@ -57,5 +58,49 @@ class VideoList extends Model
     public function createPath($userId, $movieId)
     {
         return $userId . '/' . $movieId . '.jpg';
+    }
+
+    public function updateVideoList($currentVideoList)
+    {
+        $youtube = new CallYoutubeApi();
+        $userId = $currentVideoList->user_id;
+        $videoListId = $currentVideoList->id;
+
+        //新しい再生リストをfetch
+        $newVideoList = $youtube->fetchPlaylistItems($videoListId);
+        $newVideos = $youtube->playlistToVideosArray($newVideoList);
+
+        //新しい再生リストと比べるために今の再生リストを配列で定義
+        $currentVideos = [];
+        foreach ($currentVideoList->videos as $video) {
+            $currentVideos[] = $video->code;
+        }
+
+        //追加、削除された動画
+        $newVideoList['add'] = array_diff($newVideos, $currentVideos);
+        $newVideoList['delete'] = array_diff($currentVideos, $newVideos);
+
+        var_dump($newVideoList['add']);
+
+        //更新用の動画パラメータを準備
+        $updateVideos = $youtube->prepareVidoesParam($newVideoList, $userId, $videoListId);
+
+        if (!empty($updateVideos['videosParam'])) {
+            VideoList::find($videoListId)
+                ->videos()
+                ->createMany($updateVideos['videosParam']);
+            VideoList::find($videoListId)
+                ->update(['thumbnail' => $updateVideos['videosParam'][0]['thumbnail']]);
+        }
+
+        if (!empty($newVideoList['delete'])) {
+            foreach ($newVideoList['delete'] as $deleteVideo) {
+                VideoList::find($videoListId)
+                    ->videos()
+                    ->where('code', $deleteVideo)
+                    ->delete();
+                Storage::disk('public')->delete($youtube->putPath($userId, $deleteVideo));
+            }
+        }
     }
 }

@@ -36,7 +36,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/follow/delete', 'App\Http\Controllers\FollowController@delete');
 
     Route::get('/videoList/fetch', 'App\Http\Controllers\VideoListController@fetch');
+    Route::post('/videoList/update', 'App\Http\Controllers\VideoListController@update');
 });
 Route::get('/searchUser', 'App\Http\Controllers\UserController@searchUser');
+Route::get('/suggestUsers', 'App\Http\Controllers\SuggestUsers');
 Route::post('/users/register', 'App\Http\Controllers\UserController@register');
 Route::post('/user/login', 'App\Http\Controllers\Auth\LoginController@originalLogin');

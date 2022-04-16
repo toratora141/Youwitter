@@ -61,7 +61,8 @@ import { Modal } from 'bootstrap';
         methods:{
             fetch(videoLists, videos) {
                 console.log(videoLists);
-                if(videoLists === null || videoLists === undefined && !this.$parent.isMyProfile){
+                if(videoLists === null || videoLists === undefined || videoLists.length && !this.$parent.isMyProfile){
+                // if(!videoLists.length && !this.$parent.isMyProfile){
                     this.havePlaylist = false;
                     this.alert = true;
                     this.message = 'プレイリストを準備中のようです...';
