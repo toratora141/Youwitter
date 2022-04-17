@@ -18,8 +18,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        //  $schedule->call(new VideoListUpdateDaily)->daily();
-        $schedule->call(new VideoListUpdateDaily)->everyMinute();
+        $schedule->call(new VideoListUpdateDaily)->daily();
+        // $schedule->call(new VideoListUpdateDaily)->everyMinute();
     }
 
     /**

@@ -106,7 +106,6 @@
             axios.get('/api/suggestUsers')
                 .then((res) => {
                     this.suggestUsers = res.data.suggestUsers;
-                    // console.log(this.suggestUsers);
                     var count = 0;
                     this.hasFollowed = false;
                      this.suggestUsers.forEach(follow => {
