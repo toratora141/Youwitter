@@ -53,15 +53,16 @@ class UserController extends Controller
             'display_name' => $fetch[0]->display_name,
             'icon' => $fetch[0]->icon,
         ];
-        $followed = User::where('account_name', $request->input('accountName'))
-            ->with('follows')
-            ->get();
-        $follower = Follow::where('follower', $request->input('accountName'))
-            ->get();
-        $follows = [
-            'follower' => $follower,
-            'followed' => $followed
-        ];
+        // $followed = User::where('account_name', $request->input('accountName'))
+        //     ->with('follows')
+        //     ->get();
+        // $follower = Follow::where('follower', $request->input('accountName'))
+        // //     ->get();
+        // $follows = [
+        //     'follower' => $follower,
+        //     'followed' => $followed
+        // ];
+        $follows = null;
         //マイプロフィールかどうかでDBからのfetchを変える
         // $isMyProfile = (bool)($request->input('isMyProfile'));
         // dd($isMyProfile);
