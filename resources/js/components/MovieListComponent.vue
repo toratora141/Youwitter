@@ -20,8 +20,12 @@
             <div class="modal-dialog h-75">
                 <div class="modal-content h-100 m-auto">
                     <div class="modal-body p-0 h-75" v-html="iframe">
-                    <!-- <div class="modal-body p-0">
-                        <iframe class="w-100 h-100" :src="'https://www.youtube.com/embed/'+playVideo.url" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+                    </div>
+                    <div class="card">
+                        {{playVideo.title}}
+                        <div v-if="fav">
+                            <i class="bi bi-heart fs-5" v-on:click="favBtn"></i>
+                        </div>
                     </div>
                     <div class="modal-body p-0 overflow-auto d-flex flex-column h-100">
                         <div class="video m-1 d-flex" v-for="video in videos" :key="video.code" v-on:click="changeVideo(video.code)">

@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notice extends Model
+class Action extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'notice_id';
+    protected $primaryKey = 'action_id';
     protected $fillable = [
-        'user_id',
-        'action_id',
+        'type',
+        'foreigne_id'
     ];
 }
