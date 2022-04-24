@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Follow extends Model
 {
@@ -13,6 +14,21 @@ class Follow extends Model
         'user_id',
         'follower'
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($follow) {
+            $follow->action()->create([
+                'user_id' => Auth::user()->account_name,
+                'type' => 'follow'
+            ]);
+        });
+        static::deleted(function ($follow) {
+            $follow->action()->delete();
+        });
+    }
 
     //連続フォロー回避のため、既に同じfollowが存在しているかチェック
     /*
@@ -42,5 +58,9 @@ class Follow extends Model
     public function videoLists()
     {
         return $this->belongsTo(VideoList::class, 'user_id', 'user_id');
+    }
+    public function action()
+    {
+        return $this->hasOne(Action::class, 'foreign_id');
     }
 }

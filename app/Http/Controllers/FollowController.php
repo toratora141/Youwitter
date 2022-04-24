@@ -40,8 +40,10 @@ class FollowController extends Controller
     public function delete(Request $request)
     {
         $param['user_id'] = $request->followAccountName;
-        Follow::where('user_id', $request->followAccountName)
+        $temp = Follow::where('user_id', $request->followAccountName)
             ->where('follower', Auth::user()->account_name)
+            ->first();
+        Follow::find($temp->id)
             ->delete();
         return response()->json(['result' => true]);
     }
