@@ -9,6 +9,20 @@
                             <h5>{{notice.user.account_name}}</h5>
                             <p>{{notice.user.account_name}}</p>
                         </div>
+                        <div v-if="notice.action.type == 'follow'">
+                            さんがフォローしました
+                        </div>
+                        <div v-if="notice.action.type == 'good'">
+                            さんがいいねしました
+                            <div>
+                                <img :src="'/storage/' + notice.action.good.video.thumbnail"
+                                    class="img-fluid"
+                                    style="width: 260px; height: 200px; object-fit: cover"
+                                    v-on:click="showVideoPlayerModal"
+                                />
+                                {{notice.action.good.video.title}}
+                            </div>
+                        </div>
                     </div>
                 </router-link>
             </div>
@@ -33,6 +47,7 @@ export default {
         axios.get('/api/notice/fetch')
             .then((res) => {
                 this.notices = res.data.notices;
+                this.hasNotice = true;
             })
     }
 }

@@ -111,7 +111,7 @@ import UpdateProfile from './UpdateProfile.vue';
                     this.isFollow = res.data.isFollow;
                     this.showBtn = true;
                     this.user = user;
-                    this.$refs.movieList.fetch(this.videoLists, this.videos);
+                    this.$refs.movieList.fetch(this.videoLists, this.videos, user['account_name']);
                 }
             })
             .catch((error) => {

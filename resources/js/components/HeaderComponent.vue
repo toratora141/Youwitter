@@ -26,6 +26,11 @@
                 </router-link>
             </li>
             <li class="nav-item" >
+                <router-link v-bind:to="{name:'user.notice'}">
+                    <a a class="nav-link" href="#">通知</a>
+                </router-link>
+            </li>
+            <li class="nav-item" >
                 <router-link v-bind:to="{name:'user.setting'}">
                     <a class="nav-link" href="#">設定</a>
                 </router-link>

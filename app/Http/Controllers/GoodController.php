@@ -20,7 +20,10 @@ class GoodController extends Controller
             $good->action()->create([
                 'type' => 'good',
                 'foreign_id' => $good->id
-            ]);
+            ])
+                ->notice()->create([
+                    'user_id' => $request->userId
+                ]);
         } catch (\Throwable $th) {
             dd($th);
             DB::rollback();

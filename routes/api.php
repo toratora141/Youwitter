@@ -40,6 +40,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/good/create', 'App\Http\Controllers\GoodController@create');
     Route::post('/good/destroy', 'App\Http\Controllers\GoodController@destroy');
+
+    Route::get('/notice/fetch', 'App\Http\Controllers\NoticeController@fetch');
 });
 Route::get('/searchUser', 'App\Http\Controllers\UserController@searchUser');
 Route::get('/suggestUsers', 'App\Http\Controllers\SuggestUsers');

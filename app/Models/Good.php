@@ -39,4 +39,9 @@ class Good extends Model
     {
         return $this->hasOne(Action::class, 'foreign_id');
     }
+
+    public function video()
+    {
+        return $this->hasOne(Video::class, 'code', 'video_id');
+    }
 }

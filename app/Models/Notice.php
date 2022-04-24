@@ -12,6 +12,15 @@ class Notice extends Model
     protected $primaryKey = 'notice_id';
     protected $fillable = [
         'user_id',
-        'action_id',
     ];
+
+    public function action()
+    {
+        return $this->hasOne(Action::class, 'action_id', 'action_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'account_name', 'user_id');
+    }
 }

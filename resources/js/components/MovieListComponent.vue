@@ -84,6 +84,7 @@ export default {
             fav: false,
             goodList: [],
             deleteGoodList: [],
+            userId: null,
         };
     },
     mounted() {
@@ -92,7 +93,7 @@ export default {
         });
     },
     methods: {
-        fetch(videoLists, videos) {
+        fetch(videoLists, videos, user) {
             if (
                 videoLists === null ||
                 videoLists === undefined ||
@@ -113,6 +114,7 @@ export default {
             this.videos = videos;
             this.playVideo = videos[0];
             this.playVideo.url = this.videoLists.first_video;
+            this.userId = user;
             this.iframe =
                 '<iframe class="w-100 h-100" src="https://www.youtube.com/embed/' +
                 this.videoLists.first_video +
@@ -142,7 +144,8 @@ export default {
         },
         goodedVideo(videoId) {
             axios.post("/api/good/create", {
-                    videoId: videoId,
+                videoId: videoId,
+                userId: this.userId
                 })
                 .then((res) => {
                     this.fav = !this.fav;
@@ -152,6 +155,7 @@ export default {
         deleteGoodedVideo(videoId) {
             axios.post("/api/good/destroy", {
                     videoId: videoId,
+                    userId: this.userId
                 })
                 .then((res) => {
                     this.fav = !this.fav;
