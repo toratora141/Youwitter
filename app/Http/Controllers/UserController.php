@@ -46,26 +46,15 @@ class UserController extends Controller
         // 変数名
         // followモデルにメソッドを作って、userモデルから呼び出し。全部移動
         $fetch = User::where('account_name', $request->input('accountName'))
-            ->with('videoLists.videos')
+            ->with('videoLists.videos.good')
             ->get();
         $user = [
             'account_name' => $fetch[0]->account_name,
             'display_name' => $fetch[0]->display_name,
             'icon' => $fetch[0]->icon,
         ];
-        // $followed = User::where('account_name', $request->input('accountName'))
-        //     ->with('follows')
-        //     ->get();
-        // $follower = Follow::where('follower', $request->input('accountName'))
-        // //     ->get();
-        // $follows = [
-        //     'follower' => $follower,
-        //     'followed' => $followed
-        // ];
         $follows = null;
         //マイプロフィールかどうかでDBからのfetchを変える
-        // $isMyProfile = (bool)($request->input('isMyProfile'));
-        // dd($isMyProfile);
         if ($request->input('isMyProfile') === 'false') {
             $fetchFollow = Follow::where('user_id', $request->input('accountName'))
                 ->where('follower', $myUser['account_name'])

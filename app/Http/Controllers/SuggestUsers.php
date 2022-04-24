@@ -17,10 +17,9 @@ class SuggestUsers extends Controller
     public function __invoke(Request $request)
     {
         $users = User::limit(5)
-            ->with('videoLists.videos')
+            ->with('videoLists.videos.good')
             ->has('videoLists')
             ->get();
-
         return response()->json(['suggestUsers' => $users]);
     }
 }

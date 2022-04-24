@@ -23,6 +23,11 @@ class Video extends Model
         return $this->belongsTo(VideoList::class);
     }
 
+    public function Good()
+    {
+        return $this->hasOne(Good::class, 'video_id', 'code');
+    }
+
     public function prepareVideoParams($videoList, $userId)
     {
         $videos = [];

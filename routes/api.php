@@ -37,6 +37,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/videoList/fetch', 'App\Http\Controllers\VideoListController@fetch');
     Route::post('/videoList/update', 'App\Http\Controllers\VideoListController@update');
+
+    Route::post('/good/create', 'App\Http\Controllers\GoodController@create');
+    Route::post('/good/destroy', 'App\Http\Controllers\GoodController@destroy');
 });
 Route::get('/searchUser', 'App\Http\Controllers\UserController@searchUser');
 Route::get('/suggestUsers', 'App\Http\Controllers\SuggestUsers');

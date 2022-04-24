@@ -17,7 +17,7 @@ class CreateGoodsTable extends Migration
             $table->id('good_id');
             $table->string('user_id');
             $table->string('video_id');
-            $table->$table->timestamps();
+            $table->timestamps();
         });
     }
 

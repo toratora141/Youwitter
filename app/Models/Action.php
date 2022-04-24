@@ -10,8 +10,9 @@ class Action extends Model
     use HasFactory;
 
     protected $primaryKey = 'action_id';
+    protected $table = 'actions';
     protected $fillable = [
         'type',
-        'foreigne_id'
+        'foreign_id'
     ];
 }
