@@ -7,14 +7,14 @@
             <div class="card-content">
                 <div class="card-body">
                     <label for="search"></label>
-                    <input type="text" id="search" v-on:input="setKeyword">
+                    <input type="text" id="search" v-model="searchKeyword">
                     <label for="search" v-if="errors.search" v-text="errors.search"></label>
                     <button v-on:click="search" class="btn btn-secondary">検索</button>
                 </div>
             </div>
         </div>
         <div class="search-list card">
-            <div class="card-content">
+            <div class="card-content" v-if="endSearch">
                 <div class="card-body">
                     <div v-for="user in users" :key="user.id">
                         <router-link style="text-decoration: none; color: rgb(20, 22, 25);" v-bind:to="{name:'user.profile', params:{accountName: user.account_name}}">
@@ -41,6 +41,16 @@ export default {
             searchKeyword: null,
             users: {},
             errors: {},
+            endSearch: false,
+        }
+    },
+    mounted(){
+        },
+    created(){
+        this.searchKeyword = this.$store.state.searchKeyword;
+        if(!(this.$store.state.searchKeyword == null)){
+            this.endSearch = true;
+            this.users = this.$store.state.searchReuslt;
         }
     },
     methods:{
@@ -49,13 +59,15 @@ export default {
                 searchKeyword: this.searchKeyword
             }})
                 .then((res) => {
+                    this.endSearch = true;
+                    var commitParam = {
+                        result: res.data.users,
+                        keyword:this.searchKeyword
+                    };
+                    this.$store.commit('search',commitParam);
                     this.users = res.data.users;
                 });
         },
-        setKeyword(event){
-            this.searchKeyword = event.target.value;
-            console.log(this.searchKeyword);
-        }
     }
 };
 </script>

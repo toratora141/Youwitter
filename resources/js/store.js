@@ -15,6 +15,8 @@ export default new Vuex.Store({
         videoLists: null,
         videos: null,
         noLoggedInAlert: null,
+        searchKeyword: null,
+        searchResult: null,
     },
     mutations: {
         login(state, data) {
@@ -30,6 +32,10 @@ export default new Vuex.Store({
         updateUser(state, user) {
             state.user = user;
             state.user.accountName = user.account_name;
+        },
+        search(state, search,) {
+            state.searchResult = search.result;
+            state.searchKeyword = search.keyword;
         }
     },
     actions: {
