@@ -8,7 +8,6 @@ use App\Http\Requests\UserInputPost;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Mockery\Undefined;
 
@@ -16,11 +15,11 @@ class UserController extends Controller
 {
     public function register(UserInputPost $request)
     {
-        $param['account_name'] = $request['account_name'];
-        $param['display_name'] = $request['display_name'];
-        $param['remember_token'] = true;
-        $param['password'] = Hash::make($request['password']);
-        return User::create($param);
+        $param = User::prepareParam($request);
+
+        Auth::attempt($param, true);
+        $user = User::create($param);
+        return response()->json(['user' => $user]);
     }
 
     public function fetch(Request $request)

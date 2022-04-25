@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\VideoList;
 use App\Models\Video;
 use Mockery\Undefined;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -56,6 +57,18 @@ class User extends Authenticatable
     public function follows()
     {
         return $this->hasMany(VideoList::class, 'user_id', 'account_name');
+    }
+
+    public function prepareParam($request)
+    {
+        $param = [
+            'account_name' => $request->account_name,
+            'display_name' => $request->display_name,
+            'remember_token' => true,
+            'password' => Hash::make($request->password)
+        ];
+
+        return $param;
     }
 
     /*

@@ -97,6 +97,7 @@ import { Modal } from 'bootstrap';
                 axios.post('/api/users/register', this.user)
                     .then((res) => {
                         self.showModalObj.hide();
+                        this.$store.commit('login',res.data);
                         this.$router.push({name: 'home'});
                     })
                     .catch(function(error) {

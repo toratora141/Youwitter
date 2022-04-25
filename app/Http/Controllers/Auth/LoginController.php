@@ -61,10 +61,9 @@ class LoginController extends Controller
         if (Auth::attempt($param, true)) {
             $request->session()->regenerate();
             $result = true;
-            $param = User::find(1)->prepareUserCookie($param['account_name']);
+            // $param = User::find(1)->prepareUserCookie($param['account_name']);
             $param['result'] = true;
             $param['login_message'] = 'ログインしました！';
-            $remember_cookie_name = Auth::getRecallerName();
             // Cookie::queue(
             //     $name = $remember_cookie_name,
             //     $value = Cookie::queued($remember_cookie_name)->getValue(),
