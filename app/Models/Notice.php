@@ -24,4 +24,19 @@ class Notice extends Model
 
         return $param;
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'account_name');
+    }
+
+    public function good()
+    {
+        return $this->hasOne(Good::class, 'notice_id');
+    }
+
+    public function follow()
+    {
+        return $this->belongsTo(Follow::class, 'notice_id');
+    }
 }
