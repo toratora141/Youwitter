@@ -2,12 +2,12 @@
     <div>
         <div v-if="hasNotice">
             <div v-for="notice in notices" :key="notice.key">
-                <router-link style="text-decoration: none; color: rgb(20, 22, 25);" v-bind:to="{name:'user.profile', params:{accountName: notice.user.account_name}}">
+                <router-link style="text-decoration: none; color: rgb(20, 22, 25);" v-bind:to="{name:'user.profile', params:{accountName: notice.action.user.account_name}}">
                     <div class="d-flex flex-row align-items-center">
-                        <img :src="'/storage/'+notice.user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:100px; height:100px; object-fit:cover;">
+                        <img :src="'/storage/'+notice.action.user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:100px; height:100px; object-fit:cover;">
                         <div class="d-flex flex-column">
-                            <h5>{{notice.user.account_name}}</h5>
-                            <p>{{notice.user.account_name}}</p>
+                            <h5>{{notice.action.user.account_name}}</h5>
+                            <p>{{notice.action.user.account_name}}</p>
                         </div>
                         <div v-if="notice.action.type == 'follow'">
                             さんがフォローしました
@@ -48,6 +48,8 @@ export default {
             .then((res) => {
                 this.notices = res.data.notices;
                 this.hasNotice = true;
+                console.log(this.notices[0].action.type);
+                console.log(this.notices[0].action.good);
             })
     }
 }

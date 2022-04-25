@@ -15,18 +15,13 @@ class Action extends Model
     protected $table = 'actions';
     protected $fillable = [
         'type',
+        'user_id',
         'foreign_id'
     ];
 
     public static function boot()
     {
         parent::boot();
-
-        // static::created(function ($notice) {
-        //     $notice->notice()->create([
-        //         'user_id' => Auth::user()->account_name
-        //     ]);
-        // });
 
         static::deleted(function ($action) {
             $action->notice()->delete();
@@ -35,7 +30,7 @@ class Action extends Model
 
     public function notice()
     {
-        return $this->hasOne(Notice::class, 'action_id', 'foreign_id');
+        return $this->hasOne(Notice::class, 'action_id');
     }
     public function good()
     {

@@ -29,7 +29,9 @@ class FollowController extends Controller
         $param['user_id'] = $request->followAccountName;
         $param['follower'] = Auth::user()->account_name;
 
-        Follow::create($param);
+        $follow = Follow::create($param);
+        $follow->createRelationRecord($follow, $request->followAccountName);
+
 
         return response()->json(['result' => true]);
     }

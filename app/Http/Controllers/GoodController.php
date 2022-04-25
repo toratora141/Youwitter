@@ -17,13 +17,15 @@ class GoodController extends Controller
         try {
             $paramForFill = Good::prepareParamForFill($request, Auth::user()->account_name);
             $good = Good::create($paramForFill);
-            $good->action()->create([
-                'type' => 'good',
-                'foreign_id' => $good->id
-            ])
-                ->notice()->create([
-                    'user_id' => $request->userId
-                ]);
+            // $good->action()->create([
+            //     'type' => 'good',
+            //     'foreign_id' => $good->id,
+            //     'user_id' => Auth::user()->account_name
+            // ])
+            //     ->notice()->create([
+            //         'user_id' => $request->userId
+            //     ]);
+            $good->createRelationRecord($good, $request->userId);
         } catch (\Throwable $th) {
             dd($th);
             DB::rollback();

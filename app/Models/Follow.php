@@ -19,12 +19,6 @@ class Follow extends Model
     {
         parent::boot();
 
-        static::created(function ($follow) {
-            $follow->action()->create([
-                'user_id' => Auth::user()->account_name,
-                'type' => 'follow'
-            ]);
-        });
         static::deleted(function ($follow) {
             $follow->action()->delete();
         });
@@ -61,6 +55,20 @@ class Follow extends Model
     }
     public function action()
     {
-        return $this->hasOne(Action::class, 'foreign_id');
+        return $this->belongsTo(Action::class, 'foreign_id');
+    }
+
+    public function createRelationRecord($follow, $userId)
+    {
+        $follow->action()
+            ->create([
+                'type' => 'follow',
+                'foreign_id' => $follow->id,
+                'user_id' => Auth::user()->account_name
+            ])
+            ->notice()
+            ->create([
+                'user_id' => $userId,
+            ]);
     }
 }
