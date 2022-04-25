@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnActionTable extends Migration
+class AddColumnFollowsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnActionTable extends Migration
      */
     public function up()
     {
-        Schema::table('actions', function (Blueprint $table) {
-            $table->string('user_id');
+        Schema::table('follows', function (Blueprint $table) {
+            $table->string('notice_id');
         });
     }
 
@@ -25,8 +25,8 @@ class AddColumnActionTable extends Migration
      */
     public function down()
     {
-        Schema::table('action', function (Blueprint $table) {
-            //
+        Schema::table('follows', function (Blueprint $table) {
+            $table->dropColumn('notice_id');
         });
     }
 }

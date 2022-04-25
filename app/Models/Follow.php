@@ -12,7 +12,8 @@ class Follow extends Model
 
     protected $fillable = [
         'user_id',
-        'follower'
+        'follower',
+        'notice_id'
     ];
 
     public static function boot()
@@ -20,7 +21,7 @@ class Follow extends Model
         parent::boot();
 
         static::deleted(function ($follow) {
-            $follow->action()->delete();
+            $follow->notice()->delete();
         });
     }
 
@@ -53,22 +54,20 @@ class Follow extends Model
     {
         return $this->belongsTo(VideoList::class, 'user_id', 'user_id');
     }
-    public function action()
+
+    public function notice()
     {
-        return $this->belongsTo(Action::class, 'foreign_id');
+        return $this->belongsTo(Notice::class, 'notice_id');
     }
 
-    public function createRelationRecord($follow, $userId)
+    public function prepareParam($followAccountName, $followedAccountName, $noticeId)
     {
-        $follow->action()
-            ->create([
-                'type' => 'follow',
-                'foreign_id' => $follow->id,
-                'user_id' => Auth::user()->account_name
-            ])
-            ->notice()
-            ->create([
-                'user_id' => $userId,
-            ]);
+        $param = [
+            'user_id' => $followAccountName,
+            'follower' => $followedAccountName,
+            'notice_id' => $noticeId
+        ];
+
+        return $param;
     }
 }

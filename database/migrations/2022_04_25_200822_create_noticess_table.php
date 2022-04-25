@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGoodsTable extends Migration
+class CreateNoticessTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateGoodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('goods', function (Blueprint $table) {
-            $table->id('good_id');
+        Schema::create('notices', function (Blueprint $table) {
+            $table->id('notice_id');
+            $table->string('type');
             $table->string('user_id');
-            $table->string('video_id');
+            $table->boolean('checked')->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +29,8 @@ class CreateGoodsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('goods');
+        Schema::table('notices', function (Blueprint $table) {
+            //
+        });
     }
 }

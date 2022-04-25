@@ -40,4 +40,8 @@ class Action extends Model
     {
         return $this->hasOne(Follow::class, 'id', 'foreign_id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'account_name', 'user_id');
+    }
 }

@@ -12,7 +12,7 @@ class NoticeController extends Controller
     public function fetch(Request $request)
     {
         $notices = Notice::where('user_id', Auth::user()->account_name)
-            ->with('action.good.video', 'action.good.user', 'action.follow.user',)
+            ->with('action.good.video', 'action.user', 'action.follow.user',)
             ->get();
         // dd($notices);
         return response()->json(['result' => true, 'notices' => $notices]);

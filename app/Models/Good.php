@@ -11,40 +11,29 @@ class Good extends Model
     use HasFactory;
 
     protected $primaryKey = 'good_id';
-    // public $incrementing = true;
     protected $table = "goods";
     protected $fillable = [
-        'user_id',
         'video_id',
+        'notice_id',
+        'user_id'
     ];
 
     public static function boot()
     {
         parent::boot();
 
-        // static::created(function ($follow) {
-        //     $follow->action()->create([
-        //         'user_id' => Auth::user()->account_name,
-        //         'type' => 'good'
-        //     ]);
-        // });
-
         static::deleted(function ($good) {
-            $good->action()->delete();
+            $good->notice()->delete();
         });
     }
 
-    public function prepareParamForFill($request, $accountName)
+    public function prepareParam($request, $noticeId, $userId)
     {
         return [
-            'user_id' => $accountName,
             'video_id' => $request->videoId,
+            'notice_id' => $noticeId,
+            'user_id' => $userId
         ];
-    }
-
-    public function action()
-    {
-        return $this->belongsTo(Action::class, 'foreign_id', 'good_id');
     }
 
     public function video()
@@ -52,22 +41,8 @@ class Good extends Model
         return $this->hasOne(Video::class, 'code', 'video_id');
     }
 
-    public function user()
+    public function notice()
     {
-        return $this->hasOne(User::class, 'account_name', 'user_id');
-    }
-
-    public function createRelationRecord($good, $userId)
-    {
-        $good->action()
-            ->create([
-                'type' => 'good',
-                'foreign_id' => $good->good_id,
-                'user_id' => Auth::user()->account_name
-            ])
-            ->notice()
-            ->create([
-                'user_id' => $userId,
-            ]);
+        return $this->belongsTo(Notice::class, 'notice_id');
     }
 }

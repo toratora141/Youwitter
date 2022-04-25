@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Good;
+use App\Models\Notice;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,17 +16,12 @@ class GoodController extends Controller
     {
         DB::beginTransaction();
         try {
-            $paramForFill = Good::prepareParamForFill($request, Auth::user()->account_name);
-            $good = Good::create($paramForFill);
-            // $good->action()->create([
-            //     'type' => 'good',
-            //     'foreign_id' => $good->id,
-            //     'user_id' => Auth::user()->account_name
-            // ])
-            //     ->notice()->create([
-            //         'user_id' => $request->userId
-            //     ]);
-            $good->createRelationRecord($good, $request->userId);
+            //goodsテーブルのnotice_idを取得するため、先にnoticeレコードを作成
+            $noticeParam = Notice::prepareParam('good', $request->userId);
+            $notice = Notice::create($noticeParam);
+
+            $goodParam = Good::prepareParam($request, $notice->notice_id, Auth::user()->account_name,);
+            $good = Good::create($goodParam);
         } catch (\Throwable $th) {
             dd($th);
             DB::rollback();
@@ -42,18 +38,9 @@ class GoodController extends Controller
             $good = Good::where('user_id', Auth::user()->account_name)
                 ->where('video_id', $request->videoId)
                 ->first();
-            // dd($good->good_id);
             Good::find($good->good_id)
                 ->delete();
-            // Good::where('user_id', Auth::user()->account_name)
-            //     ->where('video_id', $request->videoId)
-            //     ->action()
-            //     ->delete();
-            // Good::where('user_id', Auth::user()->account_name)
-            //     ->where('video_id', $request->videoId)
-            //     ->delete();
         } catch (\Throwable $th) {
-            dd($th);
             DB::rollBack();
         }
 

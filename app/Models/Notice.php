@@ -12,16 +12,16 @@ class Notice extends Model
     protected $primaryKey = 'notice_id';
     protected $fillable = [
         'user_id',
-        'action_id'
+        'type',
     ];
 
-    public function action()
+    public function prepareParam($type, $userId)
     {
-        return $this->belongsTo(Action::class, 'action_id');
-    }
+        $param = [
+            'type' => $type,
+            'user_id' => $userId
+        ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'account_name');
+        return $param;
     }
 }

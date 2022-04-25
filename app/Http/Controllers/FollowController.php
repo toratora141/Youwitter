@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Follow;
+use App\Models\Notice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FollowController extends Controller
 {
@@ -23,16 +25,23 @@ class FollowController extends Controller
      */
     public function follow(Request $request)
     {
-        if (Follow::already($request->followAccountName, Auth::user()->account_name)) {
+        if (Follow::already($followAccountName = $request->followAccountName, $followedAccountName = Auth::user()->account_name)) {
             return;
         }
-        $param['user_id'] = $request->followAccountName;
-        $param['follower'] = Auth::user()->account_name;
 
-        $follow = Follow::create($param);
-        $follow->createRelationRecord($follow, $request->followAccountName);
+        DB::beginTransaction();
+        try {
+            //goodsテーブルのnotice_idを取得するため、先にnoticeレコードを作成
+            $createNoticePram = Notice::prepareParam('follow', $followAccountName);
+            $notice = Notice::create($createNoticePram);
 
+            $createFollowParam = Follow::prepareParam($followAccountName, $followedAccountName, $notice->notice_id);
+            $follow = Follow::create($createFollowParam);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
 
+        DB::commit();
         return response()->json(['result' => true]);
     }
 
