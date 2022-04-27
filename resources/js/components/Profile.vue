@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-title d-flex flex-column" style="height:250px">
-                    <div class="h-100" v-if="showBtn">
+                    <div class="h-100 position-absolute end-0 top-0 m-3" v-if="showBtn" style="height:40px;">
                         <div class="text-end" v-if="!isMyProfile">
                             <div v-if="isFollow">
                                 <button class="btn btn-secondary" v-on:click="deleteFollowing" >フォローを外す</button>

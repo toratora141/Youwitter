@@ -61,22 +61,15 @@ class LoginController extends Controller
         if (Auth::attempt($param, true)) {
             $request->session()->regenerate();
             $result = true;
-            // $param = User::find(1)->prepareUserCookie($param['account_name']);
-            $param['result'] = true;
-            $param['login_message'] = 'ログインしました！';
-            // Cookie::queue(
-            //     $name = $remember_cookie_name,
-            //     $value = Cookie::queued($remember_cookie_name)->getValue(),
-            //     $minutes = 10080, // 7日
-            //     $path = '/',
-            //     $domain = null
-            // );
-            // dd(Session::all());
+            $return["user"] = Auth::user();
+            $return['result'] = true;
+            $return['login_message'] = 'ログインしました！';
         } else {
+            $result = false;
             $login_message = 'アカウントIDまたはパスワードが間違っています。';
             return response()->json(['result' => $result, 'login_message' => $login_message]);
         }
-        return response()->json($param);
+        return response()->json($return);
     }
 
     public function logout(Request $request)

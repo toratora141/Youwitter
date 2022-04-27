@@ -23,6 +23,7 @@ export default new Vuex.Store({
             state.isLoggedIn = true;
             state.user = data.user;
             //データベースから取ってきた引数のため変数名がスネークケースをキャメルケースに戻す
+            console.log(user);
             state.user.accountName = data.user.account_name;
         },
         logout(state) {
