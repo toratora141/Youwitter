@@ -1,7 +1,6 @@
 <template>
-<!-- <div class="mx-auto p-2 justify-content-center w-50" style="max-width: 600px;"> -->
 <div>
-    <div class="alert alert-dark" role="alert" v-show="!isLoggedIn">
+    <div class="alert alert-dark m-0 text-center" role="alert" v-show="!isLoggedIn">
         ログインされていません。<br>
         <router-link v-bind:to="{name:'user.login'}">
             <button class="btn btn-secondary">ログイン</button>
@@ -11,7 +10,14 @@
             <button class="btn btn-secondary" href="#">アカウント作成</button>
         </router-link>
     </div>
-    <h4 class="m-auto pt-3 pb-1 text-center">タイムライン</h4>
+    <div class="card-header">
+        <h4 class="m-auto pt-2 pb-2 text-center">タイムライン</h4>
+    </div>
+    <div class="mt-5 text-center">
+        <div class="spinner-border text-secondary" role="status" v-show="!fetchEnd">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
     <div class="card" v-for="follow in follows" :key="follow.account_name">
         <div class="card-body d-flex flex-column">
                 <router-link class="text-start d-flex flex-row" style="text-decoration: none; color: #141619;" v-bind:to="{name:'user.profile', params:{accountName: follow.user.account_name}}">
@@ -27,7 +33,7 @@
         </div>
     </div>
     <div class="mt-3" v-if="!hasFollowed">
-        <div class="alert alert-secondary w-75 m-auto mb-3">
+        <div class="alert alert-secondary text-center w-75 m-auto mb-3" v-if="isLoggedIn">
             ユーザーをフォローしましょう！
             <router-link v-bind:to="{name:'user.search'}">
                 <button class="btn btn-secondary">検索</button>
@@ -65,10 +71,12 @@
         movieList: {},
         hasFollowed: true,
         suggestUsers: null,
+        fetchEnd: false,
       }
     },
     mounted(){
         if(!this.isLoggedIn){
+            this.fetchSuggestUser();
             return;
         }
         axios.get('/api/user/follow/fetch')
@@ -90,7 +98,6 @@
                             count++;
                         });
                     });
-                            console.log('de');
             })
             .catch((error) => {
             })

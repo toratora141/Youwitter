@@ -112,6 +112,9 @@ const router = new VueRouter({
             path: '/notice',
             name: 'user.notice',
             component: Notice,
+            meta: {
+                isAuthenticated: true,
+            },
         }
     ]
 })

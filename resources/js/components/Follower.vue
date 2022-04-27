@@ -17,6 +17,11 @@
                 </li>
             </ul>
         </div>
+        <div class="mt-3 mb-3 text-center" v-show="!fetchEnd">
+            <div class="spinner-border text-secondary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
         <div v-for="follower in followerArray" :key="follower.key">
             <div class="card">
                 <router-link style="text-decoration: none; color: #141619;"
@@ -45,6 +50,7 @@ export default {
         return {
             followerArray: null,
             hasFollower: true,
+            fetchEnd: false,
         }
     },
     created() {
@@ -58,6 +64,7 @@ export default {
                 }
             })
             .then((res)=>{
+                this.fetchEnd = true;
                 this.followerArray = res.data.follower;
                 console.log(this.followerArray)
                 if(this.followerArray){

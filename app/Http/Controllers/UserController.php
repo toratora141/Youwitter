@@ -17,8 +17,8 @@ class UserController extends Controller
     {
         $param = User::prepareParam($request);
 
-        Auth::attempt($param, true);
         $user = User::create($param);
+        Auth::attempt($param, true);
         return response()->json(['user' => $user]);
     }
 

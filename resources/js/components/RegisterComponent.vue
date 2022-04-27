@@ -1,5 +1,8 @@
 <template>
-    <div class="container">
+    <div class>
+        <div class="card-header">
+            <h4 class="m-auto pt-2 pb-2 text-center">登録</h4>
+        </div>
         <div class="row justify-content-center">
             <div class="col-sm-6">
                 <form v-on:submit.prevent="submit">
@@ -96,10 +99,9 @@ import { Modal } from 'bootstrap';
                 this.showModalObj.show();
                 axios.post('/api/users/register', this.user)
                     .then((res) => {
-                        self.showModalObj.hide();
-                        console.log(res.data.user);
+                        this.login();
                         this.$store.commit('login',res.data);
-                        this.$router.push({name: 'home'});
+                        // this.$router.push({name: 'home'});
                     })
                     .catch(function(error) {
                         self.showModalObj.hide();
@@ -114,6 +116,25 @@ import { Modal } from 'bootstrap';
                     });
                     return false;
             },
+            login() {
+                this.errors = {};
+                var self = this;
+                axios.get('/sanctum/csrf-cookie',{withCredentials: true}).then(response => {
+                    axios.post('/api/user/login', this.user, {withCredentials: true})
+                        .then((res) => {
+                            this.showModalObj.hide();
+                            if(res.data.result){
+                                this.errors = res.data;
+                                this.$store.commit('login',res.data);
+                                this.$router.push({name: 'home'});
+                            }
+                            this.errors = res.data;
+                        }).catch((error) => {
+                            this.showModalObj.hide();
+                            console.log(error)
+                        });
+                });
+            }
         }
     };
 </script>

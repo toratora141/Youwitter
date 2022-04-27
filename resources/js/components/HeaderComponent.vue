@@ -1,5 +1,5 @@
 <template>
-    <div class="container w-100 p-0" >
+    <div class>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <router-link v-bind:to="{name:'home'}" >
                 <a class="navbar-brand .text-decoration-none">Youwitter</a>

@@ -2,6 +2,11 @@
     <!-- <div class="card" style="height:600px;"> -->
     <div class="card text-center p-3">
         <h6>再生リスト</h6>
+        <div class="mt-5 mb-3 text-center" v-show="!fetchEnd">
+            <div class="spinner-border text-secondary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
         <div class="card-body" v-if="havePlaylist">
             <div class="video-list" v-if="videoLists.thumbnail">
                 <img
@@ -85,6 +90,7 @@ export default {
             goodList: [],
             deleteGoodList: [],
             userId: null,
+            fetchEnd: false,
         };
     },
     mounted() {
@@ -94,6 +100,7 @@ export default {
     },
     methods: {
         fetch(videoLists, videos, user) {
+            this.fetchEnd = true;
             if (
                 videoLists === null ||
                 videoLists === undefined ||
@@ -109,6 +116,7 @@ export default {
                 this.message = "プレイリストを作成しましょう!";
                 return;
             }
+            this.$parent.fetchEnd = true;
             this.havePlaylist = true;
             this.videoLists = videoLists;
             this.videos = videos;

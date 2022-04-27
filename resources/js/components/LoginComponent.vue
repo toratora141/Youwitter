@@ -1,8 +1,11 @@
 <template>
-    <div class="container">
-        <div class="alert alert-primary" role="alert" v-if="noLoggedInAlert">
-            <p>機能を使うにはログインしてください。</p>
-            <router-link v-bind:to="{name:'user.login'}">
+    <div class>
+        <div class="card-header">
+            <h4 class="m-auto pt-2 pb-2 text-center">ログイン</h4>
+        </div>
+        <div class="alert alert-primary text-center" role="alert" v-if="noLoggedInAlert">
+            <p>この機能を使うにはログインか、アカウントの作成をしてください。</p>
+            <router-link v-bind:to="{name:'user.register'}">
                 <button class="btn btn-secondary">アカウント作成</button>
             </router-link>
         </div>
@@ -88,12 +91,6 @@ export default {
                         }).catch((error) => {
                             self.showModalObj.hide();
                             console.log(error)
-                            // var responseErrors = error.response.data.errors;
-                            // var errors = {};
-                            // for(var key in responseErrors){
-                            //     errors[key] = responseErrors[key][0];
-                            // }
-                            // self.errors = errors;
                         });
                 });
             }

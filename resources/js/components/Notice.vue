@@ -1,5 +1,13 @@
 <template>
     <div>
+        <div class="card-header">
+            <h4 class="m-auto pt-2 pb-2 text-center">通知</h4>
+        </div>
+        <div class="mt-5 mb-3 text-center" v-show="!fetchEnd">
+            <div class="spinner-border text-secondary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
         <div v-if="hasNotice">
             <div class="card" v-for="notice in notices" :key="notice.key">
                 <router-link style="text-decoration: none; color: rgb(20, 22, 25);" v-bind:to="{name:'user.profile', params:{accountName: notice.user.account_name}}">
@@ -44,11 +52,13 @@ export default {
         return {
             hasNotice: true,
             notices: null,
+            fetchEnd: false,
         }
     },
     created(){
         axios.get('/api/notice/fetch')
             .then((res) => {
+                this.fetchEnd = true;
                 this.notices = res.data.notices;
                 this.hasNotice = true;
                 console.log(this.notices[0].action.type);

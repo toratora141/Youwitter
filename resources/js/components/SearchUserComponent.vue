@@ -1,11 +1,11 @@
 <template>
-    <div class="content">
+    <div class="content w-100 m-auto">
         <div class="card">
             <div class="card-header">
-                検索
+                <h4 class="m-auto pt-2 pb-2 text-center">検索</h4>
             </div>
             <div class="card-content">
-                <div class="card-body">
+                <div class="card-body text-center">
                     <label for="search"></label>
                     <input type="text" id="search" v-model="searchKeyword">
                     <label for="search" v-if="errors.search" v-text="errors.search"></label>
@@ -13,8 +13,13 @@
                 </div>
             </div>
         </div>
-        <div class="search-list card">
-            <div class="card-content" v-if="endSearch">
+        <div class="mt-5 mb-3 text-center" v-show="!fetchEnd">
+            <div class="spinner-border text-secondary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div class="search-list card" v-if="endSearch">
+            <div class="card-content">
                 <div class="card-body">
                     <div v-for="user in users" :key="user.id">
                         <router-link style="text-decoration: none; color: rgb(20, 22, 25);" v-bind:to="{name:'user.profile', params:{accountName: user.account_name}}">
@@ -22,7 +27,7 @@
                                 <img :src="'/storage/' +user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:100px; height:100px; object-fit:cover;">
                                 <div class="d-flex flex-column">
                                     <h5>{{user.account_name}}</h5>
-                                    <p>{{user.account_name}}</p>
+                                    <p>{{user.display_name}}</p>
                                 </div>
                             </div>
                         </router-link>
@@ -42,24 +47,26 @@ export default {
             users: {},
             errors: {},
             endSearch: false,
+            fetchEnd: true,
         }
     },
-    mounted(){
-        },
     created(){
         this.searchKeyword = this.$store.state.searchKeyword;
-        if(!(this.$store.state.searchKeyword == null)){
+        if(!(this.$store.state.searchKeyword === null)){
             this.endSearch = true;
-            this.users = this.$store.state.searchReuslt;
+            this.users = this.$store.state.searchResult;
         }
     },
     methods:{
         search(){
+            this.fetchEnd = false;
+            this.users = null;
             axios.get('/api/searchUser', {params:{
                 searchKeyword: this.searchKeyword
             }})
                 .then((res) => {
                     this.endSearch = true;
+                    this.fetchEnd = true;
                     var commitParam = {
                         result: res.data.users,
                         keyword:this.searchKeyword
