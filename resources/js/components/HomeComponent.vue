@@ -86,10 +86,11 @@
                     if(!this.follows.length){
                         this.fetchSuggestUser();
                         this.follows = this.suggestUsers;
+                        return;
                     }
                     this.follows.forEach(follow => {
                         this.$nextTick(()=>{
-                            var user = follow.user_id;
+                            var user = follow.account_name;
                             if(follow.video_lists === null || follow.video_lists === undefined){
                                 this.$refs.movieList[count].fetch(null, null);
                             }else{
@@ -117,7 +118,9 @@
                     this.hasFollowed = false;
                      this.suggestUsers.forEach(follow => {
                         this.$nextTick(()=>{
-                            var user = follow.user_id;
+                            var user = follow.account_name;
+                            console.log(follow);
+                            console.log(user);
                             if(follow.video_lists === null || follow.video_lists === undefined){
                                 this.$refs.movieList[count].fetch(null, null);
                             }else{
