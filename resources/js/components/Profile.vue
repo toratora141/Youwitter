@@ -134,7 +134,6 @@ import UpdateProfile from './UpdateProfile.vue';
                 'followAccountName': this.$route.params.accountName
             })
                 .then((res) => {
-                    console.log('followed');
                     this.isFollow = true;
                 })
         },
@@ -143,7 +142,6 @@ import UpdateProfile from './UpdateProfile.vue';
                 'followAccountName': this.$route.params.accountName
             })
                 .then((res) => {
-                    console.log('following destroy');
                     this.isFollow = false;
                 })
         },
@@ -163,9 +161,7 @@ import UpdateProfile from './UpdateProfile.vue';
             })
                 .then((res) => {
                     this.videoLists = res.data.videoLists;
-                    console.log(res.data.videoLists);
                     this.videos = res.data.videoLists[0].videos;
-                    console.log(res.data.videoLists[0].videos);
                     this.$refs.movieList.fetch(this.videoLists, this.videos);
                     this.$forceUpdate()
                 })

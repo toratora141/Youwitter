@@ -70,7 +70,6 @@ export default {
             }
         },
         mounted() {
-            // console.log(this.$store.state.isLoggedIn);
             this.showModalObj = new Modal(this.$refs.showModal, {keyboard: true});
         },
         methods: {
@@ -90,7 +89,6 @@ export default {
                             this.errors = res.data;
                         }).catch((error) => {
                             self.showModalObj.hide();
-                            console.log(error)
                         });
                 });
             }

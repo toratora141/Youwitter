@@ -58,19 +58,6 @@ import { Modal } from 'bootstrap';
         this.showModalObj = new Modal(this.$refs.showModal, {keyboard: true});
     },
     created() {
-        // var self = this;
-        // axios.get('/api/user')
-        //     .then((res) => {
-        //         var user = {};
-        //         if (res.data.result) {
-        //             user['account_name'] = res.data.account_name;
-        //         this.auth = true
-        //         }
-        //         self.account_name = res.data.account_name;
-        //     })
-        //     .catch((error) => {
-
-        //     })
     },
     methods:{
         submit() {
@@ -85,7 +72,6 @@ import { Modal } from 'bootstrap';
                 .then((res) => {
                     self.showModalObj.hide();
                     self.alertSuccess = true;
-                    console.log(res.data.data);
                 })
                 .catch((error) => {
                     self.showModalObj.hide();

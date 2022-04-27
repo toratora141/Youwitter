@@ -61,8 +61,6 @@ export default {
                 this.fetchEnd = true;
                 this.notices = res.data.notices;
                 this.hasNotice = true;
-                console.log(this.notices[0].action.type);
-                console.log(this.notices[0].action.good);
             })
     }
 }

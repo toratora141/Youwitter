@@ -75,7 +75,6 @@ export default ({
         }
     },
     mounted() {
-        // console.log(this.$store.state.user);
         this.updateModalObj = new Modal(this.$refs.updateModal,{keyboard: true})
         this.waitModalObj = new Modal(this.$refs.waitModal,{keyboard: true})
     },
@@ -106,7 +105,6 @@ export default ({
                     if(error !== true){
                         var error_message = '編集に失敗しました。';
                         this.message = error_message;
-                    console.log(self.errors);
                     }
                 })
         },

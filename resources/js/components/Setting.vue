@@ -18,7 +18,6 @@
             logout(){
                 axios.post('/api/user/logout')
                     .then((res)=>{
-                        console.log('logout');
                         this.$store.commit('logout');
                         this.$router.push({name:'user.login'});
                     })

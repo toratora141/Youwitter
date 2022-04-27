@@ -104,10 +104,6 @@
             })
     },
     created() {
-        console.log(this.$store.state.isLoggedIn);
-        console.log(this.$store.state.user);
-        console.log(this.$store.state.videoLists);
-        console.log(this.$store.state.videos);
     },
     methods: {
         fetchSuggestUser(){
@@ -119,8 +115,6 @@
                      this.suggestUsers.forEach(follow => {
                         this.$nextTick(()=>{
                             var user = follow.account_name;
-                            console.log(follow);
-                            console.log(user);
                             if(follow.video_lists === null || follow.video_lists === undefined){
                                 this.$refs.movieList[count].fetch(null, null);
                             }else{

@@ -69,7 +69,6 @@ export default {
             .then((res)=>{
                 this.fetchEnd = true;
                 this.followedArray = res.data.followed;
-                console.log(this.followerArray);
                 if(this.followerArray === undefined){
                     this.hasFollowed = false;
                 }

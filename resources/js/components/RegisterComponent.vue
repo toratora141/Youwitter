@@ -101,7 +101,6 @@ import { Modal } from 'bootstrap';
                     .then((res) => {
                         this.login();
                         this.$store.commit('login',res.data);
-                        // this.$router.push({name: 'home'});
                     })
                     .catch(function(error) {
                         self.showModalObj.hide();
@@ -131,7 +130,6 @@ import { Modal } from 'bootstrap';
                             this.errors = res.data;
                         }).catch((error) => {
                             this.showModalObj.hide();
-                            console.log(error)
                         });
                 });
             }
