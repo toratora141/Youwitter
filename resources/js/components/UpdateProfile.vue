@@ -71,16 +71,17 @@ export default ({
             message: null,
             error_message: null,
             updateParam: {},
-            picture: this.$parent.user.icon,
+            picture: null,
             fileResult: null,
         }
     },
     mounted() {
-        this.updateModalObj = new Modal(this.$refs.updateModal,{keyboard: true})
-        this.waitModalObj = new Modal(this.$refs.waitModal,{keyboard: true})
+        this.updateModalObj = new Modal(this.$refs.updateModal,{keyboard: true});
+        this.waitModalObj = new Modal(this.$refs.waitModal,{keyboard: true});
     },
     created(){
         this.updateParam.display_name = this.user.display_name;
+        this.picture = '/storage/' + this.$parent.user.icon;
     },
     methods:{
         showUpdateModal(){
@@ -95,8 +96,8 @@ export default ({
 
             axios.post('/api/user/update', this.updateParam)
                 .then((res) => {
-                    if(!fileResult){
-                        throw new Error('選択された画像は設定できません');
+                    if(!this.fileResult){
+                        throw new Error();
                     }
                     this.waitModalObj.hide();
                     this.updateModalObj.hide();
@@ -106,20 +107,22 @@ export default ({
                 })
                 .catch((error) => {
                     this.waitModalObj.hide();
-                    if(error !== true){
-                        var error_message = '編集に失敗しました。';
-                        this.message = error_message;
-                    }
+                    var error_message = '編集に失敗しました。';
+                    this.message = error_message;
                 })
         },
         async upload(event) {
             const files = event.target.files || event.dataTransfer.files;
             const file = files[0];
+            var orgWidth  = file.width;
+            var orgHeight = file.height;
+            file.width = 300;
+            file.height = orgHeight * (file.width / orgWidth);
             var self = this;
 
             if(this.checkFile(file)){
                 const picture = await this.getBase64(file);
-                this.picture = picture
+                this.picture = picture;
                 self.updateParam['icon_base64'] = picture;
             }
         },
@@ -143,7 +146,7 @@ export default ({
             if(file.size > SIZE_LIMIT){
                 this.fileResult = false;
             }
-            return result;
+            return this.fileResult;
         }
     }
 })

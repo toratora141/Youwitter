@@ -64,11 +64,6 @@ class UserController extends Controller
         $img = str_replace(' ', '+', $img);
         $fileData = base64_decode($img);
 
-        $height = 300;
-        $fileData->resize(null, $height, function ($constraint) {
-            $constraint->aspectRatio();
-        });
-
         $dir = rtrim($user['account_name'], '/') . '/';
         $fileName = md5($img);
         $path = $dir . $fileName . '.' . $extention;
