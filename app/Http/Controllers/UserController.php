@@ -53,35 +53,40 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+        try {
 
-        //Todo: Userクラス関数を作成
-        $user = $request->only('account_name', 'display_name', 'icon_base64');
-        $user['account_name'] = Auth::user()->account_name;
-        preg_match('/data:image\/(\w+);base64,/', $user['icon_base64'], $matches);
-        $extention = $matches[1];
+            //Todo: Userクラス関数を作成
+            $user = $request->only('account_name', 'display_name', 'icon_base64');
+            $user['account_name'] = Auth::user()->account_name;
+            preg_match('/data:image\/(\w+);base64,/', $user['icon_base64'], $matches);
+            $extention = $matches[1];
 
-        $img = preg_replace('/^data:image.*base64,/', '', $user['icon_base64']);
-        $img = str_replace(' ', '+', $img);
-        $fileData = base64_decode($img);
+            $img = preg_replace('/^data:image.*base64,/', '', $user['icon_base64']);
+            $img = str_replace(' ', '+', $img);
+            $fileData = base64_decode($img);
 
-        $dir = rtrim($user['account_name'], '/') . '/';
-        $fileName = md5($img);
-        $path = $dir . $fileName . '.' . $extention;
+            $dir = rtrim($user['account_name'], '/') . '/';
+            $fileName = md5($img);
+            $path = $dir . $fileName . '.' . $extention;
 
-        Storage::disk('public')->put($path, $fileData);
+            Storage::disk('public')->put($path, $fileData);
 
-        User::where('account_name', $user['account_name'])
-            ->update([
+            User::where('account_name', $user['account_name'])
+                ->update([
+                    'display_name' => $user['display_name'],
+                    'icon' => $path
+                ]);
+
+            $result = true;
+            $updateUser = [
+                'account_name' => Auth::user()->account_name,
                 'display_name' => $user['display_name'],
-                'icon' => $path
-            ]);
-
-        $result = true;
-        $updateUser = [
-            'account_name' => Auth::user()->account_name,
-            'display_name' => $user['display_name'],
-            'icon' => '/storage/' . $path
-        ];
+                'icon' => '/storage/' . $path
+            ];
+        } catch (\Throwable $th) {
+            dd($th);
+            return response()->json(['result' => false, 'user' => $updateUser]);
+        }
         return response()->json(['result' => $result, 'user' => $updateUser]);
     }
 
