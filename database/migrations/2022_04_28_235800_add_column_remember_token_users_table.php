@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddThumnailFistVideoMovieListsTable extends Migration
+class AddColumnRememberTokenUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddThumnailFistVideoMovieListsTable extends Migration
      */
     public function up()
     {
-        Schema::table('movie_lists', function (Blueprint $table) {
-            $table->string('thumnail');
-            $table->string('first_video');
+        Schema::table('users', function (Blueprint $table) {
+            $table->rememberToken();
         });
     }
 
@@ -26,10 +25,8 @@ class AddThumnailFistVideoMovieListsTable extends Migration
      */
     public function down()
     {
-        Schema::table('movie_lists', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
-            $table->dropColumn('thumnail');
-            $table->dropColumn('first_video');
         });
     }
 }

@@ -59,7 +59,7 @@ export default new Vuex.Store({
             ],
             storage: {
                 getItem: (key) => Cookies.get(key),
-                setItem: (key, value) => Cookies.set(key, value, { expires: null, secure: true }),
+                setItem: (key, value) => Cookies.set(key, value, { expires: 31536000, secure: true }),
                 removeItem:(key) => Cookies.remove(key)
             }
         }

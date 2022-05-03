@@ -46,9 +46,22 @@
         date: function() {
             return {
                 isLoggedIn: false,
+                user: null,
             }
         },
         created(){
+            axios.get('/sanctum/csrf-cookie',{withCredentials: true}).then(response => {
+                    axios.post('/api/user/login', this.user, {withCredentials: true})
+                        .then((res) => {
+                            if(res.data.result){
+                                self.errors = res.data;
+                                this.$store.commit('login',res.data);
+                            }
+                            this.errors = res.data;
+                        }).catch((error) => {
+                            self.showModalObj.hide();
+                        });
+                });
         },
         methods:{
         }

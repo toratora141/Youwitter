@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class VideosFactory extends Factory
+class NoticeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,7 +14,7 @@ class VideosFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'notice_id' => 1,
         ];
     }
 }

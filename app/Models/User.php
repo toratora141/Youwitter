@@ -59,7 +59,8 @@ class User extends Authenticatable
         return $this->hasMany(VideoList::class, 'user_id', 'account_name');
     }
 
-    public function prepareParam($request)
+    //UserControllerのregister関数でインスタンスの作成をする準備
+    public function prepareParamForRegister($request)
     {
         $param = [
             'account_name' => $request->account_name,
@@ -69,6 +70,53 @@ class User extends Authenticatable
         ];
 
         return $param;
+    }
+
+    //UserControllerのfetchProf関数の返り値用の関数
+    public function prepareResponseForFetch($result, $user, $videoLists, $isFollow)
+    {
+        return [
+            'result' => $result,
+            'user' => $user,
+            'videoLists' => $videoLists,
+            'isFollow' => $isFollow
+        ];
+    }
+
+    public function fetchUserWithRelation($accountName)
+    {
+        return User::where('account_name', $accountName)
+            ->with('videoLists.videos.good')
+            ->get();
+    }
+
+    //プロフィールページのユーザをフォローしているかチェック
+    //Follow.phpで行った方が保守性がいい気がしたので飛ばす
+    public function checkFollowing($otherAccountName, $myAccountName)
+    {
+        return Follow::checkFollowing($otherAccountName, $myAccountName);
+    }
+
+    public function prepareUserForResponse($accountName, $displayName, $icon)
+    {
+        return [
+            'account_name' => $accountName,
+            'display_name' => $displayName,
+            'icon' => $icon,
+        ];
+    }
+
+    /*
+     * like検索
+     * @param $keyword string
+     * @return users obj
+     */
+    public function searchLike($keyword)
+    {
+        $pat = '%' . addcslashes($keyword, '%_\\') . '%';
+        $users = User::where('account_name', 'LIKE', $pat)
+            ->get();
+        return $users;
     }
 
     /*

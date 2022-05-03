@@ -9,31 +9,16 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Mockery\Undefined;
 
 class UserController extends Controller
 {
     public function register(UserInputPost $request)
     {
-        $param = User::prepareParam($request);
+        $param = User::prepareParamForRegister($request);
 
         $user = User::create($param);
         Auth::attempt($param, true);
-        return response()->json(['user' => $user]);
-    }
-
-    public function fetch(Request $request)
-    {
-        $result = false;
-        $user = [];
-        if (Auth::check()) {
-            $user = Auth::user();
-            $result = true;
-        }
-        return response()->json(['result' => $result, 'user' => $user]);
-        return ['result' => $result, 'user' => $user];
-
-        $user = $request->user();
+        return response()->json(['result' => true, 'user' => $user]);
     }
 
     public function fetchProf(Request $request)
@@ -41,48 +26,28 @@ class UserController extends Controller
         $result = false;
         $isFollow = false;
         $myUser = Auth::user();
-        //ToDo:
-        // 変数名
-        // followモデルにメソッドを作って、userモデルから呼び出し。全部移動
-        $fetch = User::where('account_name', $request->input('accountName'))
-            ->with('videoLists.videos.good')
-            ->get();
-        $user = [
-            'account_name' => $fetch[0]->account_name,
-            'display_name' => $fetch[0]->display_name,
-            'icon' => $fetch[0]->icon,
-        ];
-        $follows = null;
-        //マイプロフィールかどうかでDBからのfetchを変える
+
+        $fetch = User::fetchUserWithRelation($accountName = $request->input('accountName'));
+        $user = User::prepareUserForResponse($fetch[0]->account_name, $fetch[0]->display_name, $fetch[0]->icon,);
+        // フォローしているかチェックするために、マイページかどうかチェック
+        // boolean型で渡せず、文字列でしか渡せなかったので文字列でのチェック
         if ($request->input('isMyProfile') === 'false') {
-            $fetchFollow = Follow::where('user_id', $request->input('accountName'))
-                ->where('follower', $myUser['account_name'])
-                ->first();
+            $fetchFollow = User::checkFollowing($accountName, $myUser['account_name']);
         }
         if (isset($fetchFollow)) {
             $isFollow = true;
         }
-        $result = true;
-        return response()->json(['result' => $result, 'user' => $user, 'videoLists' => $fetch[0]->videoLists, 'follows' => $follows, 'isFollow' => $isFollow]);
-    }
 
-    public function fetchUser(Request $request)
-    {
-        $fetch = User::where('account_name', $request->input('account_name'))
-            ->with('videoLists.videos')
-            ->get();
         $result = true;
-        // dd($fetch);
-        return response()->json(['result' => $result, 'user' => $fetch[0], 'videoLists' => $fetch[0]->videoLists]);
+
+        $response = User::prepareResponseForFetch($result, $user, $fetch[0]->videoLists, $isFollow);
+
+        return response()->json($response);
     }
 
     public function searchUser(Request $request)
     {
-        $keyword = $request->input('searchKeyword');
-        $pat = '%' . addcslashes($keyword, '%_\\') . '%';
-        $users = User::where('account_name', 'LIKE', $pat)
-            ->get();
-        // dd($keyword);
+        $users = User::searchLike($request->input('searchKeyword'));
         return response()->json(['users' => $users]);
     }
 

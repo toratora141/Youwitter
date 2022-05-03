@@ -70,4 +70,12 @@ class Follow extends Model
 
         return $param;
     }
+
+    //プロフィールページのユーザをフォローしているかチェック
+    public function checkFollowing($otherAccountName, $myAccountName)
+    {
+        return Follow::where('user_id', $otherAccountName)
+            ->where('follower', $myAccountName)
+            ->first();
+    }
 }

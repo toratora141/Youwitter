@@ -25,9 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/user/logout', 'App\Http\Controllers\Auth\LoginController@logout');
     Route::post('/user/update', 'App\Http\Controllers\UserController@update');
-    Route::get('/user/fetch', 'App\Http\Controllers\UserController@fetchProf');
-    Route::get('/user/fetchUser', 'App\Http\Controllers\UserController@fetchUser');
-    Route::get('/user/fetchProf', 'App\Http\Controllers\UserController@fetchProf');
+    Route::get('/user/fetchProf', 'App\Http\Controllers\UserController@fetchProf')->name('user.profile');
     Route::post('/user/videoList/create', 'App\Http\Controllers\VideoListController@listCreate');
 
     Route::get('/user/follow/fetch', 'App\Http\Controllers\FollowController@fetch');
@@ -43,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/notice/fetch', 'App\Http\Controllers\NoticeController@fetch');
 });
-Route::get('/searchUser', 'App\Http\Controllers\UserController@searchUser');
+Route::get('/searchUser', 'App\Http\Controllers\UserController@searchUser')->name('user.search');
 Route::get('/suggestUsers', 'App\Http\Controllers\SuggestUsers');
-Route::post('/users/register', 'App\Http\Controllers\UserController@register');
+Route::post('/users/register', 'App\Http\Controllers\UserController@register')->name('user.register');
 Route::post('/user/login', 'App\Http\Controllers\Auth\LoginController@originalLogin');

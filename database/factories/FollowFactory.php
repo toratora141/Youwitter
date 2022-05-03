@@ -14,7 +14,13 @@ class FollowFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => function () {
+                return \App\Models\User::factory()->create()->account_name;
+            },
+            'follower' => function () {
+                return \App\Models\User::factory()->create()->account_name;
+            },
+            'notice_id' => 1,
         ];
     }
 }
