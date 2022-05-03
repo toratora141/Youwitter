@@ -72,6 +72,7 @@ export default ({
             error_message: null,
             updateParam: {},
             picture: this.$parent.user.icon,
+            fileResult: null,
         }
     },
     mounted() {
@@ -94,6 +95,9 @@ export default ({
 
             axios.post('/api/user/update', this.updateParam)
                 .then((res) => {
+                    if(!fileResult){
+                        throw new Error('選択された画像は設定できません');
+                    }
                     this.waitModalObj.hide();
                     this.updateModalObj.hide();
                     this.$parent.user = res.data.user;
@@ -128,16 +132,16 @@ export default ({
             });
         },
         checkFile(file) {
-            let result =  true;
-            const SIZE_LIMIT = 5000000;
+            this.fileResult =  true;
+            const SIZE_LIMIT = 500000000;
             if(!file) {
-                result = false;
+                this.fileResult = false;
             }
             if(file.type !== 'image/jpeg' && file.type !== 'image/png') {
-                result = false;
+                this.fileResult = false;
             }
             if(file.size > SIZE_LIMIT){
-                result = false;
+                this.fileResult = false;
             }
             return result;
         }

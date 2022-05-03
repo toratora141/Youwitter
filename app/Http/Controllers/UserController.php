@@ -62,13 +62,18 @@ class UserController extends Controller
 
         $img = preg_replace('/^data:image.*base64,/', '', $user['icon_base64']);
         $img = str_replace(' ', '+', $img);
-        $file_data = base64_decode($img);
+        $fileData = base64_decode($img);
+
+        $height = 300;
+        $fileData->resize(null, $height, function ($constraint) {
+            $constraint->aspectRatio();
+        });
 
         $dir = rtrim($user['account_name'], '/') . '/';
         $fileName = md5($img);
         $path = $dir . $fileName . '.' . $extention;
 
-        Storage::disk('public')->put($path, $file_data);
+        Storage::disk('public')->put($path, $fileData);
 
         User::where('account_name', $user['account_name'])
             ->update([
