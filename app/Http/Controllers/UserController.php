@@ -66,7 +66,7 @@ class UserController extends Controller
             $fileData = base64_decode($img);
 
             $dir = rtrim($user['account_name'], '/') . '/';
-            $path = $dir . 'icon.' . $extention;
+            $path = $dir . md5($img) . '.' . $extention;
 
             Storage::disk('public')->put($path, $fileData);
 

@@ -81,7 +81,7 @@ export default ({
     },
     created(){
         this.updateParam.display_name = this.user.display_name;
-        this.picture = '/storage/' + this.$parent.user.icon;
+        this.picture = this.$parent.user.icon;
     },
     methods:{
         showUpdateModal(){
@@ -102,6 +102,7 @@ export default ({
                     this.waitModalObj.hide();
                     this.updateModalObj.hide();
                     this.$parent.user = res.data.user;
+                    console.log(res.data.user.icon);
                     this.$store.commit('updateUser', res.data.user);
                     this.updateMyProfile.hide();
                 })
@@ -114,16 +115,22 @@ export default ({
         async upload(event) {
             const files = event.target.files || event.dataTransfer.files;
             const file = files[0];
-            var orgWidth  = file.width;
-            var orgHeight = file.height;
-            file.width = 300;
-            file.height = orgHeight * (file.width / orgWidth);
             var self = this;
 
             if(this.checkFile(file)){
-                const picture = await this.getBase64(file);
-                this.picture = picture;
-                self.updateParam['icon_base64'] = picture;
+                    this.getBase64(file).then(image => {
+
+                    const originalImg = new Image();
+                    originalImg.src = image;
+                    originalImg.onload = () => {
+                        const resizedCanvas = this.createResizedCanvasElement(originalImg);
+                        const resizedBase64 = resizedCanvas.toDataURL(file);
+                        this.picture = resizedBase64;
+                        this.updateParam['icon_base64'] = resizedBase64;
+                        return resizedBase64;
+                    }
+                })
+                .catch(error => this.setError(error, '画像のアップロードに失敗しました。'));
             }
         },
         getBase64(file) {
@@ -147,7 +154,38 @@ export default ({
                 this.fileResult = false;
             }
             return this.fileResult;
-        }
+        },
+        createResizedCanvasElement (originalImg) {
+            const originalImgWidth = originalImg.width
+            const orifinalImgHeight = originalImg.height
+
+            const [resizedWidth, resizedHeight] = this.resizeWidthAndHeight(originalImgWidth, orifinalImgHeight)
+            const canvas = document.createElement('canvas')
+            const ctx = canvas.getContext('2d')
+            canvas.width = resizedWidth
+            canvas.height = resizedHeight
+
+            ctx.drawImage(originalImg, 0, 0, resizedWidth, resizedHeight)
+            return canvas
+        },
+
+        resizeWidthAndHeight (width, height) {
+            const MAX_WIDTH = 400
+            const MAX_HEIGHT = 400
+
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width
+                width = MAX_WIDTH
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                width *= MAX_HEIGHT / height
+                height = MAX_HEIGHT
+                }
+            }
+            return [width, height]
+        },
     }
 })
 </script>
