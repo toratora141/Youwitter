@@ -6,7 +6,7 @@
   <div>
     <h3>マイリストの作成</h3>
     <form v-on:submit.prevent="submit">
-        <div class="form-group row" >
+        <div class="form-group row w-75 m-auto" >
             <label for="movieList-id" class="col-sm-3 col-form-label w-100">プレイリストURL</label>
             <input type="text"
                 class="col-sm-9 form-control"
@@ -25,7 +25,7 @@
                 v-if="errors.message">
             </label>
         </div>
-        <button type="submit" class="btn btn-primary w-100 mt-5">登録</button>
+        <button type="submit" class="btn btn-primary  w-25 m-auto mt-5">作成</button>
     </form>
     <div class="modal" tabindex="-1" ref="showModal" data-bs-backdrop="static">
         <div class="modal-dialog">

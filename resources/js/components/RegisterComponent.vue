@@ -6,7 +6,7 @@
         <div class="row justify-content-center">
             <div class="col-sm-6">
                 <form v-on:submit.prevent="submit">
-                    <div class="form-group row" >
+                    <div class="form-group row w-75 m-auto" >
                         <label for="account-name" class="col-sm-3 col-form-label w-100">ID</label>
                         <input type="text"
                             class="col-sm-9 form-control"
@@ -20,7 +20,7 @@
                             v-if="errors.account_name">
                         </label>
                     </div>
-                    <div class="form-group row" >
+                    <div class="form-group row w-75 m-auto" >
                         <label for="display-name" class="col-sm-3 col-form-label w-100">名前</label>
                         <input type="text"
                             class="col-sm-9 form-control"
@@ -34,7 +34,7 @@
                             v-if="errors.display_name">
                         </label>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row w-75 m-auto">
                         <label for="password" class="col-sm-3 col-form-label w-100">パスワード</label>
                         <input type="password"
                             class="col-sm-9 form-control"
@@ -47,7 +47,7 @@
                             v-if="errors.password">
                         </label>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row w-75 m-auto">
                         <label for="password-confirm" class="col-sm-3 col-form-label w-100">パスワード再確認</label>
                         <input type="password"
                             class="col-sm-9 form-control"
