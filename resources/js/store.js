@@ -17,6 +17,7 @@ export default new Vuex.Store({
         noLoggedInAlert: null,
         searchKeyword: null,
         searchResult: null,
+        toMessageUser: null,
     },
     mutations: {
         login(state, data) {
@@ -39,6 +40,10 @@ export default new Vuex.Store({
             if (search.keyword == null) {
                 state.searchKeyword = '';
             }
+        },
+        prepareMessageUser(state, toMessageUser) {
+            state.toMessageUser = toMessageUser;
+            state.toMessageUser.accountName = toMessageUser.account_name;
         }
     },
     actions: {
@@ -54,12 +59,11 @@ export default new Vuex.Store({
             paths:[
                 'isLoggedIn',
                 'user',
-                'videoLists',
-                'videos',
+                'toMessageUser'
             ],
             storage: {
                 getItem: (key) => Cookies.get(key),
-                setItem: (key, value) => Cookies.set(key, value, { expires: 31536000, secure: true }),
+                setItem: (key, value) => Cookies.set(key, value, { expires: 730, sameSite: "Lax" }),
                 removeItem:(key) => Cookies.remove(key)
             }
         }
