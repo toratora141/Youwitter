@@ -45,7 +45,7 @@
 import { Modal } from 'bootstrap';
 
   export default {
-    data() {
+    data:function () {
       return {
         account_name: '',
         videoList: {},

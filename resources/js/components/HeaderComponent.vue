@@ -16,8 +16,8 @@
                 </router-link>
             </li>
             <li class="nav-item" >
-                <router-link v-bind:to="{name:'movieList.create'}">
-                    <a class="nav-link" href="#">マイリストの作成</a>
+                <router-link v-bind:to="{name:'message.list'}">
+                    <a class="nav-link" href="#">メッセージ</a>
                 </router-link>
             </li>
             <li class="nav-item" >

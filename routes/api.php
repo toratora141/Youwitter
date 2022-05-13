@@ -40,6 +40,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/good/destroy', 'App\Http\Controllers\GoodController@destroy');
 
     Route::get('/notice/fetch', 'App\Http\Controllers\NoticeController@fetch');
+
+    Route::get('/room/fetch', 'App\Http\Controllers\RoomController@fetch')->name('room.fetch');
+    Route::post('/room/create', 'App\Http\Controllers\RoomController@create')->name('room.create');
+
+    Route::get('/message/fetch', 'App\Http\Controllers\MessageController@fetch');
+    Route::get('/messageUsers/fetch', 'App\Http\Controllers\MessageController@userList');
+    Route::post('/message/create', 'App\Http\Controllers\MessageController@create');
 });
 Route::get('/searchUser', 'App\Http\Controllers\UserController@searchUser')->name('user.search');
 Route::get('/suggestUsers', 'App\Http\Controllers\SuggestUsers');

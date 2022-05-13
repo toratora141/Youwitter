@@ -17,6 +17,8 @@ import Profile from "./components/Profile";
 import Followed from "./components/Followed";
 import Follower from "./components/Follower";
 import Notice from "./components/Notice";
+import MessageList from "./components/MessageList";
+import Message from "./components/Message";
 import MovieListComponent from "./components/MovieListComponent";
 import MovieListCreateComponent from "./components/MovieListCreateComponent";
 import HomeComponent from "./components/HomeComponent";
@@ -112,6 +114,22 @@ const router = new VueRouter({
             path: '/notice',
             name: 'user.notice',
             component: Notice,
+            meta: {
+                isAuthenticated: true,
+            },
+        },
+        {
+            path: '/messageList',
+            name: 'message.list',
+            component: MessageList,
+            meta: {
+                isAuthenticated: true,
+            },
+        },
+        {
+            path: '/message/:roomId',
+            name: 'message',
+            component: Message,
             meta: {
                 isAuthenticated: true,
             },
