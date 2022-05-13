@@ -24,6 +24,9 @@
                             <div v-if="notice.type == 'good'">
                                 <p class="m-0 p-1">さんがいいねしました</p>
                             </div>
+                            <div class="flex-fill">
+                                <p class="text-end p-1 m-0">{{diffTime(notice.created_at)}}</p>
+                            </div>
                         </div>
                         <div class="w-100">
                             <div class="w-100 d-flex flex-row align-items-center justify-content-center" v-if="notice.type == 'good'">

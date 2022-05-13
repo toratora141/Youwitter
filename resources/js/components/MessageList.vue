@@ -2,7 +2,7 @@
     <div class="d-flex flex-column">
         <div class="card">
             <div class="card-header" v-on:click="fetchFollows">
-                <h6>新しくメッセージを送る</h6>
+                <h6 class="m-auto">新しくメッセージを送る</h6>
             </div>
             <div class="modal" ref="newMessageModal" tabindex="-1">
                 <div class="modal-dialog">
@@ -17,11 +17,11 @@
                             </div>
                         </div>
                         <div v-if="hasFollows">
-                        <p>誰にメッセージを送りますか？</p>
+                        <p class="m-auto">誰にメッセージを送りますか？</p>
                             <div v-for="follow in follows" :key="follow.account_name">
                                 <div style="text-decoration: none; color: rgb(20, 22, 25);"  v-on:click="prepareMessagePage(follow.user)">
                                     <div class="d-flex flex-row align-items-center">
-                                        <img :src="'/storage/' + follow.user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:100px; height:100px; object-fit:cover;">
+                                        <img :src="'/storage/' + follow.user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:50px; height:50px; object-fit:cover;">
                                         <div class="d-flex flex-column">
                                             <h5>{{follow.user.account_name}}</h5>
                                             <p>{{follow.user.display_name}}</p>
@@ -45,11 +45,15 @@
                     <div v-for="userList in room.user_list" :key="userList.user_id">
                         <div v-if="user.accountName != userList.user_id">
                             <router-link style="text-decoration: none; color: rgb(20, 22, 25);" v-bind:to="{name:'message', params:{roomId: userList.room_id}}">
-                                <div class="d-flex flex-row align-items-center">
+                                <div class="d-flex flex-row align-items-center m-2 w-auto">
                                     <img :src="'/storage/' + userList.user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:50px; height:50px; object-fit:cover;">
-                                    <div class="d-flex flex-column">
-                                        <h5>{{userList.user.account_name}}</h5>
-                                        <p>{{userList.user.display_name}}</p>
+                                    <div class="flex-fill">
+                                        <div class="d-flex flex-row">
+                                            <h5 class="ms-2">{{userList.user.account_name}}</h5>
+                                            <p class="ms-2">{{userList.user.display_name}}</p>
+                                            <p class="flex-fill text-end">{{diffTime(room.message_order_by[0].created_at)}}</p>
+                                        </div>
+                                        <p class="ms-2">{{room.message_order_by[0].text}}</p>
                                     </div>
                                 </div>
                             </router-link>
@@ -67,6 +71,7 @@
 <script>
 
 import { Modal } from 'bootstrap';
+
 export default {
     data:function() {
         return {
@@ -120,7 +125,7 @@ export default {
                 .then((res) => {
                     this.$router.push({name:'message', params:{roomId: res.data.room.room_id}});
                 });
-        }
+        },
     }
 }
 </script>

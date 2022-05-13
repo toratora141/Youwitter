@@ -23,8 +23,10 @@ import MovieListComponent from "./components/MovieListComponent";
 import MovieListCreateComponent from "./components/MovieListCreateComponent";
 import HomeComponent from "./components/HomeComponent";
 require('./bootstrap');
+import myVueMixin  from './my_vue_mixin';
 
 window.Vue = require('vue').default;
+Vue.mixin(myVueMixin );
 
 /**
  * The following block of code may be used to automatically register your

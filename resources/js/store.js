@@ -12,12 +12,9 @@ export default new Vuex.Store({
         user: {
             accountName:null
         },
-        videoLists: null,
-        videos: null,
         noLoggedInAlert: null,
         searchKeyword: null,
         searchResult: null,
-        toMessageUser: null,
     },
     mutations: {
         login(state, data) {
@@ -49,7 +46,6 @@ export default new Vuex.Store({
     actions: {
     },
     modules: {
-        // auth,
     },
     getters: {
     },
@@ -59,7 +55,6 @@ export default new Vuex.Store({
             paths:[
                 'isLoggedIn',
                 'user',
-                'toMessageUser'
             ],
             storage: {
                 getItem: (key) => Cookies.get(key),

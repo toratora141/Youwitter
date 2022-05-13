@@ -27,6 +27,10 @@ class Room extends Model
     {
         return $this->hasMany(Message::class, 'room_id');
     }
+    public function messageOrderBy()
+    {
+        return $this->hasMany(Message::class, 'room_id')->orderBy('created_at', 'desc');
+    }
 
     /*
      * @param Reuqest $reuqest
@@ -39,8 +43,8 @@ class Room extends Model
         $userLists = UserList::select('room_id')
             ->where('user_id', $myAccountName);
         $rooms = Room::whereIn('room_id', $userLists)
-            ->with('userList.user', 'message.user')
-            ->get();;
+            ->with('userList.user', 'messageOrderBy.user')
+            ->get();
 
         return $rooms;
     }
@@ -75,11 +79,6 @@ and not exists(
                     ->where('userListB.room_id', 'userListA.room_id')
                     ->whereIn('user_id', $request->users, 'and', $not = true);
             });
-        // foreach ($request->users as $user) {
-        //     $userLists->whereExists(function ($query) use ($user) {
-        //         $query->where('user_id', $user);
-        //     });
-        // }
         $room = Room::whereIn('room_id', $userLists)
             ->with('userList.user')
             ->first();

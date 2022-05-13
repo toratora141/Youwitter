@@ -30,6 +30,7 @@
     "dependencies": {
         "cookie": "^0.4.2",
         "js-cookie": "^3.0.1",
+        "moment": "^2.29.3",
         "vuex-persistedstate": "^4.1.0"
     }
 }
