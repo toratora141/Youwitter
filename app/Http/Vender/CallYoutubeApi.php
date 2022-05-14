@@ -2,14 +2,17 @@
 
 namespace App\Http\Vender;
 
+use Google\Service\YouTube;
 use Google_Client;
 use Google_Service_YouTube;
+use App\Consts\YoutubeConsts;
 
 use Illuminate\Support\Facades\Storage;
 
 class CallYoutubeApi
 {
-    private $key = 'AIzaSyD84yQx4yaM7rfYrP4Uv6OD0eb9U7jv3OQ';
+    // private $key = 'AIzaSyD84yQx4yaM7rfYrP4Uv6OD0eb9U7jv3OQ';
+    private $key = YoutubeConsts::API_KEY;
     private $client;
     private $youtube;
 
