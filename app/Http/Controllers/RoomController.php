@@ -33,7 +33,7 @@ class RoomController extends Controller
 
     public function create(Request $request)
     {
-        if (!empty($room = Room::checkExisting($request))) {
+        if (!empty($room = Room::searchOneRoom($request))) {
             return response()->json(['room' => $room]);
         }
 
@@ -41,7 +41,6 @@ class RoomController extends Controller
         $paramForUserList = UserList::preparePramForNewUserList($request);
         $newRoom = Room::create($paramForRoom);
         $newRoom->userList()->createMany($paramForUserList);
-        // dd(UserList::where('room_id', $newRoom->room_id)->first());
 
         $room = Room::where('room_id', $newRoom->room_id)
             ->with('userList.user')

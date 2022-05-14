@@ -17,7 +17,7 @@
                             </div>
                         </div>
                         <div class="p-2" v-if="hasFollows">
-                        <p class="m-auto">誰にメッセージを送りますか？</p>
+                            <p class="m-auto">誰にメッセージを送りますか？</p>
                             <div v-for="follow in follows" :key="follow.account_name">
                                 <div style="text-decoration: none; color: rgb(20, 22, 25);"  v-on:click="prepareMessagePage(follow.user)">
                                     <div class="d-flex flex-row align-items-center">
@@ -28,6 +28,12 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="p-2" v-else-if="fetchFollowsEnd && !hasFollows">
+                            <div class="alert alert-secondary text-center w-75 m-auto mb-3">
+                                ユーザーをフォローしましょう！
+                                    <button class="btn btn-secondary" v-on:click="moveSearch()">検索</button>
                             </div>
                         </div>
                     </div>
@@ -61,8 +67,10 @@
                     </div>
                 </div>
             </div>
-            <div v-else>
-                <p>メッセージの履歴がありません</p>
+            <div v-else class="p-2">
+                <div class="alert alert-secondary">
+                    メッセージの履歴がありません
+                </div>
             </div>
         </div>
     </div>
@@ -107,7 +115,7 @@ export default {
                 .then((res) => {
                     this.fetchFollowsEnd = true;
                     this.follows = res.data.follows;
-                    if(this.follows != null){
+                    if(this.follows.length > 0){
                         this.hasFollows = true;
                     }
                 });
@@ -126,6 +134,10 @@ export default {
                     this.$router.push({name:'message', params:{roomId: res.data.room.room_id}});
                 });
         },
+        moveSearch(){
+            this.newMessageObj.hide();
+            this.$router.push({name:'user.search'});
+        }
     }
 }
 </script>

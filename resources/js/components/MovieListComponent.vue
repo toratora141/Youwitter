@@ -162,22 +162,22 @@ export default {
             });
         },
         goodedVideo(videoId) {
+            this.fav = !this.fav;
             axios.post("/api/good/create", {
                 videoId: videoId,
                 userId: this.userId
                 })
                 .then((res) => {
-                    this.fav = !this.fav;
                 });
             this.goodList.push(videoId);
         },
         deleteGoodedVideo(videoId) {
+            this.fav = !this.fav;
             axios.post("/api/good/destroy", {
                     videoId: videoId,
                     userId: this.userId
                 })
                 .then((res) => {
-                    this.fav = !this.fav;
                 });
             var index = this.goodList.indexOf(videoId);
             this.goodList.splice(index, 1);

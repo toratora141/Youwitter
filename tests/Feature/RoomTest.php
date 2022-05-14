@@ -134,7 +134,7 @@ test('create new room', function () {
     $response = actingAs($users[0])->json('POST', route('room.create'), $param);
     $response->assertStatus(200);
     $response->assertJson(json_decode(json_encode($expectValue), true));
-})->group('create')->skip();
+})->group('create');
 
 test('create new room but room already exist', function () {
     $users = User::factory()->createMany([
@@ -189,4 +189,4 @@ test('create new room but room already exist', function () {
     $response = actingAs($users[0])->json('POST', route('room.create'), $param);
     $response->assertStatus(200);
     $response->assertJson(json_decode(json_encode($expectValue), true));
-})->group('create');
+})->group('create')->skip();

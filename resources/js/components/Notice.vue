@@ -41,7 +41,7 @@
                 </router-link>
             </div>
         </div>
-        <div v-else>
+        <div class="p-2" v-else>
             <div class="alert alert-secondary">
                 通知はありません
             </div>
@@ -63,7 +63,9 @@ export default {
             .then((res) => {
                 this.fetchEnd = true;
                 this.notices = res.data.notices;
-                this.hasNotice = true;
+                if(this.notices.length == 0){
+                    this.hasNotice = false;
+                }
             })
     }
 }

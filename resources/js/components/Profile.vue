@@ -130,19 +130,27 @@ import UpdateProfile from './UpdateProfile.vue';
             this.$refs.updateProfile.showUpdateModal();
         },
         doFollowing(){
+            this.isFollow = true;
             axios.post('/api/user/follow', {
                 'followAccountName': this.$route.params.accountName
             })
                 .then((res) => {
                     this.isFollow = true;
                 })
+                .catch((error) => {
+                    this.isFollow = false;
+                })
         },
         deleteFollowing(){
+            this.isFollow = false;
             axios.post('/api/user/follow/delete', {
                 'followAccountName': this.$route.params.accountName
             })
                 .then((res) => {
                     this.isFollow = false;
+                })
+                .catch((error) => {
+                    this.isFollow = true;
                 })
         },
         updateVideoList(){

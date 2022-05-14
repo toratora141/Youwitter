@@ -8,7 +8,7 @@
         <div class="card min-vh-100" v-if="fetchEnd">
             <div class="card-content">
                 <div v-for="user in users" :key="user.account_name">
-                    <div class="card-header"  v-if="user.user.account_name != myUser.accountName">
+                    <div class="card-header"  v-if="user.user.account_name != myUser.id">
                         <div class="d-flex flex-row align-items-center">
                             <img :src="'/storage/' + user.user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:50px; height:50px; object-fit:cover;">
                             <div class="d-flex flex-column">

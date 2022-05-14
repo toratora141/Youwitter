@@ -49,34 +49,17 @@ class Room extends Model
         return $rooms;
     }
 
-    public function checkExisting($request)
-    {
-        return self::searchOneRoom($request);
-    }
     /*
-SELECT *
-from rooms r
-inner join user_lists ul_a
-on r.room_id = ul_a.room_id
-where (user_id = 'user1' or user_id = 'user2')
-and not exists(
-	select *
-    from user_lists ul_b
-    where ul_a.room_id = ul_b.room_id
-    and not ul_b.user_id = 'user1'
-    and not ul_b.user_id = 'user2'
-);
- */
-
+     * @param Request $request
+     * @return App\Http\Controller\RoomController Object $room
+     */
     public function searchOneRoom($request)
     {
+        //パラメータで渡されたユーザ以外のユーザが存在しないレコードを探す
         $userLists = UserList::select('room_id')
-            ->from('user_lists as userListA')
-            ->whereIn('user_id', $request->users, 'and')
             ->whereNotExists(function ($query) use ($request) {
                 $query->select()
-                    ->from('user_lists as userListB')
-                    ->where('userListB.room_id', 'userListA.room_id')
+                    ->from('user_lists')
                     ->whereIn('user_id', $request->users, 'and', $not = true);
             });
         $room = Room::whereIn('room_id', $userLists)

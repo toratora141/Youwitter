@@ -9,7 +9,7 @@
                 <button class="btn btn-secondary">アカウント作成</button>
             </router-link>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center w-100">
             <div class="col-sm-6">
                 <form v-on:submit.prevent="login">
                     <div class="form-group row" >
@@ -25,7 +25,7 @@
                             v-if="errors.account_name">
                         </label>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group">
                         <label for="password" class="col-sm-3 col-form-label w-100">パスワード</label>
                         <input type="password"
                             class="col-sm-9 form-control"
@@ -38,18 +38,20 @@
                             v-if="errors.password">
                         </label>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group">
                         <label class="alert alert-danger p-2"
                             v-text="errors.login_message"
                             v-if="errors.login_message"></label>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100 mt-5">ログイン</button>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary w-25 mt-5">ログイン</button>
+                    </div>
                 </form>
                 <div class="modal" tabindex="-1" ref="showModal" data-bs-backdrop="static">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-body">
-                                <p>ログイン中です</p>
+                            <div class="modal-body text-center">
+                                <p class="m-0">ログイン中です</p>
                             </div>
                         </div>
                     </div>
