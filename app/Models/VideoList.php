@@ -33,6 +33,11 @@ class VideoList extends Model
         return $this->hasMany(Video::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'account_name');
+    }
+
     public function prepareNewPlaylist($userId, $input)
     {
         $youtubeApi = new CallYoutubeApi();

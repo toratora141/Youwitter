@@ -1,13 +1,15 @@
 <template>
-    <!-- <div class="card" style="height:600px;"> -->
     <div class="card text-center p-3">
         <h6>再生リスト</h6>
-        <div class="mt-5 mb-3 text-center" v-show="!fetchEnd">
-            <div class="spinner-border text-secondary" role="status">
+        <div class="text-center" v-show="!fetchEnd">
+            <div class="mt-5 mb-5 spinner-border text-secondary" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
-        <div class="card-body" v-if="havePlaylist">
+        <div class="card-body p-1" v-if="havePlaylist">
+            <div>
+                <p class="m-0 text-end">{{diffTime(videoLists.updated_at)}}</p>
+            </div>
             <div class="video-list" v-if="videoLists.thumbnail">
                 <img
                     :src="'/storage/' + videoLists.thumbnail"
@@ -33,8 +35,18 @@
         <div class="modal" tabindex="-1" ref="videoPlayerModal">
             <div class="modal-dialog h-75">
                 <div class="modal-content h-100 m-auto">
+                    <div class="modal-header p-1">
+                        <div class="modal-title" v-if="havePlaylist">
+                            <div class="d-flex flex-row align-items-center">
+                                <img :src="'/storage/' + videoLists.user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:50px; height:50px; object-fit:cover;">
+                                <div class="d-flex flex-column align-items-center">
+                                    <p class="ms-2 mb-0">{{videoLists.user.display_name}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="modal-body p-0 h-75" v-html="iframe"></div>
-                    <div class="card">
+                    <div class="card p-1">
                         {{ playVideo.title }}
                         <div v-if="!isMyProfile">
                             <div v-if="!fav">
@@ -61,7 +73,10 @@
                             v-on:click="changeVideo(video)"
                         >
                             <img :src="'/storage/' + video.thumbnail" />
-                            <p v-text="video.title" class="fz-1 mt-1"></p>
+                            <div class="d-flex flex-column flex-fill">
+                                <p class="text-end m-0">{{diffTime(video.created_at)}}</p>
+                                <p v-text="video.title" class="fz-1 mt-1 m-auto"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,11 +116,7 @@ export default {
     methods: {
         fetch(videoLists, videos, user) {
             this.fetchEnd = true;
-            if (
-                videoLists === null ||
-                videoLists === undefined ||
-                (videoLists.length && !this.$parent.isMyProfile)
-            ) {
+            if ((videoLists === null || videoLists === undefined) && !this.$parent.isMyProfile) {
                 this.havePlaylist = false;
                 this.alert = true;
                 this.message = "プレイリストを準備中のようです...";

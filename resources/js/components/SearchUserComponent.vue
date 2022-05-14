@@ -7,7 +7,7 @@
             <div class="card-content">
                 <div class="card-body text-center">
                     <label for="search"></label>
-                    <input type="text" id="search" v-model="searchKeyword">
+                    <input type="text" id="search" placeholder="ユーザID" v-model="searchKeyword">
                     <label for="search" v-if="errors.search" v-text="errors.search"></label>
                     <button v-on:click="search" class="btn btn-secondary">検索</button>
                 </div>
@@ -24,7 +24,7 @@
                     <div v-for="user in users" :key="user.id">
                         <router-link style="text-decoration: none; color: rgb(20, 22, 25);" v-bind:to="{name:'user.profile', params:{accountName: user.account_name}}">
                             <div class="d-flex flex-row align-items-center">
-                                <img :src="'/storage/' +user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:100px; height:100px; object-fit:cover;">
+                                <img :src="'/storage/' +user.icon" class="img-fluid img-thumbnail rounded-circle" style="width:50px; height:50px; object-fit:cover;">
                                 <div class="d-flex flex-column">
                                     <h5>{{user.account_name}}</h5>
                                     <p>{{user.display_name}}</p>

@@ -25,7 +25,9 @@
                 v-if="errors.message">
             </label>
         </div>
-        <button type="submit" class="btn btn-primary  w-25 m-auto mt-5">作成</button>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary  w-25 m-auto mt-5">作成</button>
+        </div>
     </form>
     <div class="modal" tabindex="-1" ref="showModal" data-bs-backdrop="static">
         <div class="modal-dialog">

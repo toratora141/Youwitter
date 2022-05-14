@@ -8,7 +8,7 @@
         aria-expanded="false" aria-label="ナビゲーションの切替">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="Nav" ref="nav">
+      <div class="collapse navbar-collapse ms-2" id="Nav" ref="nav">
         <ul class="navbar-nav mt-3" >
             <li class="nav-item"  v-if="$store.state.isLoggedIn">
                 <router-link v-bind:to="{name:'user.profile', params:{accountName:$store.state.user.accountName}}">

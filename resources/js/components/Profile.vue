@@ -4,8 +4,8 @@
     <div class="mx-auto p-2" style="max-width: 600px;">
         <div class="card">
             <div class="card-body">
-                <div class="card-title d-flex flex-column" style="height:250px">
-                    <div class="h-100 position-absolute end-0 top-0 m-3" v-if="showBtn" style="height:40px;">
+                <div class="d-flex flex-column h-auto" style="height:250px">
+                    <div class="position-absolute end-0 top-0 m-3" v-if="showBtn" style="height:40px;">
                         <div class="text-end" v-if="!isMyProfile">
                             <div v-if="isFollow">
                                 <button class="btn btn-secondary" v-on:click="deleteFollowing" >フォローを外す</button>
@@ -28,12 +28,12 @@
                     </div>
                     <div class="d-flex flex-row">
                         <router-link v-bind:to="{name:'user.followed', params:{accountName:$route.params.accountName}}" style="text-decoration: none; color: #141619;">
-                            <p class="mr-2">
+                            <p class="mb-0">
                                 フォロー
                             </p>
                         </router-link>
                         <router-link v-bind:to="{name:'user.follower', params:{accountName:$route.params.accountName}}" style="text-decoration: none; color: #141619;">
-                            <p>
+                            <p class="mb-0 ms-2">
                                 フォロワー
                             </p>
                         </router-link>

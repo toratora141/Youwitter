@@ -16,7 +16,7 @@
                                 <span class="visually-hidden">Loading...</span>
                             </div>
                         </div>
-                        <div v-if="hasFollows">
+                        <div class="p-2" v-if="hasFollows">
                         <p class="m-auto">誰にメッセージを送りますか？</p>
                             <div v-for="follow in follows" :key="follow.account_name">
                                 <div style="text-decoration: none; color: rgb(20, 22, 25);"  v-on:click="prepareMessagePage(follow.user)">

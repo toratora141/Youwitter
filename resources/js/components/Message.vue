@@ -39,7 +39,7 @@
                 <form v-on:submit.prevent="send">
                     <div class="d-flex flex-row">
                         <input class="flex-fill rounded-pill me-1" type="text" placeholder="メッセージを入力" v-model="messageText">
-                        <input class="rounded-pill ps-2 pe-2" type="submit" value="送信">
+                        <input class="btn btn-secondary rounded-pill ps-3 pe-3" type="submit" value="送信">
                     </div>
                 </form>
             </div>
