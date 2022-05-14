@@ -32,7 +32,7 @@
             </li>
             <li class="nav-item" >
                 <router-link v-bind:to="{name:'user.setting'}">
-                    <a class="nav-link" href="#">設定</a>
+                    <a class="nav-link" href="#">その他</a>
                 </router-link>
             </li>
         </ul>

@@ -60,7 +60,9 @@
                             v-if="errors.password_confirm">
                         </label>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100 mt-5">登録</button>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary w-25 mt-5">登録</button>
+                    </div>
                 </form>
                 <div class="modal" tabindex="-1" ref="showModal">
                     <div class="modal-dialog">
@@ -73,7 +75,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
