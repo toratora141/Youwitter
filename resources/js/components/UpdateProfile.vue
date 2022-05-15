@@ -81,7 +81,7 @@ export default ({
     },
     created(){
         this.updateParam.display_name = this.user.display_name;
-        this.picture = this.$parent.user.icon;
+        this.picture = '/storage/' + this.$parent.user.icon;
     },
     methods:{
         showUpdateModal(){
