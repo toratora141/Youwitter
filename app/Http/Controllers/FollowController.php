@@ -16,7 +16,7 @@ class FollowController extends Controller
     public function fetch()
     {
         $follows = Follow::where('follower', Auth::user()->account_name)
-            ->with(['user', 'videoLists.videos.good'])
+            ->with(['user', 'videoLists.videos.good', 'videoLists.user'])
             ->get();
         return response()->json(['follows' => $follows]);
     }
