@@ -23,6 +23,10 @@ class RoomController extends Controller
             $room = Room::where('room_id', $roomId)
                 ->with('userList.user', 'message.user')
                 ->first();
+            if (Room::find($room->room_id)->userList()->where('user_id', $this->myAccountName)->doesntExist()) {
+                throw new \Exception('ルームがありません');
+            }
+
             return response()->json(['room' => $room]);
         }
 

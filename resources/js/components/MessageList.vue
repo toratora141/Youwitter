@@ -57,9 +57,9 @@
                                         <div class="d-flex flex-row">
                                             <h5 class="ms-2">{{userList.user.account_name}}</h5>
                                             <p class="ms-2">{{userList.user.display_name}}</p>
-                                            <p class="flex-fill text-end">{{diffTime(room.message_order_by[0].created_at)}}</p>
+                                            <p class="flex-fill text-end" v-if="room.message_order_by.length > 0">{{diffTime(room.message_order_by[0].created_at)}}</p>
                                         </div>
-                                        <p class="ms-2">{{room.message_order_by[0].text}}</p>
+                                        <p class="ms-2" v-if="room.message_order_by.length > 0">{{room.message_order_by[0].text}}</p>
                                     </div>
                                 </div>
                             </router-link>
@@ -85,8 +85,8 @@ export default {
         return {
             user: this.$store.state.user,
             follows: {},
-            hasFollows: false,
             hasRooms: false,
+            hasFollows: false,
             newMessageObj: null,
             fetchFollowsEnd: false,
             fetchRoomEnd: false,
@@ -137,6 +137,12 @@ export default {
         moveSearch(){
             this.newMessageObj.hide();
             this.$router.push({name:'user.search'});
+        },
+        hasMessages(room) {
+            if(room.message_order_by.length > 0){
+                return true;
+            }
+            return false;
         }
     }
 }
