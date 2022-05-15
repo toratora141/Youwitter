@@ -169,7 +169,7 @@ import UpdateProfile from './UpdateProfile.vue';
             })
                 .then((res) => {
                     this.videoLists = res.data.videoLists;
-                    this.videos = res.data.videoLists[0].videos;
+                    this.videos = res.data.videoLists.videos;
                     this.$refs.movieList.fetch(this.videoLists, this.videos);
                     this.$forceUpdate()
                 })

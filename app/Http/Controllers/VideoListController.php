@@ -47,7 +47,7 @@ class VideoListController extends Controller
         $user = Auth::user();
         $videoLists = VideoList::find($request->input('id'))
             ->where('id', $request->input('id'))
-            ->with('videos')
+            ->with('videos', 'user')
             ->first();
         return response()->json(['videoLists' => $videoLists, 'result' => true]);
     }

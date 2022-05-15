@@ -9,10 +9,10 @@
                 <button class="btn btn-secondary">アカウント作成</button>
             </router-link>
         </div>
-        <div class="justify-content-center w-100">
-            <div class="col-sm-6 p-2 m-auto">
+        <div class="justify-content-center">
+            <div class="col-sm-6 p-2 m-auto w-75">
                 <form v-on:submit.prevent="login">
-                    <div class="form-group" >
+                    <div class="row form-group m-auto" >
                         <label for="account-name" class="col-sm-3 col-form-label w-100">ID</label>
                         <input type="text"
                             class="col-sm-9 form-control"
@@ -25,7 +25,7 @@
                             v-if="errors.account_name">
                         </label>
                     </div>
-                    <div class="form-group">
+                    <div class="row form-group m-auto">
                         <label for="password" class="col-sm-3 col-form-label w-100">パスワード</label>
                         <input type="password"
                             class="col-sm-9 form-control"
@@ -38,13 +38,13 @@
                             v-if="errors.password">
                         </label>
                     </div>
-                    <div class="form-group">
+                    <div class="row form-group m-auto">
                         <label class="alert alert-danger p-2"
                             v-text="errors.login_message"
                             v-if="errors.login_message"></label>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary w-25 mt-5">ログイン</button>
+                        <button type="submit" class="btn btn-primary mt-5">ログイン</button>
                     </div>
                 </form>
                 <div class="modal" tabindex="-1" ref="showModal" data-bs-backdrop="static">
