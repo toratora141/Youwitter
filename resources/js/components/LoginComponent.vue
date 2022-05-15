@@ -10,7 +10,7 @@
             </router-link>
         </div>
         <div class="justify-content-center w-100">
-            <div class="col-sm-6 p-2">
+            <div class="col-sm-6 p-2 m-auto">
                 <form v-on:submit.prevent="login">
                     <div class="form-group" >
                         <label for="account-name" class="col-sm-3 col-form-label w-100">ID</label>
